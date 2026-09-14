@@ -13,3 +13,6 @@ __pycache__/
 *.pyc
 .DS_Store
 ~$*
+# GUI 로 볼 케이블 근육 모델·모션은 올린다
+!report/moco/newmus_paths_subject3_model.osim
+!report/moco/paths_subject3_walking1_ik_full.mot
