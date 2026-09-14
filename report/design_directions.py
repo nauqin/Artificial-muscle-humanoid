@@ -57,7 +57,7 @@ def dataset(with_dj=False):
     return {k: np.vstack(v) for k, v in parts.items()}
 
 
-def capacity_lp(V, tau, slack_w=50.0):
+def capacity_lp(V, tau, slack_w=50.0, time_limit=None):
     """V 고정. min Σc + w·Σ|slack|  s.t.  Vᵀu_t + slack_t = τ_t, 0 ≤ u_t ≤ c. 반환 (Σc, c, slack 최대)."""
     T, n = tau.shape; k = V.shape[0]
     nu, ns = T * k, T * n
@@ -73,7 +73,7 @@ def capacity_lp(V, tau, slack_w=50.0):
     # 부등식: u_ti − c_i ≤ 0
     ri2 = np.arange(nu); ci2 = np.arange(nu); ci3 = nu + 2 * ns + np.tile(np.arange(k), T)
     Aub = coo_matrix((np.concatenate([np.ones(nu), -np.ones(nu)]), (np.concatenate([ri2, ri2]), np.concatenate([ci2, ci3]))), shape=(nu, nv)).tocsr()
-    res = linprog(cost, A_ub=Aub, b_ub=np.zeros(nu), A_eq=Aeq, b_eq=beq, bounds=(0, None), method="highs")
+    res = linprog(cost, A_ub=Aub, b_ub=np.zeros(nu), A_eq=Aeq, b_eq=beq, bounds=(0, None), method="highs", options=({"time_limit": time_limit} if time_limit else {}))
     if not res.success: return np.inf, None, np.inf
     c = res.x[nu + 2 * ns:]; s = res.x[nu:nu + 2 * ns]
     return float(c.sum() + slack_w * s.sum()), c, float(s.max())
@@ -104,10 +104,21 @@ def main():
     print("데이터:", {k: v.shape[0] for k, v in data.items()}, "합계", tau_all.shape[0], "프레임 (좌우 합침, 피험자3 크기)")
     print("좌표별 피크 (Nm):", dict(zip(COORDS, np.round(np.abs(tau_all).max(axis=0), 1))))
     tau_fit = subsample(tau_all, a.frames)
-    print(f"최적화 프레임 {len(tau_fit)}개")
+    tau_eval = subsample(tau_all, 3000, seed=7)
+    print(f"최적화 프레임 {len(tau_fit)}개, 평가 프레임 {len(tau_eval)}개 (전체 LP 는 조건 나쁜 V 에서 한없이 길어져 표본으로 잰다)")
 
     def evaluate(V, tau=tau_fit):
-        return capacity_lp(unit(V), tau)
+        if tau is tau_all: tau = tau_eval
+        return capacity_lp(unit(V), tau, time_limit=(5.0 if tau is tau_fit else 120.0))
+
+    def verify_all(V, c):
+        """용량 c 로 전 프레임을 정말 낼 수 있나 — 프레임별 0 ≤ u ≤ c 최소제곱, 남는 토크 최대 (Nm)."""
+        from scipy.optimize import lsq_linear
+        Vu = unit(V); worst = 0.0
+        for row in tau_all[::3]:
+            r = lsq_linear(Vu.T, row, bounds=(np.zeros(len(c)), np.maximum(c, 1e-9)), lsmr_tol="auto")
+            worst = max(worst, float(np.abs(Vu.T @ r.x - row).max()))
+        return worst
 
     results = {}
     # 기준 1: 관절마다 굴근·신근
@@ -123,15 +134,27 @@ def main():
     starts = [axis_aligned()] + ([unit(Vn)] if os.path.exists(npz) else [])
     rng = np.random.default_rng(1)
     while len(starts) < a.starts + 2: starts.append(unit(rng.normal(size=(8, 4))))
+    class Stop(Exception): pass
     best = (np.inf, None)
     for si, V0 in enumerate(starts):
-        tic = time.time()
-        f = lambda x: evaluate(x.reshape(8, 4))[0]
-        r = minimize(f, unit(V0).ravel(), method="Powell", options={"maxfev": a.maxfev, "xtol": 1e-2, "ftol": 1e-3})
-        V = unit(r.x.reshape(8, 4)); full = evaluate(V, tau_all)
-        print(f"  시작 {si}: {r.nfev}회 {time.time()-tic:.0f}s  부분집합 {r.fun:.0f} → 전체 {full[0]:.0f} Nm (slack {full[2]:.2f})", flush=True)
+        tic = time.time(); state = {"n": 0, "best": (np.inf, None), "t_lp": 0.0}
+        def f(x):
+            t0 = time.time(); v = evaluate(x.reshape(8, 4))[0]; state["t_lp"] += time.time() - t0
+            state["n"] += 1
+            if v < state["best"][0]: state["best"] = (v, x.copy())
+            if state["n"] % 100 == 0:
+                print(f"    시작 {si} 평가 {state['n']}회  현재 최선 {state['best'][0]:.0f} Nm  LP 평균 {state['t_lp']/state['n']*1000:.0f} ms", flush=True)
+            if state["n"] >= a.maxfev: raise Stop
+            return v
+        try:
+            minimize(f, unit(V0).ravel(), method="Powell", options={"maxfev": a.maxfev, "xtol": 1e-2, "ftol": 1e-3})
+        except Stop:
+            pass
+        V = unit(state["best"][1].reshape(8, 4)); full = evaluate(V, tau_all)
+        print(f"  시작 {si}: {state['n']}회 {time.time()-tic:.0f}s  부분집합 {state['best'][0]:.0f} → 전체 {full[0]:.0f} Nm (slack {full[2]:.2f})", flush=True)
         if full[0] < best[0]: best = (full[0], V, full)
     V, full = best[1], best[2]; results["최적화 8개"] = (V, full)
+    print(f"전 프레임 검산 (1/3 표본): 설계 용량으로 못 내는 토크 최대 {verify_all(V, full[1]):.2f} Nm  (축 정렬: {verify_all(axis_aligned(), cA[1]):.2f} Nm)", flush=True)
 
     # 정리
     print("\n설계안 (행 = 근육, 열 =", COORDS, ") 단위방향 × 용량 = Nm")
@@ -141,7 +164,7 @@ def main():
     print("\n과제별 (설계 V 고정) 필요 총용량:")
     per_task = {}
     for k, v in data.items():
-        r = capacity_lp(V, v); per_task[k] = r[0]; print(f"  {k:10s} {r[0]:7.0f} Nm  slack {r[2]:.2f}")
+        r = capacity_lp(V, subsample(v, 3000, seed=3), time_limit=120.0); per_task[k] = r[0]; print(f"  {k:10s} {r[0]:7.0f} Nm  slack {r[2]:.2f}")
     np.savez(os.path.join(ROOT, "report/newmus_V_design_k8.npz"), V=V, c=c, V_nm=Vnm, coords=np.array(COORDS),
              axis_c=cA[1], nmf_c=(cN[1] if os.path.exists(npz) else np.zeros(8)))
     with open(os.path.join(ROOT, "report/design_directions.csv"), "w", newline="") as fh:

@@ -257,6 +257,7 @@ VAF(설명된 분산)로 고른다. 두 기준을 나란히 보고한다.
 | `report/plot_newmuscles_cross.py` | 방향 V 출처별 교차 검증 막대그림 (`fig_newmuscles_cross.png`) |
 | `report/newmus_video.py` | 새 근육으로 걷는 모습 mp4 — 스틱피겨 + GRF + 신호 막대 + 토크 추적 (GUI 없이) |
 | `report/emg_check.py` | 실측 EMG(LabValidation) 대 SO 활성도·시너지 검산 — soleus 0.78, tibant 0.10 |
+| `report/design_directions.py` | **새 근육 8개 방향을 ID 토크에서 직접 설계** (LP + Powell) — 394 Nm, 축 정렬 532 대비 −26 %. 결과 `newmus_V_design_k8.npz`, 검증 `design_validation.csv` |
 | `raw_b3d/` | 내려받은 `.b3d`를 여기에 둔다 |
 | `data/` | AddBiomechanics 다운로드를 여기에 푼다 |
 | `out/` | 결과 |
@@ -560,7 +561,11 @@ Uhlrich2023은 무릎 부하를 줄이는 보행 수정을 다루는 연구다. 
      `report/newmus_video.py` → `report/video_newmus_*.mp4`.
      **EMG 검산(9/14)**: SO 는 발목·햄스트링은 맞고(r 0.6~0.8) recfem·tibant 는 안 켠다(0.1~0.3),
      EMG 시너지는 2~3개 — NOTES 3절. V 를 ID 토크에서 직접 뽑으면 이 SO 오류에서 벗어난다.
-     다음: ① V 를 NMF 에 맡기지 말고 필요한 u 최소화로 직접 최적화(7명 전체 + 스쿼트·점프·STS), ② hip_rotation
+     **설계 완료 (9/14 저녁)**: `report/design_directions.py` 로 방향 8개를 ID 토크에서 직접 최적화
+     (7명 걷기 + 스쿼트 + STS, 피험자3 크기). 총용량 394 Nm(축 정렬 532, NMF 513). 한 설계로 7명
+     12걸음 오차 ≤ 10 %(walkingTS2 무릎 20 %). Moco 내부 토크가 ID 와 어긋나는 노드가 있어 검증
+     지표는 "새 근육 토크 vs ID" — NOTES 3절. 설계 파일 `report/newmus_V_design_k8.npz`.
+     다음: ① Moco 노드 튐 원인, ② hip_rotation
      포함 5 DOF, ③ 접촉 모델로 스스로 걷기(균형), ④ 그 토크 서명을 내는 실제 부착 경로.
 4. **하지 배치 과제 Phase 1~5**는 아래 "하지 인공근육 배치 과제" 절과 NOTES 4-A.
    Phase 0의 열린 질문(어느 봉투를 쓰나)은 오늘 닫혔다 — subject6·9는 데이터 탓이므로

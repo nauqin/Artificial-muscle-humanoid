@@ -22,9 +22,10 @@ import lumped_actuator_test as lat                     # noqa: E402
 
 osim.Logger.setLevelString("Error")
 COORDS = lat.COORDS
+EDGE = 0.05   # s. 보조 % 를 잴 때 구간 양 끝에서 뺄 폭 (MocoInverse 는 마지막 몇 노드에서 토크가 튄다)
 
 
-def build_model(model_path, ext_loads, k, sub, trial, out_dir, name, umax, v_from=None):
+def build_model(model_path, ext_loads, k, sub, trial, out_dir, name, umax, v_from=None, v_scale=1.0):
     """v_from=(sub, trial): 새 근육 방향 V 를 다른 trial 에서 만든다 (하드웨어 고정 → 교차 검증)."""
     pre = os.path.join(out_dir, f"{name}_pre.osim")
     welds, removed = strip_locked(model_path, pre)
@@ -41,7 +42,7 @@ def build_model(model_path, ext_loads, k, sub, trial, out_dir, name, umax, v_fro
     for side in ("r", "l"):
         vs, vt = v_from if v_from else (sub, trial)
         if v_from and vt.endswith(".npz"):                      # 설계 파일: V_nm (8×4, 최대 신호 u=1 일 때 Nm), 좌우 같은 설계
-            V = np.load(vt)["V_nm"]
+            V = np.load(vt)["V_nm"] * v_scale                 # 몸 크기 비율(질량×키 / 피험자3)로 용량을 맞춘다
         elif vt == "ALL":                                     # 그 피험자의 모든 걸음을 합쳐서 V
             trials = sorted(os.path.basename(p) for p in glob.glob(os.path.join(ROOT, "out/real", vs, "walking*")))
             A, F, R, tau = lat.load_pooled(vs, trials, side); V = lat.directions(A, F, R, k)
@@ -75,6 +76,8 @@ def main():
     ap.add_argument("--tag", default="")
     ap.add_argument("--reserve-weight", type=float, default=1.0,
                     help="보조 액추에이터 비용 가중치. 1 이면 u 와 보조(Nm)가 같은 값이라 u 가 크면 보조에 떠넘긴다; 100 이면 정말 못 내는 몫만 보조로 남는다")
+    ap.add_argument("--prefilter", action="store_true", help="운동학을 전체 길이에서 6 Hz 로 미리 필터해 넘긴다 (Moco 내부 필터는 창으로 자른 뒤 걸어 양 끝이 튄다)")
+    ap.add_argument("--v-scale", type=float, default=None, help="설계 V(Nm) 에 곱할 비율. 기본: 피험자 (질량×키)/(63.5×1.69) 자동")
     ap.add_argument("--v-from", nargs=2, metavar=("SUBJECT", "TRIAL"), default=None,
                     help="새 근육 방향 V 를 이 (subject, trial) 로 만든다. TRIAL=ALL 이면 그 피험자 전체, .npz 면 설계 파일(V_nm). 기본은 자기 자신")
     args = ap.parse_args()
@@ -88,11 +91,27 @@ def main():
     idm = io.read_mot(os.path.join(base, f"{trial}_id.sto")); t0, t1 = float(idm.t0), float(idm.t1)
     ik_path, _ = complete_kinematics(model_path, ik_raw, os.path.join(out_dir, f"{name}_ik_full.mot"))
 
-    model_osim, V_all = build_model(model_path, ext, k, sub, trial, out_dir, name, args.umax, v_from=args.v_from)
+    v_scale = args.v_scale
+    if v_scale is None:
+        meta = os.path.join(os.path.dirname(ROOT), "LabValidation_withoutVideos", sub, "sessionMetadata.yaml")
+        if os.path.exists(meta):
+            kv = dict(l.strip().split(":") for l in open(meta) if l.startswith(("mass_kg", "height_m")))
+            v_scale = float(kv["mass_kg"]) * float(kv["height_m"]) / (63.5 * 1.69)
+        else: v_scale = 1.0
+    model_osim, V_all = build_model(model_path, ext, k, sub, trial, out_dir, name, args.umax, v_from=args.v_from, v_scale=v_scale)
+    if args.v_from and args.v_from[1].endswith(".npz"): print(f"[{name}] 설계 V 사용, 몸 크기 비율 {v_scale:.2f}", flush=True)
     if args.v_from: print(f"[{name}] V 출처: {args.v_from[0]}/{args.v_from[1]}  (교차 검증)", flush=True)
     inv = osim.MocoInverse(); inv.setName(name)
     inv.setModel(osim.ModelProcessor(model_osim))
-    tp = osim.TableProcessor(ik_path); tp.append(osim.TabOpLowPassFilter(6.0)); inv.setKinematics(tp)
+    if args.prefilter:
+        from scipy.signal import butter, filtfilt
+        mot = io.read_mot(ik_path); fs = 1.0 / np.median(np.diff(mot.time)); b, a_ = butter(4, 6.0 / (fs / 2))
+        D = np.column_stack([filtfilt(b, a_, mot.column(n)) for n in mot.names])
+        ik_path = ik_path.replace(".mot", "_f6.mot"); io.write_mot(ik_path, mot.names, mot.time, D)
+        tp = osim.TableProcessor(ik_path)
+    else:
+        tp = osim.TableProcessor(ik_path); tp.append(osim.TabOpLowPassFilter(6.0))
+    inv.setKinematics(tp)
     inv.set_kinematics_allow_extra_columns(True)
     inv.set_initial_time(t0); inv.set_final_time(t1); inv.set_mesh_interval(args.mesh)
     inv.set_convergence_tolerance(args.tol); inv.set_constraint_tolerance(args.tol); inv.set_max_iterations(2000)
@@ -103,6 +122,8 @@ def main():
     goal = osim.MocoControlGoal.safeDownCast(study.updProblem().updGoal("excitation_effort"))
     goal.setWeightForControlPattern("/forceset/newmus_.*", 0.0)
     goal.setWeightForControlPattern("/forceset/reserve_.*", args.reserve_weight)
+    # 골반 6개 보조는 ID 의 잔차와 같은 역할 — 힘판 접촉 시작 순간의 가짜 모멘트를 여기서 흡수해야지 다리로 밀리면 안 된다.
+    goal.setWeightForControlPattern("/forceset/reserve_jointset_ground_pelvis_.*", 0.01)
     tic = time.time(); msol = study.solve(); dt = time.time() - tic
     ok = msol.success(); msol.unseal()
     print(f"[{name}] 성공={ok}  {dt/60:.1f} 분  목적함수={msol.getObjective():.3f}  반복 {msol.getNumIterations()}", flush=True)
@@ -114,7 +135,8 @@ def main():
         for side in ("r", "l"):
             coord = f"{c}_{side}"; cands = [n for n in names if "reserve" in n and n.endswith("_" + coord)]
             if not cands: continue
-            res = float(np.abs(msol.getControlMat(cands[0])).max()); idpk = float(np.abs(idm.column(f"{coord}_moment")).max())
+            tt = np.asarray(msol.getTimeMat()).ravel(); inner = (tt >= t0 + EDGE) & (tt <= t1 - EDGE)   # 구간 양 끝은 뺀다 — 최적화 경계에서 토크가 튄다
+            res = float(np.abs(np.asarray(msol.getControlMat(cands[0])).ravel()[inner]).max()); idpk = float(np.abs(idm.column(f"{coord}_moment")).max())
             rows.append((coord, res, idpk, res / idpk * 100)); print(f"  {coord:16s} {res:12.2f} {idpk:12.1f} {res/idpk*100:10.1f} %")
     worst = max(r[3] for r in rows)
     # 새 근육 신호 크기 — 하드웨어 용량 감각
