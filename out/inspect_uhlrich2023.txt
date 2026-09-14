@@ -1,0 +1,222 @@
+.b3d 10개
+
+=== subject10 ===
+  질량 60.00 kg  키 1.60 m  DOF 37  trial 16개
+  pass 2 / 3  접지 바디 ['calcn_r', 'calcn_l']
+  근육 80개
+  trial                          프레임    GRF양호        잔차 N (AddB)    마커mm  사유
+  DJ1_segment_1                  125       68     평균39.6 최대306.3      18  footContactDetectedButNoForce×56  missingBlip×1
+  DJ2_segment_1                  124      104    평균48.7 최대1220.0      28  forceDiscrepancy×2  missingBlip×3  unmeasuredExternalForceDetected×15
+  DJ3_segment_1                  119      119       평균9.3 최대58.9      16  -
+  DJAsym1_segment_1              119      119       평균6.8 최대21.2      20  -
+  DJAsym2_segment_0              216       65   평균217.1 최대1067.9      17  forceDiscrepancy×4  manualReview×80  measuredGrfZeroWhenAccelerationNonZero×2  missingBlip×65
+  DJAsym3_segment_1              112      112       평균7.8 최대33.3      19  -
+  STS1_segment_0                1411        0   평균232.8 최대5364.0      36  manualReview×1411
+  STSweakLegs1_segment_0        1383        0    평균215.6 최대728.3      15  manualReview×1383
+  squats1_segment_0             1288        0       평균8.6 최대22.2      12  manualReview×1288
+  squatsAsym1_segment_0         1257        0  평균102.3 최대20193.2      21  manualReview×1257
+  walking1_segment_0             125        0        평균2.8 최대8.4      14  manualReview×125
+  walking2_segment_0             121        0        평균2.7 최대9.3      14  manualReview×121
+  walking3_segment_0             130        0     평균27.3 최대868.8      14  manualReview×130
+  walkingTS1_segment_0           147        0       평균2.8 최대17.1      15  manualReview×147
+  walkingTS2_segment_0           150        0       평균3.3 최대13.1      15  manualReview×150
+  walkingTS3_segment_0           142        0       평균3.5 최대23.8      14  manualReview×142
+
+=== subject11 ===
+  질량 92.90 kg  키 1.84 m  DOF 37  trial 17개
+  pass 2 / 3  접지 바디 ['calcn_r', 'calcn_l']
+  근육 80개
+  trial                          프레임    GRF양호        잔차 N (AddB)    마커mm  사유
+  DJ1_segment_1                  125       52   평균215.1 최대1747.8      36  footContactDetectedButNoForce×54  missingBlip×19
+  DJ4_segment_1                  124       49   평균103.8 최대3003.0      43  footContactDetectedButNoForce×48  missingBlip×27
+  DJ5_segment_1                  130       59   평균164.6 최대1870.0      44  footContactDetectedButNoForce×42  missingBlip×29
+  DJAsym3_segment_1              154       76   평균455.0 최대6571.8      42  footContactDetectedButNoForce×57  missingBlip×21
+  DJAsym4_segment_1              140       38   평균424.2 최대4391.7      37  footContactDetectedButNoForce×50  missingBlip×28  unmeasuredExternalForceDetected×24
+  DJAsym5_segment_1              117       28   평균516.6 최대6205.2      38  footContactDetectedButNoForce×43  missingBlip×19  unmeasuredExternalForceDetected×27
+  STS1_segment_0                1328      633   평균179.4 최대1372.1      23  forceDiscrepancy×53  missingBlip×366  unmeasuredExternalForceDetected×276
+  STSweakLegs1_segment_0        1747      985  평균383.6 최대12670.3      32  footContactDetectedButNoForce×292  forceDiscrepancy×66  missingBlip×404
+  squats1_segment_0             1349     1349      평균11.3 최대47.2      23  -
+  squatsAsym1_segment_0         1414     1414      평균11.8 최대48.7      21  -
+  static1_segment_0              781      781      평균11.7 최대19.7      24  -
+  walking2_segment_0             136      136       평균8.7 최대36.5      26  -
+  walking3_segment_0             136      136       평균4.6 최대26.3      25  -
+  walking4_segment_0             138      138       평균6.0 최대49.1      25  -
+  walkingTS1_segment_0           163      163       평균6.2 최대35.2      28  -
+  walkingTS2_segment_0           158      158       평균8.0 최대50.2      29  -
+  walkingTS3_segment_0           160      160       평균8.2 최대38.0      27  -
+
+=== subject2 ===
+  질량 78.20 kg  키 1.96 m  DOF 37  trial 10개
+  pass 2 / 3  접지 바디 ['calcn_r', 'calcn_l']
+  근육 80개
+  trial                          프레임    GRF양호        잔차 N (AddB)    마커mm  사유
+  STS1_segment_0                 861        0  평균258.0 최대25051.6      31  manualReview×861
+  STSweakLegs1_segment_0        1139        0   평균654.2 최대5383.6      17  manualReview×1139
+  squats1_segment_0              801        0       평균9.9 최대34.9      17  manualReview×801
+  squatsAsym1_segment_0          901        0       평균8.4 최대26.7      15  manualReview×901
+  walking1_segment_0             158        0     평균99.8 최대915.2      15  manualReview×158
+  walking2_segment_0             151        0    평균93.3 최대1515.2      15  manualReview×151
+  walking3_segment_0             153        0     평균42.7 최대327.3      16  manualReview×153
+  walkingTS1_segment_0           184        0     평균50.1 최대519.6      16  manualReview×184
+  walkingTS2_segment_0           171        0     평균40.6 최대347.7      17  manualReview×171
+  walkingTS4_segment_0           184        0     평균54.8 최대526.8      16  manualReview×184
+
+=== subject3 ===
+  질량 63.50 kg  키 1.69 m  DOF 37  trial 16개
+  pass 2 / 3  접지 바디 ['calcn_r', 'calcn_l']
+  근육 80개
+  trial                          프레임    GRF양호        잔차 N (AddB)    마커mm  사유
+  DJ1_segment_1                  130       47   평균312.7 최대2897.9      32  forceDiscrepancy×4  measuredGrfZeroWhenAccelerationNonZero×12  missingBlip×67
+  DJ2_segment_1                  160       91   평균184.6 최대2033.6      27  forceDiscrepancy×6  measuredGrfZeroWhenAccelerationNonZero×10  missingBlip×53
+  DJ4_segment_1                  135       53   평균248.1 최대3315.4      32  footContactDetectedButNoForce×47  missingBlip×35
+  DJAsym2_segment_1              131       48   평균181.2 최대2298.6      28  forceDiscrepancy×3  measuredGrfZeroWhenAccelerationNonZero×7  missingBlip×73
+  DJAsym4_segment_1              138       24   평균315.0 최대1966.9      36  footContactDetectedButNoForce×32  missingBlip×35  unmeasuredExternalForceDetected×47
+  STS1_segment_0                1137      638    평균117.3 최대995.4      15  forceDiscrepancy×49  missingBlip×217  unmeasuredExternalForceDetected×233
+  STSweakLegs1_segment_0        2000     1332    평균172.5 최대906.1      17  footContactDetectedButNoForce×81  forceDiscrepancy×113  missingBlip×442  unmeasuredExternalForceDetected×32
+  squats1_segment_0             1184     1184       평균6.9 최대12.6      17  -
+  squatsAsym1_segment_0         1280     1280       평균7.7 최대38.5      17  -
+  static1_segment_0              679      679       평균5.2 최대19.7      19  -
+  walking1_segment_0             132      132       평균4.4 최대10.8      19  -
+  walking2_segment_0             136      136       평균6.9 최대16.3      18  -
+  walking3_segment_0             138      138       평균4.3 최대11.5      20  -
+  walkingTS2_segment_0           181      181       평균7.2 최대37.7      19  -
+  walkingTS3_segment_0           170      170       평균7.0 최대16.8      18  -
+  walkingTS4_segment_0           156      156       평균6.0 최대22.9      18  -
+
+=== subject4 ===
+  질량 62.60 kg  키 1.68 m  DOF 37  trial 17개
+  pass 2 / 3  접지 바디 ['calcn_r', 'calcn_l']
+  근육 80개
+  trial                          프레임    GRF양호        잔차 N (AddB)    마커mm  사유
+  DJ1_segment_1                  127      127      평균14.0 최대77.6      34  -
+  DJ2_segment_1                  120      120      평균11.5 최대57.6      32  -
+  DJ3_segment_1                  126       48   평균300.3 최대2362.7      42  forceDiscrepancy×3  missingBlip×16  unmeasuredExternalForceDetected×59
+  DJAsym1_segment_1              112       54     평균46.3 최대503.7      34  footContactDetectedButNoForce×44  missingBlip×14
+  DJAsym2_segment_1              112      112     평균15.1 최대106.6      32  -
+  DJAsym3_segment_1              117      117       평균9.4 최대43.6      29  -
+  STS1_segment_0                1399      970   평균272.8 최대6614.3      31  footContactDetectedButNoForce×305  forceDiscrepancy×11  missingBlip×113
+  STSweakLegs1_segment_0        1774      941   평균257.2 최대2824.1      34  footContactDetectedButNoForce×349  forceDiscrepancy×84  missingBlip×400
+  squats1_segment_0             1346     1346      평균28.0 최대45.3      17  -
+  squatsAsym1_segment_0         1338     1338      평균27.8 최대53.4      17  -
+  static1_segment_0              517      517      평균27.6 최대31.5      17  -
+  walking1_segment_0             131      131       평균5.2 최대16.8      18  -
+  walking2_segment_0             132      132       평균5.2 최대16.5      20  -
+  walking4_segment_0             139      139       평균4.9 최대10.6      17  -
+  walkingTS1_segment_0           143      143       평균4.2 최대10.7      19  -
+  walkingTS2_segment_0           141      141        평균4.0 최대7.9      20  -
+  walkingTS3_segment_0           141      141        평균3.3 최대9.8      26  -
+
+=== subject5 ===
+  질량 79.40 kg  키 1.85 m  DOF 37  trial 17개
+  pass 2 / 3  접지 바디 ['calcn_r', 'calcn_l']
+  근육 80개
+  trial                          프레임    GRF양호        잔차 N (AddB)    마커mm  사유
+  DJ1_segment_1                  139       76   평균130.6 최대1531.7      17  footContactDetectedButNoForce×45  missingBlip×18
+  DJ2_segment_1                  138       72   평균171.8 최대2299.6      17  forceDiscrepancy×2  measuredGrfZeroWhenAccelerationNonZero×5  missingBlip×59
+  DJ3_segment_1                  139       72    평균72.7 최대1160.2      18  forceDiscrepancy×2  measuredGrfZeroWhenAccelerationNonZero×4  missingBlip×61
+  DJAsym1_segment_1              143       81     평균22.3 최대175.9      16  footContactDetectedButNoForce×49  missingBlip×13
+  DJAsym2_segment_1              138       75   평균207.9 최대4790.9      22  forceDiscrepancy×1  measuredGrfZeroWhenAccelerationNonZero×2  missingBlip×60
+  DJAsym3_segment_1              134       70   평균160.7 최대2491.9      19  footContactDetectedButNoForce×45  missingBlip×19
+  STS1_segment_0                1336      935   평균258.7 최대8434.0      38  footContactDetectedButNoForce×16  forceDiscrepancy×49  missingBlip×336
+  STSweakLegs1_segment_0        1631      463   평균247.0 최대1152.8      19  footContactDetectedButNoForce×80  forceDiscrepancy×132  missingBlip×612  unmeasuredExternalForceDetected×344
+  squats1_segment_0             1623     1623       평균3.5 최대18.4      13  -
+  squatsAsym1_segment_0         1312     1274    평균25.6 최대4279.9      14  footContactDetectedButNoForce×32  missingBlip×6
+  static1_segment_0              502      502       평균4.9 최대20.4      15  -
+  walking1_segment_0             139      139       평균2.8 최대11.9      16  -
+  walking2_segment_0             136      136       평균3.0 최대11.7      16  -
+  walking3_segment_0             141      141        평균2.5 최대9.9      17  -
+  walkingTS1_segment_0           150      150        평균2.6 최대8.9      14  -
+  walkingTS2_segment_0           146      146       평균2.8 최대17.1      14  -
+  walkingTS3_segment_0           146      146       평균4.1 최대34.4      15  -
+
+=== subject6 ===
+  질량 59.00 kg  키 1.65 m  DOF 37  trial 17개
+  pass 2 / 3  접지 바디 ['calcn_r', 'calcn_l']
+  근육 80개
+  trial                          프레임    GRF양호        잔차 N (AddB)    마커mm  사유
+  DJ1_segment_1                  113       59   평균220.7 최대4837.4      16  footContactDetectedButNoForce×53  missingBlip×1
+  DJ2_segment_1                  118       61   평균262.6 최대4434.1      16  footContactDetectedButNoForce×46  missingBlip×11
+  DJ3_segment_1                  111       55   평균333.7 최대5122.4      19  footContactDetectedButNoForce×45  missingBlip×11
+  DJAsym1_segment_0              197       65   평균332.4 최대2883.5      17  footContactDetectedButNoForce×131  missingBlip×1
+  DJAsym2_segment_1              110       59   평균198.3 최대5052.0      15  footContactDetectedButNoForce×40  missingBlip×11
+  DJAsym3_segment_0              223       68   평균296.3 최대1513.2      17  footContactDetectedButNoForce×127  missingBlip×28
+  STS1_segment_0                1424      653   평균218.8 최대1166.1      13  forceDiscrepancy×95  missingBlip×676
+  STSweakLegs1_segment_0        1413      523   평균234.7 최대1232.9      14  footContactDetectedButNoForce×17  forceDiscrepancy×100  missingBlip×618  unmeasuredExternalForceDetected×155
+  squats1_segment_0             1302     1302    평균131.7 최대940.2      22  -
+  squatsAsym1_segment_0         1318     1318    평균102.9 최대942.6      17  -
+  static1_segment_0              265      265     평균57.1 최대252.1      21  -
+  walking1_segment_0             143      143    평균85.9 최대2142.9      22  -
+  walking2_segment_0             138      138    평균77.3 최대2190.7      21  -
+  walking3_segment_0             145      145    평균83.6 최대2274.3      22  -
+  walkingTS1_segment_0           142      142   평균105.2 최대2295.9      20  -
+  walkingTS2_segment_0           128      128    평균95.0 최대2595.2      19  -
+  walkingTS3_segment_0           135      135   평균102.6 최대2503.3      20  -
+
+=== subject7 ===
+  질량 61.20 kg  키 1.68 m  DOF 37  trial 18개
+  pass 2 / 3  접지 바디 ['calcn_r', 'calcn_l']
+  근육 80개
+  trial                          프레임    GRF양호        잔차 N (AddB)    마커mm  사유
+  DJ2_segment_1                  135      135       평균6.5 최대32.4      16  -
+  DJ3_segment_1                  121       66     평균37.6 최대237.8      16  footContactDetectedButNoForce×52  missingBlip×3
+  DJ4_segment_1                  119       62     평균34.1 최대185.0      16  footContactDetectedButNoForce×54  missingBlip×3
+  DJAsym1_segment_1              127      127       평균7.7 최대36.8      15  -
+  DJAsym2_segment_1              115       62     평균67.6 최대974.7      17  footContactDetectedButNoForce×50  missingBlip×3
+  DJAsym3_segment_1              107       53     평균51.5 최대780.0      15  footContactDetectedButNoForce×51  missingBlip×3
+  STS1_segment_0                1371      927   평균187.7 최대6892.2      30  footContactDetectedButNoForce×8  forceDiscrepancy×84  missingBlip×352
+  STSweakLegs1_segment_0        1638      973   평균288.1 최대6497.6      39  footContactDetectedButNoForce×383  forceDiscrepancy×45  missingBlip×237
+  STSweakLegs1_segment_2         421      191   평균328.9 최대2995.6      18  footContactDetectedButNoForce×76  forceDiscrepancy×10  missingBlip×96  unmeasuredExternalForceDetected×48
+  squats1_segment_0             1281     1281      평균14.0 최대31.9      14  -
+  squatsAsym1_segment_0         1341     1341      평균14.1 최대27.8      14  -
+  static1_segment_0              704      704      평균15.3 최대67.4      22  -
+  walking1_segment_0             132      122     평균21.0 최대878.4      31  forceDiscrepancy×1  missingBlip×3  unmeasuredExternalForceDetected×6
+  walking2_segment_0             131      131       평균7.4 최대16.8      30  -
+  walking3_segment_0             133      124    평균26.0 최대1239.2      30  forceDiscrepancy×1  missingBlip×3  unmeasuredExternalForceDetected×5
+  walkingTS1_segment_0           150      150       평균6.7 최대47.6      41  -
+  walkingTS2_segment_0           157      157       평균5.4 최대36.1      34  -
+  walkingTS3_segment_0           170      170      평균15.4 최대33.9      19  -
+
+=== subject8 ===
+  질량 59.40 kg  키 1.64 m  DOF 37  trial 17개
+  pass 2 / 3  접지 바디 ['calcn_r', 'calcn_l']
+  근육 80개
+  trial                          프레임    GRF양호        잔차 N (AddB)    마커mm  사유
+  DJ1_segment_1                  126       63     평균60.9 최대664.9      23  footContactDetectedButNoForce×46  missingBlip×17
+  DJ2_segment_1                  128       71     평균82.2 최대773.2      21  footContactDetectedButNoForce×56  missingBlip×1
+  DJ3_segment_1                  129       76    평균97.8 최대1410.0      19  footContactDetectedButNoForce×52  missingBlip×1
+  DJAsym1_segment_1              162       86   평균107.4 최대2114.2      22  footContactDetectedButNoForce×53  missingBlip×23
+  DJAsym2_segment_1              164       88   평균261.4 최대7065.2      38  footContactDetectedButNoForce×59  missingBlip×17
+  DJAsym3_segment_1              165       83     평균46.7 최대578.5      18  footContactDetectedButNoForce×57  missingBlip×25
+  STS1_segment_0                1321      702    평균154.4 최대613.4      15  forceDiscrepancy×87  missingBlip×361  unmeasuredExternalForceDetected×171
+  STSweakLegs1_segment_0        1861      628    평균161.7 최대949.6      17  forceDiscrepancy×136  missingBlip×716  unmeasuredExternalForceDetected×381
+  squats1_segment_0             1321     1321      평균15.3 최대54.0      16  -
+  squatsAsym1_segment_0         1321     1321      평균15.0 최대58.9      17  -
+  static1_segment_0              501      501      평균15.6 최대63.1      20  -
+  walking1_segment_0             129      129       평균6.4 최대13.5      22  -
+  walking2_segment_0             131      122    평균31.1 최대1108.4      16  forceDiscrepancy×1  missingBlip×3  unmeasuredExternalForceDetected×5
+  walking3_segment_0             136      136       평균6.0 최대14.1      27  -
+  walkingTS1_segment_0           197      151   평균160.7 최대2341.0      18  forceDiscrepancy×1  measuredGrfZeroWhenAccelerationNonZero×15  missingBlip×30
+  walkingTS2_segment_0           149      149       평균7.0 최대12.9      30  -
+  walkingTS3_segment_0           154      154       평균6.6 최대19.9      36  -
+
+=== subject9 ===
+  질량 75.70 kg  키 1.85 m  DOF 37  trial 16개
+  pass 2 / 3  접지 바디 ['calcn_r', 'calcn_l']
+  근육 80개
+  trial                          프레임    GRF양호        잔차 N (AddB)    마커mm  사유
+  DJ1_segment_1                  122       57   평균275.8 최대6868.2      17  footContactDetectedButNoForce×45  missingBlip×20
+  DJ2_segment_0                  231      102   평균428.5 최대1720.1      20  forceDiscrepancy×5  measuredGrfZeroWhenAccelerationNonZero×25  missingBlip×99
+  DJ3_segment_0                  231       90   평균350.0 최대1923.4      16  footContactDetectedButNoForce×116  missingBlip×25
+  DJAsym1_segment_1              119       42  평균541.4 최대13428.0      17  footContactDetectedButNoForce×57  missingBlip×20
+  DJAsym2_segment_1              128       53   평균192.3 최대6541.3      17  footContactDetectedButNoForce×55  missingBlip×20
+  DJAsym3_segment_1              124       59   평균281.6 최대6616.0      17  footContactDetectedButNoForce×64  missingBlip×1
+  STS1_segment_0                1441      837   평균266.6 최대6122.3      14  forceDiscrepancy×74  missingBlip×339  unmeasuredExternalForceDetected×191
+  STSweakLegs1_segment_0        1831     1078    평균258.0 최대983.9      15  forceDiscrepancy×151  missingBlip×602
+  squats1_segment_0             1301     1301    평균40.6 최대1582.8      14  -
+  squatsAsym1_segment_0         1351     1317      평균26.6 최대96.0      15  footContactDetectedButNoForce×34
+  walking1_segment_0             136      129   평균220.4 최대3075.0      21  forceDiscrepancy×1  missingBlip×1  unmeasuredExternalForceDetected×5
+  walking2_segment_0             130      122   평균177.9 최대3345.5      18  forceDiscrepancy×1  missingBlip×1  unmeasuredExternalForceDetected×6
+  walking3_segment_0             137      131   평균169.6 최대3078.7      18  forceDiscrepancy×1  missingBlip×1  unmeasuredExternalForceDetected×4
+  walkingTS1_segment_0           144      144   평균120.1 최대3209.1      17  -
+  walkingTS2_segment_0           140      140   평균135.7 최대3062.7      17  -
+  walkingTS3_segment_0           137      137   평균145.9 최대3229.2      17  -
