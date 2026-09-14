@@ -974,6 +974,26 @@ numpy 로만 계산하므로 평가가 마이크로초 → differential evolutio
 GUI 로 보기: `report/moco/newmus_paths_subject3_model.osim` + `report/moco/paths_subject3_walking1_ik_full.mot`.
 PathActuator 라 색은 고정(근육별 색), 활성도 색은 Muscle 로 바꿔야 나온다.
 
+### 케이블 근육으로 스쿼트도 했다 — 그리고 입력은 반드시 같은 모델 짝이어야 한다 (2026-09-14 밤)
+
+설계에 스쿼트가 들어갔으니 케이블 근육으로 스쿼트를 재현해 봤다. **처음엔 460 % 로 실패**했다:
+논문 팀의 IK·힘판 데이터(`LabValidation`)를 우리 AddB 스케일 모델에 그대로 넣었기 때문이다.
+두 모델은 같은 사람이라도 스케일·발 기하가 달라 발 위치와 힘판 COP 가 몇 cm 어긋나고, 그게
+발목 토크로 크게 튄다(발목 ID 피크 27 Nm 인데 오차 120 Nm). 해결: subject3 `.b3d` 에서
+squats1 을 우리 모델 짝으로 변환(`b3d_to_opensim.py`, 1,184 프레임 전부 양호, 잔차 7 N) →
+`run_trial.py` 로 ID → `moco_path_muscles.py --t0 2.6 --t1 4.4`(두 번째 반복). 결과 오른다리
+케이블 토크 vs ID 최악 **5.6 %** (고관절 굴곡 2.7, 내전 5.6, 무릎 0.9, 발목 4.2), 왼쪽 고관절만
+보조 22 %(반복 상한 도달, 미수렴). 영상 `report/video_paths_subject3_squats1.mp4`
+(`report/paths_video.py`: 케이블을 신호 u 로 진하기·굵기 표시).
+
+STS1(앉았다 서기)은 AddB 에서 절반이 `unmeasuredExternalForceDetected` — 의자가 미는 힘이
+힘판에 없어서 ID 가 틀리므로 **시뮬레이션 대상에서 뺀다**(설계 데이터의 STS 토크는 논문 팀 ID
+로, 의자 힘을 포함한 것인지 확인 필요 — 열린 질문).
+
+교훈: 운동학·힘판·ID 는 **한 모델에서 나온 짝**으로만 쓴다. 다른 출처를 섞으면 발목부터 깨진다.
+`moco_path_muscles.py` 에 `--ik --ext --id --t0 --t1 --name` 을 넣어 임의 입력을 받게 했지만,
+그 입력이 `--model` 과 짝인지는 사람이 확인해야 한다.
+
 ### 계획 파일이 없다
 
 README 가 `PLAN_lowerlimb_muscle_placement.md` 를 참조하지만 프로젝트 어디에도 없다

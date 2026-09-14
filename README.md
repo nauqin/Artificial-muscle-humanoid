@@ -258,7 +258,8 @@ VAF(설명된 분산)로 고른다. 두 기준을 나란히 보고한다.
 | `report/newmus_video.py` | 새 근육으로 걷는 모습 mp4 — 스틱피겨 + GRF + 신호 막대 + 토크 추적 (GUI 없이) |
 | `report/emg_check.py` | 실측 EMG(LabValidation) 대 SO 활성도·시너지 검산 — soleus 0.78, tibant 0.10 |
 | `report/path_design.py` | 설계 방향 → 케이블 부착점 최적화 (tendon excursion 모멘트암, DE + Powell). `newmus_paths_k8.json`, 모델 `moco/newmus_paths_subject3_model.osim` |
-| `report/moco_path_muscles.py` | 경로 근육(PathActuator) 8개/다리로 MocoInverse 걸음 재현 — 6걸음 중 5걸음 ≤ 10 % |
+| `report/moco_path_muscles.py` | 경로 근육(PathActuator) 8개/다리로 MocoInverse 재현 — 걷기 6걸음 중 5걸음 ≤ 10 %, 스쿼트 5.6 % (`--ik --ext --id --t0 --t1` 로 임의 입력, 단 모델과 짝이어야 함) |
+| `report/paths_video.py` | 케이블 근육 영상 — 뼈대 + 케이블(신호로 진하기) + GRF + 토크 추적 |
 | `report/design_directions.py` | **새 근육 8개 방향을 ID 토크에서 직접 설계** (LP + Powell) — 394 Nm, 축 정렬 532 대비 −26 %. 결과 `newmus_V_design_k8.npz`, 검증 `design_validation.csv` |
 | `raw_b3d/` | 내려받은 `.b3d`를 여기에 둔다 |
 | `data/` | AddBiomechanics 다운로드를 여기에 푼다 |
