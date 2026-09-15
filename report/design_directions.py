@@ -27,6 +27,11 @@ for f in font_manager.findSystemFonts():
 plt.rcParams["axes.unicode_minus"] = False
 
 
+def mass_kg(sub):
+    for line in open(os.path.join(LAB, sub, "sessionMetadata.yaml")):
+        if line.startswith("mass_kg"): return float(line.split(":")[1])
+
+
 def body(sub):
     m = h = None
     for line in open(os.path.join(LAB, sub, "sessionMetadata.yaml")):
@@ -50,10 +55,17 @@ def dataset(with_dj=False):
         scale = REF / body(sub)
         for f in sorted(glob.glob(os.path.join(ROOT, "out/real", sub, "walking*", "*_id.sto"))):
             parts.setdefault("walking", []).extend(torque_rows(io.read_mot(f), scale))
-        for task in ("squats1", "STS1") + (("DJ1", "DJ2", "DJ3", "DJ4") if with_dj else ()):
+        for task in ("squats1",) + (("DJ1", "DJ2", "DJ3", "DJ4") if with_dj else ()):   # STS 는 뺐다(9/15 결정): 의자 힘이 힘판에 없어 앉은 구간 ID 가 틀리고, 남는 구간은 스쿼트와 같다
             f = os.path.join(LAB, sub, "OpenSimData/Mocap/ID", f"{task}.sto")
             if os.path.exists(f):
-                parts.setdefault(task.rstrip("1234"), []).extend(torque_rows(io.read_mot(f), scale))
+                mot = io.read_mot(f); rows = torque_rows(mot, scale)
+                if task.startswith("STS"):
+                    # 의자는 힘판 위에 없었다 (힘판 3 = 0). 앉아 있는 동안 발 힘판은 체중의 20~35 % 뿐이라 ID 가 틀리다
+                    # → 발 힘판 합이 체중의 85 % 이상인 프레임(의자에서 떨어진 상태)만 쓴다.
+                    fz = io.read_mot(os.path.join(LAB, sub, "ForceData", f"{task}_forces.mot"))
+                    tot = np.interp(mot.time, fz.time, fz.column("R_ground_force_vy") + fz.column("L_ground_force_vy"))
+                    keep = tot >= 0.85 * mass_kg(sub) * 9.80665; rows = [r[keep] for r in rows]
+                parts.setdefault(task.rstrip("1234"), []).extend(rows)
     return {k: np.vstack(v) for k, v in parts.items()}
 
 
@@ -185,7 +197,7 @@ def main():
     ax.set_title("설계안: 근육별 관절 토크 (Nm, 최대 신호일 때)", fontsize=10); plt.colorbar(im, ax=ax, fraction=0.04)
     ax = axes[2]; ks = list(per_task); ax.bar(range(len(ks)), [per_task[k] for k in ks], color="#1e8449")
     ax.set_xticks(range(len(ks))); ax.set_xticklabels(ks, fontsize=9); ax.set_ylabel("Nm"); ax.set_title("설계 V 고정, 과제별 필요 총용량", fontsize=10)
-    fig.suptitle("새 근육 8개 방향 — ID 토크에서 직접 설계 (7명, 걷기 42 + 스쿼트 + 앉았다서기, 피험자3 크기)", fontsize=11)
+    fig.suptitle("새 근육 8개 방향 — ID 토크에서 직접 설계 (7명, 걷기 42 + 스쿼트, 피험자3 크기)", fontsize=11)
     fig.tight_layout(); fig.savefig(os.path.join(ROOT, "report/fig_design_directions.png"), dpi=150); print("그림 저장")
 
 

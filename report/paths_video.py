@@ -59,8 +59,10 @@ def main():
     for j, m in enumerate(paths["muscles"]):
         r, _ = pd.moment_arms(fr, [pd.BODIES.index(b) for b in m["chain"]], np.array(m["points"])); tau += (m["force_N"] * U[:, j])[:, None] * r
     grf = read_grf(a.grf)
-    fig = plt.figure(figsize=(14, 7.2)); gs = fig.add_gridspec(2, 2, width_ratios=[1.1, 1], height_ratios=[1, 1.1], left=0.04, right=0.98, top=0.9, bottom=0.08, wspace=0.18, hspace=0.42)
-    axf = fig.add_subplot(gs[:, 0]); axb = fig.add_subplot(gs[0, 1]); axt = fig.add_subplot(gs[1, 1])
+    # 보조 액추에이터(새 근육이 못 낸 몫) — 오른다리 4좌표
+    RES = np.column_stack([np.interp(times, sol.time, sol.column([k for k in sol.names if "reserve" in k and k.endswith(f"_{c}_r")][0])) for c in COORDS])
+    fig = plt.figure(figsize=(14, 8.4)); gs = fig.add_gridspec(3, 2, width_ratios=[1.1, 1], height_ratios=[0.9, 1.1, 0.8], left=0.04, right=0.98, top=0.92, bottom=0.07, wspace=0.18, hspace=0.5)
+    axf = fig.add_subplot(gs[:, 0]); axb = fig.add_subplot(gs[0, 1]); axt = fig.add_subplot(gs[1, 1]); axr = fig.add_subplot(gs[2, 1])
     fig.suptitle(f"케이블 근육 8개/다리 — {a.title or a.name}   (색 진하기 = 신호 u, MocoInverse, 운동학·지면반력 실측 고정)   1/{a.slow:g} 배속", fontsize=12)
     axf.set_aspect("equal"); axf.axhline(0, color="#7f8c8d", lw=1.5); axf.set_ylim(-0.12, float(pos[:, :, 1].max()) + 0.3); axf.set_yticks([0, 0.5, 1.0]); axf.set_xlabel("[m]")
     for sp in ("top", "right"): axf.spines[sp].set_visible(False)
@@ -72,7 +74,12 @@ def main():
     axb.set_title("이 순간 케이블 근육 8개의 신호 u (1 = 용량)", fontsize=11); axb.set_ylabel("u")
     for j, c in enumerate(COORDS):
         ln, = axt.plot(times, tau[:, j], lw=1.8, label=KL[c]); axt.plot(times, np.interp(times, idm.time, idm.column(f"{c}_r_moment")), ":", color=ln.get_color(), lw=1.2)
-    cur = axt.axvline(t0, color="k", lw=1); axt.set_title("오른다리 관절 토크 — 케이블 근육이 낸 것(실선) vs 측정 ID(점선)", fontsize=11); axt.set_ylabel("Nm"); axt.set_xlabel("time [s]"); axt.legend(fontsize=8, ncol=4, loc="lower left"); axt.set_xlim(t0, t1)
+    cur = axt.axvline(t0, color="k", lw=1); axt.set_title("오른다리 관절 토크 — 케이블 근육이 낸 것(실선) vs 측정 ID(점선)", fontsize=11); axt.set_ylabel("Nm"); axt.legend(fontsize=8, ncol=4, loc="lower left"); axt.set_xlim(t0, t1)
+    idpk = {c: float(np.abs(idm.column(f"{c}_r_moment")).max()) for c in COORDS}; worst = max(np.abs(RES[:, j]).max() / idpk[c] * 100 for j, c in enumerate(COORDS))
+    for j, c in enumerate(COORDS): axr.plot(times, RES[:, j], lw=1.5, label=KL[c])
+    cur2 = axr.axvline(t0, color="k", lw=1); lim = max(10.0, float(np.abs(RES).max()) * 1.2); axr.set_ylim(-lim, lim); axr.set_xlim(t0, t1)
+    axr.set_title(f"보조 액추에이터가 떠맡은 토크 (케이블 근육이 못 낸 몫) — 최악 {worst:.0f} % of ID 피크", fontsize=11); axr.set_ylabel("Nm"); axr.set_xlabel("time [s]"); axr.legend(fontsize=8, ncol=4, loc="lower left")
+    rtxt = axr.text(0.99, 0.95, "", transform=axr.transAxes, ha="right", va="top", fontsize=9)
 
     def update(fi):
         i = fi % n; p = pos[i]
@@ -85,7 +92,9 @@ def main():
             else: arrow.set_visible(False)
         tl.set_text(f"t = {times[i]:5.2f} s   vGRF = {tot / weight_n:4.2f} BW")
         for b, v in zip(bars, U[i]): b.set_height(v)
-        cur.set_xdata([times[i], times[i]]); return [bones, tl, cur] + cables + list(bars) + arrows
+        cur.set_xdata([times[i], times[i]]); cur2.set_xdata([times[i], times[i]])
+        rtxt.set_text("지금: " + "  ".join(f"{KL[c]} {RES[i, j]:+.1f}" for j, c in enumerate(COORDS)) + " Nm")
+        return [bones, tl, cur, cur2, rtxt] + cables + list(bars) + arrows
     anim = FuncAnimation(fig, update, frames=n * a.loops, interval=1000 / a.fps, blit=False)
     out = os.path.join(ROOT, "report", f"video_{a.name}.mp4"); anim.save(out, writer=FFMpegWriter(fps=a.fps, bitrate=3000, extra_args=["-pix_fmt", "yuv420p"]), dpi=110)
     print(f"저장 {out}  ({os.path.getsize(out)/1e6:.1f} MB)")

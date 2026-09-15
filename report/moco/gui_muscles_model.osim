@@ -5621,9 +5621,9 @@
 					<!--The maximum generalized force produced by this actuator.-->
 					<optimal_force>10</optimal_force>
 				</CoordinateActuator>
-				<PathActuator name="M0_r">
+				<Millard2012EquilibriumMuscle name="M0_r">
 					<!--Minimum allowed value for control signal. Used primarily when solving for control values.-->
-					<min_control>0</min_control>
+					<min_control>0.01</min_control>
 					<!--Maximum allowed value for control signal. Used primarily when solving for control values.-->
 					<max_control>1</max_control>
 					<!--The path of the actuator which defines length and lengthening speed.-->
@@ -5631,7 +5631,7 @@
 						<!--Default appearance attributes for this AbstractGeometryPath.-->
 						<Appearance>
 							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.90000000000000002 0.20000000000000001 0.20000000000000001</color>
+							<color>0.75 0.22 0.17000000000000001</color>
 						</Appearance>
 						<!--The set of points defining the path-->
 						<PathPointSet>
@@ -5658,12 +5658,50 @@
 							<groups />
 						</PathPointSet>
 					</GeometryPath>
-					<!--The maximum force this actuator can produce.-->
-					<optimal_force>1788.2466850099893</optimal_force>
-				</PathActuator>
-				<PathActuator name="M1_r">
+					<!--Maximum isometric force that the fibers can generate-->
+					<max_isometric_force>1788.2466850099893</max_isometric_force>
+					<!--Optimal length of the muscle fibers-->
+					<optimal_fiber_length>0.47999999999999998</optimal_fiber_length>
+					<!--Resting length of the tendon-->
+					<tendon_slack_length>0.32000000000000006</tendon_slack_length>
+					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
+					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
+					<!--Compute muscle dynamics ignoring tendon compliance. Tendon is assumed to be rigid.-->
+					<ignore_tendon_compliance>true</ignore_tendon_compliance>
+					<!--Compute muscle dynamics ignoring activation dynamics. Activation is equivalent to excitation.-->
+					<ignore_activation_dynamics>true</ignore_activation_dynamics>
+					<!--Active-force-length curve.-->
+					<ActiveForceLengthCurve name="M0_r_ActiveForceLengthCurve">
+						<!--Minimum value of the active-force-length curve-->
+						<minimum_value>0</minimum_value>
+					</ActiveForceLengthCurve>
+					<!--Force-velocity curve.-->
+					<ForceVelocityCurve name="M0_r_ForceVelocityCurve">
+						<!--Curve slope at the maximum normalized concentric (shortening) velocity (normalized velocity of -1)-->
+						<concentric_slope_at_vmax>0</concentric_slope_at_vmax>
+						<!--Curve slope just before reaching concentric_slope_at_vmax-->
+						<concentric_slope_near_vmax>0.25</concentric_slope_near_vmax>
+						<!--Curve slope at isometric (normalized velocity of 0)-->
+						<isometric_slope>5</isometric_slope>
+						<!--Curve slope at the maximum normalized eccentric (lengthening) velocity (normalized velocity of 1)-->
+						<eccentric_slope_at_vmax>0</eccentric_slope_at_vmax>
+						<!--Curve slope just before reaching eccentric_slope_at_vmax-->
+						<eccentric_slope_near_vmax>0.14999999999999999</eccentric_slope_near_vmax>
+						<!--Curve value at the maximum normalized eccentric contraction velocity-->
+						<max_eccentric_velocity_force_multiplier>1.3999999999999999</max_eccentric_velocity_force_multiplier>
+					</ForceVelocityCurve>
+					<!--Passive-force-length curve.-->
+					<FiberForceLengthCurve name="M0_r_FiberForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</FiberForceLengthCurve>
+					<!--Tendon-force-length curve.-->
+					<TendonForceLengthCurve name="M0_r_TendonForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</TendonForceLengthCurve>
+				</Millard2012EquilibriumMuscle>
+				<Millard2012EquilibriumMuscle name="M1_r">
 					<!--Minimum allowed value for control signal. Used primarily when solving for control values.-->
-					<min_control>0</min_control>
+					<min_control>0.01</min_control>
 					<!--Maximum allowed value for control signal. Used primarily when solving for control values.-->
 					<max_control>1</max_control>
 					<!--The path of the actuator which defines length and lengthening speed.-->
@@ -5671,7 +5709,7 @@
 						<!--Default appearance attributes for this AbstractGeometryPath.-->
 						<Appearance>
 							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.20000000000000001 0.59999999999999998 0.90000000000000002</color>
+							<color>0.16 0.5 0.72999999999999998</color>
 						</Appearance>
 						<!--The set of points defining the path-->
 						<PathPointSet>
@@ -5704,12 +5742,50 @@
 							<groups />
 						</PathPointSet>
 					</GeometryPath>
-					<!--The maximum force this actuator can produce.-->
-					<optimal_force>1597.5759814242508</optimal_force>
-				</PathActuator>
-				<PathActuator name="M2_r">
+					<!--Maximum isometric force that the fibers can generate-->
+					<max_isometric_force>1597.5759814242508</max_isometric_force>
+					<!--Optimal length of the muscle fibers-->
+					<optimal_fiber_length>0.47999999999999998</optimal_fiber_length>
+					<!--Resting length of the tendon-->
+					<tendon_slack_length>0.32000000000000006</tendon_slack_length>
+					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
+					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
+					<!--Compute muscle dynamics ignoring tendon compliance. Tendon is assumed to be rigid.-->
+					<ignore_tendon_compliance>true</ignore_tendon_compliance>
+					<!--Compute muscle dynamics ignoring activation dynamics. Activation is equivalent to excitation.-->
+					<ignore_activation_dynamics>true</ignore_activation_dynamics>
+					<!--Active-force-length curve.-->
+					<ActiveForceLengthCurve name="M1_r_ActiveForceLengthCurve">
+						<!--Minimum value of the active-force-length curve-->
+						<minimum_value>0</minimum_value>
+					</ActiveForceLengthCurve>
+					<!--Force-velocity curve.-->
+					<ForceVelocityCurve name="M1_r_ForceVelocityCurve">
+						<!--Curve slope at the maximum normalized concentric (shortening) velocity (normalized velocity of -1)-->
+						<concentric_slope_at_vmax>0</concentric_slope_at_vmax>
+						<!--Curve slope just before reaching concentric_slope_at_vmax-->
+						<concentric_slope_near_vmax>0.25</concentric_slope_near_vmax>
+						<!--Curve slope at isometric (normalized velocity of 0)-->
+						<isometric_slope>5</isometric_slope>
+						<!--Curve slope at the maximum normalized eccentric (lengthening) velocity (normalized velocity of 1)-->
+						<eccentric_slope_at_vmax>0</eccentric_slope_at_vmax>
+						<!--Curve slope just before reaching eccentric_slope_at_vmax-->
+						<eccentric_slope_near_vmax>0.14999999999999999</eccentric_slope_near_vmax>
+						<!--Curve value at the maximum normalized eccentric contraction velocity-->
+						<max_eccentric_velocity_force_multiplier>1.3999999999999999</max_eccentric_velocity_force_multiplier>
+					</ForceVelocityCurve>
+					<!--Passive-force-length curve.-->
+					<FiberForceLengthCurve name="M1_r_FiberForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</FiberForceLengthCurve>
+					<!--Tendon-force-length curve.-->
+					<TendonForceLengthCurve name="M1_r_TendonForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</TendonForceLengthCurve>
+				</Millard2012EquilibriumMuscle>
+				<Millard2012EquilibriumMuscle name="M2_r">
 					<!--Minimum allowed value for control signal. Used primarily when solving for control values.-->
-					<min_control>0</min_control>
+					<min_control>0.01</min_control>
 					<!--Maximum allowed value for control signal. Used primarily when solving for control values.-->
 					<max_control>1</max_control>
 					<!--The path of the actuator which defines length and lengthening speed.-->
@@ -5717,7 +5793,7 @@
 						<!--Default appearance attributes for this AbstractGeometryPath.-->
 						<Appearance>
 							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.20000000000000001 0.80000000000000004 0.29999999999999999</color>
+							<color>0.14999999999999999 0.68000000000000005 0.38</color>
 						</Appearance>
 						<!--The set of points defining the path-->
 						<PathPointSet>
@@ -5744,12 +5820,50 @@
 							<groups />
 						</PathPointSet>
 					</GeometryPath>
-					<!--The maximum force this actuator can produce.-->
-					<optimal_force>2965.2281998037288</optimal_force>
-				</PathActuator>
-				<PathActuator name="M3_r">
+					<!--Maximum isometric force that the fibers can generate-->
+					<max_isometric_force>2965.2281998037288</max_isometric_force>
+					<!--Optimal length of the muscle fibers-->
+					<optimal_fiber_length>0.47999999999999998</optimal_fiber_length>
+					<!--Resting length of the tendon-->
+					<tendon_slack_length>0.32000000000000006</tendon_slack_length>
+					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
+					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
+					<!--Compute muscle dynamics ignoring tendon compliance. Tendon is assumed to be rigid.-->
+					<ignore_tendon_compliance>true</ignore_tendon_compliance>
+					<!--Compute muscle dynamics ignoring activation dynamics. Activation is equivalent to excitation.-->
+					<ignore_activation_dynamics>true</ignore_activation_dynamics>
+					<!--Active-force-length curve.-->
+					<ActiveForceLengthCurve name="M2_r_ActiveForceLengthCurve">
+						<!--Minimum value of the active-force-length curve-->
+						<minimum_value>0</minimum_value>
+					</ActiveForceLengthCurve>
+					<!--Force-velocity curve.-->
+					<ForceVelocityCurve name="M2_r_ForceVelocityCurve">
+						<!--Curve slope at the maximum normalized concentric (shortening) velocity (normalized velocity of -1)-->
+						<concentric_slope_at_vmax>0</concentric_slope_at_vmax>
+						<!--Curve slope just before reaching concentric_slope_at_vmax-->
+						<concentric_slope_near_vmax>0.25</concentric_slope_near_vmax>
+						<!--Curve slope at isometric (normalized velocity of 0)-->
+						<isometric_slope>5</isometric_slope>
+						<!--Curve slope at the maximum normalized eccentric (lengthening) velocity (normalized velocity of 1)-->
+						<eccentric_slope_at_vmax>0</eccentric_slope_at_vmax>
+						<!--Curve slope just before reaching eccentric_slope_at_vmax-->
+						<eccentric_slope_near_vmax>0.14999999999999999</eccentric_slope_near_vmax>
+						<!--Curve value at the maximum normalized eccentric contraction velocity-->
+						<max_eccentric_velocity_force_multiplier>1.3999999999999999</max_eccentric_velocity_force_multiplier>
+					</ForceVelocityCurve>
+					<!--Passive-force-length curve.-->
+					<FiberForceLengthCurve name="M2_r_FiberForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</FiberForceLengthCurve>
+					<!--Tendon-force-length curve.-->
+					<TendonForceLengthCurve name="M2_r_TendonForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</TendonForceLengthCurve>
+				</Millard2012EquilibriumMuscle>
+				<Millard2012EquilibriumMuscle name="M3_r">
 					<!--Minimum allowed value for control signal. Used primarily when solving for control values.-->
-					<min_control>0</min_control>
+					<min_control>0.01</min_control>
 					<!--Maximum allowed value for control signal. Used primarily when solving for control values.-->
 					<max_control>1</max_control>
 					<!--The path of the actuator which defines length and lengthening speed.-->
@@ -5757,7 +5871,7 @@
 						<!--Default appearance attributes for this AbstractGeometryPath.-->
 						<Appearance>
 							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.90000000000000002 0.59999999999999998 0.10000000000000001</color>
+							<color>0.90000000000000002 0.48999999999999999 0.13</color>
 						</Appearance>
 						<!--The set of points defining the path-->
 						<PathPointSet>
@@ -5790,12 +5904,50 @@
 							<groups />
 						</PathPointSet>
 					</GeometryPath>
-					<!--The maximum force this actuator can produce.-->
-					<optimal_force>2132.9711746897619</optimal_force>
-				</PathActuator>
-				<PathActuator name="M4_r">
+					<!--Maximum isometric force that the fibers can generate-->
+					<max_isometric_force>2132.9711746897619</max_isometric_force>
+					<!--Optimal length of the muscle fibers-->
+					<optimal_fiber_length>0.47999999999999998</optimal_fiber_length>
+					<!--Resting length of the tendon-->
+					<tendon_slack_length>0.32000000000000006</tendon_slack_length>
+					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
+					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
+					<!--Compute muscle dynamics ignoring tendon compliance. Tendon is assumed to be rigid.-->
+					<ignore_tendon_compliance>true</ignore_tendon_compliance>
+					<!--Compute muscle dynamics ignoring activation dynamics. Activation is equivalent to excitation.-->
+					<ignore_activation_dynamics>true</ignore_activation_dynamics>
+					<!--Active-force-length curve.-->
+					<ActiveForceLengthCurve name="M3_r_ActiveForceLengthCurve">
+						<!--Minimum value of the active-force-length curve-->
+						<minimum_value>0</minimum_value>
+					</ActiveForceLengthCurve>
+					<!--Force-velocity curve.-->
+					<ForceVelocityCurve name="M3_r_ForceVelocityCurve">
+						<!--Curve slope at the maximum normalized concentric (shortening) velocity (normalized velocity of -1)-->
+						<concentric_slope_at_vmax>0</concentric_slope_at_vmax>
+						<!--Curve slope just before reaching concentric_slope_at_vmax-->
+						<concentric_slope_near_vmax>0.25</concentric_slope_near_vmax>
+						<!--Curve slope at isometric (normalized velocity of 0)-->
+						<isometric_slope>5</isometric_slope>
+						<!--Curve slope at the maximum normalized eccentric (lengthening) velocity (normalized velocity of 1)-->
+						<eccentric_slope_at_vmax>0</eccentric_slope_at_vmax>
+						<!--Curve slope just before reaching eccentric_slope_at_vmax-->
+						<eccentric_slope_near_vmax>0.14999999999999999</eccentric_slope_near_vmax>
+						<!--Curve value at the maximum normalized eccentric contraction velocity-->
+						<max_eccentric_velocity_force_multiplier>1.3999999999999999</max_eccentric_velocity_force_multiplier>
+					</ForceVelocityCurve>
+					<!--Passive-force-length curve.-->
+					<FiberForceLengthCurve name="M3_r_FiberForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</FiberForceLengthCurve>
+					<!--Tendon-force-length curve.-->
+					<TendonForceLengthCurve name="M3_r_TendonForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</TendonForceLengthCurve>
+				</Millard2012EquilibriumMuscle>
+				<Millard2012EquilibriumMuscle name="M4_r">
 					<!--Minimum allowed value for control signal. Used primarily when solving for control values.-->
-					<min_control>0</min_control>
+					<min_control>0.01</min_control>
 					<!--Maximum allowed value for control signal. Used primarily when solving for control values.-->
 					<max_control>1</max_control>
 					<!--The path of the actuator which defines length and lengthening speed.-->
@@ -5803,7 +5955,7 @@
 						<!--Default appearance attributes for this AbstractGeometryPath.-->
 						<Appearance>
 							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.59999999999999998 0.29999999999999999 0.80000000000000004</color>
+							<color>0.56000000000000005 0.27000000000000002 0.68000000000000005</color>
 						</Appearance>
 						<!--The set of points defining the path-->
 						<PathPointSet>
@@ -5836,12 +5988,50 @@
 							<groups />
 						</PathPointSet>
 					</GeometryPath>
-					<!--The maximum force this actuator can produce.-->
-					<optimal_force>3459.9019424059206</optimal_force>
-				</PathActuator>
-				<PathActuator name="M5_r">
+					<!--Maximum isometric force that the fibers can generate-->
+					<max_isometric_force>3459.9019424059206</max_isometric_force>
+					<!--Optimal length of the muscle fibers-->
+					<optimal_fiber_length>0.47999999999999998</optimal_fiber_length>
+					<!--Resting length of the tendon-->
+					<tendon_slack_length>0.32000000000000006</tendon_slack_length>
+					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
+					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
+					<!--Compute muscle dynamics ignoring tendon compliance. Tendon is assumed to be rigid.-->
+					<ignore_tendon_compliance>true</ignore_tendon_compliance>
+					<!--Compute muscle dynamics ignoring activation dynamics. Activation is equivalent to excitation.-->
+					<ignore_activation_dynamics>true</ignore_activation_dynamics>
+					<!--Active-force-length curve.-->
+					<ActiveForceLengthCurve name="M4_r_ActiveForceLengthCurve">
+						<!--Minimum value of the active-force-length curve-->
+						<minimum_value>0</minimum_value>
+					</ActiveForceLengthCurve>
+					<!--Force-velocity curve.-->
+					<ForceVelocityCurve name="M4_r_ForceVelocityCurve">
+						<!--Curve slope at the maximum normalized concentric (shortening) velocity (normalized velocity of -1)-->
+						<concentric_slope_at_vmax>0</concentric_slope_at_vmax>
+						<!--Curve slope just before reaching concentric_slope_at_vmax-->
+						<concentric_slope_near_vmax>0.25</concentric_slope_near_vmax>
+						<!--Curve slope at isometric (normalized velocity of 0)-->
+						<isometric_slope>5</isometric_slope>
+						<!--Curve slope at the maximum normalized eccentric (lengthening) velocity (normalized velocity of 1)-->
+						<eccentric_slope_at_vmax>0</eccentric_slope_at_vmax>
+						<!--Curve slope just before reaching eccentric_slope_at_vmax-->
+						<eccentric_slope_near_vmax>0.14999999999999999</eccentric_slope_near_vmax>
+						<!--Curve value at the maximum normalized eccentric contraction velocity-->
+						<max_eccentric_velocity_force_multiplier>1.3999999999999999</max_eccentric_velocity_force_multiplier>
+					</ForceVelocityCurve>
+					<!--Passive-force-length curve.-->
+					<FiberForceLengthCurve name="M4_r_FiberForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</FiberForceLengthCurve>
+					<!--Tendon-force-length curve.-->
+					<TendonForceLengthCurve name="M4_r_TendonForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</TendonForceLengthCurve>
+				</Millard2012EquilibriumMuscle>
+				<Millard2012EquilibriumMuscle name="M5_r">
 					<!--Minimum allowed value for control signal. Used primarily when solving for control values.-->
-					<min_control>0</min_control>
+					<min_control>0.01</min_control>
 					<!--Maximum allowed value for control signal. Used primarily when solving for control values.-->
 					<max_control>1</max_control>
 					<!--The path of the actuator which defines length and lengthening speed.-->
@@ -5849,7 +6039,7 @@
 						<!--Default appearance attributes for this AbstractGeometryPath.-->
 						<Appearance>
 							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.10000000000000001 0.69999999999999996 0.69999999999999996</color>
+							<color>0.089999999999999997 0.63 0.52000000000000002</color>
 						</Appearance>
 						<!--The set of points defining the path-->
 						<PathPointSet>
@@ -5882,12 +6072,50 @@
 							<groups />
 						</PathPointSet>
 					</GeometryPath>
-					<!--The maximum force this actuator can produce.-->
-					<optimal_force>589.92308328741797</optimal_force>
-				</PathActuator>
-				<PathActuator name="M6_r">
+					<!--Maximum isometric force that the fibers can generate-->
+					<max_isometric_force>589.92308328741797</max_isometric_force>
+					<!--Optimal length of the muscle fibers-->
+					<optimal_fiber_length>0.47999999999999998</optimal_fiber_length>
+					<!--Resting length of the tendon-->
+					<tendon_slack_length>0.32000000000000006</tendon_slack_length>
+					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
+					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
+					<!--Compute muscle dynamics ignoring tendon compliance. Tendon is assumed to be rigid.-->
+					<ignore_tendon_compliance>true</ignore_tendon_compliance>
+					<!--Compute muscle dynamics ignoring activation dynamics. Activation is equivalent to excitation.-->
+					<ignore_activation_dynamics>true</ignore_activation_dynamics>
+					<!--Active-force-length curve.-->
+					<ActiveForceLengthCurve name="M5_r_ActiveForceLengthCurve">
+						<!--Minimum value of the active-force-length curve-->
+						<minimum_value>0</minimum_value>
+					</ActiveForceLengthCurve>
+					<!--Force-velocity curve.-->
+					<ForceVelocityCurve name="M5_r_ForceVelocityCurve">
+						<!--Curve slope at the maximum normalized concentric (shortening) velocity (normalized velocity of -1)-->
+						<concentric_slope_at_vmax>0</concentric_slope_at_vmax>
+						<!--Curve slope just before reaching concentric_slope_at_vmax-->
+						<concentric_slope_near_vmax>0.25</concentric_slope_near_vmax>
+						<!--Curve slope at isometric (normalized velocity of 0)-->
+						<isometric_slope>5</isometric_slope>
+						<!--Curve slope at the maximum normalized eccentric (lengthening) velocity (normalized velocity of 1)-->
+						<eccentric_slope_at_vmax>0</eccentric_slope_at_vmax>
+						<!--Curve slope just before reaching eccentric_slope_at_vmax-->
+						<eccentric_slope_near_vmax>0.14999999999999999</eccentric_slope_near_vmax>
+						<!--Curve value at the maximum normalized eccentric contraction velocity-->
+						<max_eccentric_velocity_force_multiplier>1.3999999999999999</max_eccentric_velocity_force_multiplier>
+					</ForceVelocityCurve>
+					<!--Passive-force-length curve.-->
+					<FiberForceLengthCurve name="M5_r_FiberForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</FiberForceLengthCurve>
+					<!--Tendon-force-length curve.-->
+					<TendonForceLengthCurve name="M5_r_TendonForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</TendonForceLengthCurve>
+				</Millard2012EquilibriumMuscle>
+				<Millard2012EquilibriumMuscle name="M6_r">
 					<!--Minimum allowed value for control signal. Used primarily when solving for control values.-->
-					<min_control>0</min_control>
+					<min_control>0.01</min_control>
 					<!--Maximum allowed value for control signal. Used primarily when solving for control values.-->
 					<max_control>1</max_control>
 					<!--The path of the actuator which defines length and lengthening speed.-->
@@ -5895,7 +6123,7 @@
 						<!--Default appearance attributes for this AbstractGeometryPath.-->
 						<Appearance>
 							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.29999999999999999 0.59999999999999998</color>
+							<color>0.82999999999999996 0.33000000000000002 0</color>
 						</Appearance>
 						<!--The set of points defining the path-->
 						<PathPointSet>
@@ -5928,12 +6156,50 @@
 							<groups />
 						</PathPointSet>
 					</GeometryPath>
-					<!--The maximum force this actuator can produce.-->
-					<optimal_force>3355.7368248858202</optimal_force>
-				</PathActuator>
-				<PathActuator name="M7_r">
+					<!--Maximum isometric force that the fibers can generate-->
+					<max_isometric_force>3355.7368248858202</max_isometric_force>
+					<!--Optimal length of the muscle fibers-->
+					<optimal_fiber_length>0.47999999999999998</optimal_fiber_length>
+					<!--Resting length of the tendon-->
+					<tendon_slack_length>0.32000000000000006</tendon_slack_length>
+					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
+					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
+					<!--Compute muscle dynamics ignoring tendon compliance. Tendon is assumed to be rigid.-->
+					<ignore_tendon_compliance>true</ignore_tendon_compliance>
+					<!--Compute muscle dynamics ignoring activation dynamics. Activation is equivalent to excitation.-->
+					<ignore_activation_dynamics>true</ignore_activation_dynamics>
+					<!--Active-force-length curve.-->
+					<ActiveForceLengthCurve name="M6_r_ActiveForceLengthCurve">
+						<!--Minimum value of the active-force-length curve-->
+						<minimum_value>0</minimum_value>
+					</ActiveForceLengthCurve>
+					<!--Force-velocity curve.-->
+					<ForceVelocityCurve name="M6_r_ForceVelocityCurve">
+						<!--Curve slope at the maximum normalized concentric (shortening) velocity (normalized velocity of -1)-->
+						<concentric_slope_at_vmax>0</concentric_slope_at_vmax>
+						<!--Curve slope just before reaching concentric_slope_at_vmax-->
+						<concentric_slope_near_vmax>0.25</concentric_slope_near_vmax>
+						<!--Curve slope at isometric (normalized velocity of 0)-->
+						<isometric_slope>5</isometric_slope>
+						<!--Curve slope at the maximum normalized eccentric (lengthening) velocity (normalized velocity of 1)-->
+						<eccentric_slope_at_vmax>0</eccentric_slope_at_vmax>
+						<!--Curve slope just before reaching eccentric_slope_at_vmax-->
+						<eccentric_slope_near_vmax>0.14999999999999999</eccentric_slope_near_vmax>
+						<!--Curve value at the maximum normalized eccentric contraction velocity-->
+						<max_eccentric_velocity_force_multiplier>1.3999999999999999</max_eccentric_velocity_force_multiplier>
+					</ForceVelocityCurve>
+					<!--Passive-force-length curve.-->
+					<FiberForceLengthCurve name="M6_r_FiberForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</FiberForceLengthCurve>
+					<!--Tendon-force-length curve.-->
+					<TendonForceLengthCurve name="M6_r_TendonForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</TendonForceLengthCurve>
+				</Millard2012EquilibriumMuscle>
+				<Millard2012EquilibriumMuscle name="M7_r">
 					<!--Minimum allowed value for control signal. Used primarily when solving for control values.-->
-					<min_control>0</min_control>
+					<min_control>0.01</min_control>
 					<!--Maximum allowed value for control signal. Used primarily when solving for control values.-->
 					<max_control>1</max_control>
 					<!--The path of the actuator which defines length and lengthening speed.-->
@@ -5941,7 +6207,7 @@
 						<!--Default appearance attributes for this AbstractGeometryPath.-->
 						<Appearance>
 							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.5 0.5 0.10000000000000001</color>
+							<color>0.5 0.55000000000000004 0.55000000000000004</color>
 						</Appearance>
 						<!--The set of points defining the path-->
 						<PathPointSet>
@@ -5974,12 +6240,50 @@
 							<groups />
 						</PathPointSet>
 					</GeometryPath>
-					<!--The maximum force this actuator can produce.-->
-					<optimal_force>3242.099003233488</optimal_force>
-				</PathActuator>
-				<PathActuator name="M0_l">
+					<!--Maximum isometric force that the fibers can generate-->
+					<max_isometric_force>3242.099003233488</max_isometric_force>
+					<!--Optimal length of the muscle fibers-->
+					<optimal_fiber_length>0.47999999999999998</optimal_fiber_length>
+					<!--Resting length of the tendon-->
+					<tendon_slack_length>0.32000000000000006</tendon_slack_length>
+					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
+					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
+					<!--Compute muscle dynamics ignoring tendon compliance. Tendon is assumed to be rigid.-->
+					<ignore_tendon_compliance>true</ignore_tendon_compliance>
+					<!--Compute muscle dynamics ignoring activation dynamics. Activation is equivalent to excitation.-->
+					<ignore_activation_dynamics>true</ignore_activation_dynamics>
+					<!--Active-force-length curve.-->
+					<ActiveForceLengthCurve name="M7_r_ActiveForceLengthCurve">
+						<!--Minimum value of the active-force-length curve-->
+						<minimum_value>0</minimum_value>
+					</ActiveForceLengthCurve>
+					<!--Force-velocity curve.-->
+					<ForceVelocityCurve name="M7_r_ForceVelocityCurve">
+						<!--Curve slope at the maximum normalized concentric (shortening) velocity (normalized velocity of -1)-->
+						<concentric_slope_at_vmax>0</concentric_slope_at_vmax>
+						<!--Curve slope just before reaching concentric_slope_at_vmax-->
+						<concentric_slope_near_vmax>0.25</concentric_slope_near_vmax>
+						<!--Curve slope at isometric (normalized velocity of 0)-->
+						<isometric_slope>5</isometric_slope>
+						<!--Curve slope at the maximum normalized eccentric (lengthening) velocity (normalized velocity of 1)-->
+						<eccentric_slope_at_vmax>0</eccentric_slope_at_vmax>
+						<!--Curve slope just before reaching eccentric_slope_at_vmax-->
+						<eccentric_slope_near_vmax>0.14999999999999999</eccentric_slope_near_vmax>
+						<!--Curve value at the maximum normalized eccentric contraction velocity-->
+						<max_eccentric_velocity_force_multiplier>1.3999999999999999</max_eccentric_velocity_force_multiplier>
+					</ForceVelocityCurve>
+					<!--Passive-force-length curve.-->
+					<FiberForceLengthCurve name="M7_r_FiberForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</FiberForceLengthCurve>
+					<!--Tendon-force-length curve.-->
+					<TendonForceLengthCurve name="M7_r_TendonForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</TendonForceLengthCurve>
+				</Millard2012EquilibriumMuscle>
+				<Millard2012EquilibriumMuscle name="M0_l">
 					<!--Minimum allowed value for control signal. Used primarily when solving for control values.-->
-					<min_control>0</min_control>
+					<min_control>0.01</min_control>
 					<!--Maximum allowed value for control signal. Used primarily when solving for control values.-->
 					<max_control>1</max_control>
 					<!--The path of the actuator which defines length and lengthening speed.-->
@@ -5987,7 +6291,7 @@
 						<!--Default appearance attributes for this AbstractGeometryPath.-->
 						<Appearance>
 							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.90000000000000002 0.20000000000000001 0.20000000000000001</color>
+							<color>0.75 0.22 0.17000000000000001</color>
 						</Appearance>
 						<!--The set of points defining the path-->
 						<PathPointSet>
@@ -6014,12 +6318,50 @@
 							<groups />
 						</PathPointSet>
 					</GeometryPath>
-					<!--The maximum force this actuator can produce.-->
-					<optimal_force>1788.2466850099893</optimal_force>
-				</PathActuator>
-				<PathActuator name="M1_l">
+					<!--Maximum isometric force that the fibers can generate-->
+					<max_isometric_force>1788.2466850099893</max_isometric_force>
+					<!--Optimal length of the muscle fibers-->
+					<optimal_fiber_length>0.47999999999999998</optimal_fiber_length>
+					<!--Resting length of the tendon-->
+					<tendon_slack_length>0.32000000000000006</tendon_slack_length>
+					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
+					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
+					<!--Compute muscle dynamics ignoring tendon compliance. Tendon is assumed to be rigid.-->
+					<ignore_tendon_compliance>true</ignore_tendon_compliance>
+					<!--Compute muscle dynamics ignoring activation dynamics. Activation is equivalent to excitation.-->
+					<ignore_activation_dynamics>true</ignore_activation_dynamics>
+					<!--Active-force-length curve.-->
+					<ActiveForceLengthCurve name="M0_l_ActiveForceLengthCurve">
+						<!--Minimum value of the active-force-length curve-->
+						<minimum_value>0</minimum_value>
+					</ActiveForceLengthCurve>
+					<!--Force-velocity curve.-->
+					<ForceVelocityCurve name="M0_l_ForceVelocityCurve">
+						<!--Curve slope at the maximum normalized concentric (shortening) velocity (normalized velocity of -1)-->
+						<concentric_slope_at_vmax>0</concentric_slope_at_vmax>
+						<!--Curve slope just before reaching concentric_slope_at_vmax-->
+						<concentric_slope_near_vmax>0.25</concentric_slope_near_vmax>
+						<!--Curve slope at isometric (normalized velocity of 0)-->
+						<isometric_slope>5</isometric_slope>
+						<!--Curve slope at the maximum normalized eccentric (lengthening) velocity (normalized velocity of 1)-->
+						<eccentric_slope_at_vmax>0</eccentric_slope_at_vmax>
+						<!--Curve slope just before reaching eccentric_slope_at_vmax-->
+						<eccentric_slope_near_vmax>0.14999999999999999</eccentric_slope_near_vmax>
+						<!--Curve value at the maximum normalized eccentric contraction velocity-->
+						<max_eccentric_velocity_force_multiplier>1.3999999999999999</max_eccentric_velocity_force_multiplier>
+					</ForceVelocityCurve>
+					<!--Passive-force-length curve.-->
+					<FiberForceLengthCurve name="M0_l_FiberForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</FiberForceLengthCurve>
+					<!--Tendon-force-length curve.-->
+					<TendonForceLengthCurve name="M0_l_TendonForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</TendonForceLengthCurve>
+				</Millard2012EquilibriumMuscle>
+				<Millard2012EquilibriumMuscle name="M1_l">
 					<!--Minimum allowed value for control signal. Used primarily when solving for control values.-->
-					<min_control>0</min_control>
+					<min_control>0.01</min_control>
 					<!--Maximum allowed value for control signal. Used primarily when solving for control values.-->
 					<max_control>1</max_control>
 					<!--The path of the actuator which defines length and lengthening speed.-->
@@ -6027,7 +6369,7 @@
 						<!--Default appearance attributes for this AbstractGeometryPath.-->
 						<Appearance>
 							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.20000000000000001 0.59999999999999998 0.90000000000000002</color>
+							<color>0.16 0.5 0.72999999999999998</color>
 						</Appearance>
 						<!--The set of points defining the path-->
 						<PathPointSet>
@@ -6060,12 +6402,50 @@
 							<groups />
 						</PathPointSet>
 					</GeometryPath>
-					<!--The maximum force this actuator can produce.-->
-					<optimal_force>1597.5759814242508</optimal_force>
-				</PathActuator>
-				<PathActuator name="M2_l">
+					<!--Maximum isometric force that the fibers can generate-->
+					<max_isometric_force>1597.5759814242508</max_isometric_force>
+					<!--Optimal length of the muscle fibers-->
+					<optimal_fiber_length>0.47999999999999998</optimal_fiber_length>
+					<!--Resting length of the tendon-->
+					<tendon_slack_length>0.32000000000000006</tendon_slack_length>
+					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
+					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
+					<!--Compute muscle dynamics ignoring tendon compliance. Tendon is assumed to be rigid.-->
+					<ignore_tendon_compliance>true</ignore_tendon_compliance>
+					<!--Compute muscle dynamics ignoring activation dynamics. Activation is equivalent to excitation.-->
+					<ignore_activation_dynamics>true</ignore_activation_dynamics>
+					<!--Active-force-length curve.-->
+					<ActiveForceLengthCurve name="M1_l_ActiveForceLengthCurve">
+						<!--Minimum value of the active-force-length curve-->
+						<minimum_value>0</minimum_value>
+					</ActiveForceLengthCurve>
+					<!--Force-velocity curve.-->
+					<ForceVelocityCurve name="M1_l_ForceVelocityCurve">
+						<!--Curve slope at the maximum normalized concentric (shortening) velocity (normalized velocity of -1)-->
+						<concentric_slope_at_vmax>0</concentric_slope_at_vmax>
+						<!--Curve slope just before reaching concentric_slope_at_vmax-->
+						<concentric_slope_near_vmax>0.25</concentric_slope_near_vmax>
+						<!--Curve slope at isometric (normalized velocity of 0)-->
+						<isometric_slope>5</isometric_slope>
+						<!--Curve slope at the maximum normalized eccentric (lengthening) velocity (normalized velocity of 1)-->
+						<eccentric_slope_at_vmax>0</eccentric_slope_at_vmax>
+						<!--Curve slope just before reaching eccentric_slope_at_vmax-->
+						<eccentric_slope_near_vmax>0.14999999999999999</eccentric_slope_near_vmax>
+						<!--Curve value at the maximum normalized eccentric contraction velocity-->
+						<max_eccentric_velocity_force_multiplier>1.3999999999999999</max_eccentric_velocity_force_multiplier>
+					</ForceVelocityCurve>
+					<!--Passive-force-length curve.-->
+					<FiberForceLengthCurve name="M1_l_FiberForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</FiberForceLengthCurve>
+					<!--Tendon-force-length curve.-->
+					<TendonForceLengthCurve name="M1_l_TendonForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</TendonForceLengthCurve>
+				</Millard2012EquilibriumMuscle>
+				<Millard2012EquilibriumMuscle name="M2_l">
 					<!--Minimum allowed value for control signal. Used primarily when solving for control values.-->
-					<min_control>0</min_control>
+					<min_control>0.01</min_control>
 					<!--Maximum allowed value for control signal. Used primarily when solving for control values.-->
 					<max_control>1</max_control>
 					<!--The path of the actuator which defines length and lengthening speed.-->
@@ -6073,7 +6453,7 @@
 						<!--Default appearance attributes for this AbstractGeometryPath.-->
 						<Appearance>
 							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.20000000000000001 0.80000000000000004 0.29999999999999999</color>
+							<color>0.14999999999999999 0.68000000000000005 0.38</color>
 						</Appearance>
 						<!--The set of points defining the path-->
 						<PathPointSet>
@@ -6100,12 +6480,50 @@
 							<groups />
 						</PathPointSet>
 					</GeometryPath>
-					<!--The maximum force this actuator can produce.-->
-					<optimal_force>2965.2281998037288</optimal_force>
-				</PathActuator>
-				<PathActuator name="M3_l">
+					<!--Maximum isometric force that the fibers can generate-->
+					<max_isometric_force>2965.2281998037288</max_isometric_force>
+					<!--Optimal length of the muscle fibers-->
+					<optimal_fiber_length>0.47999999999999998</optimal_fiber_length>
+					<!--Resting length of the tendon-->
+					<tendon_slack_length>0.32000000000000006</tendon_slack_length>
+					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
+					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
+					<!--Compute muscle dynamics ignoring tendon compliance. Tendon is assumed to be rigid.-->
+					<ignore_tendon_compliance>true</ignore_tendon_compliance>
+					<!--Compute muscle dynamics ignoring activation dynamics. Activation is equivalent to excitation.-->
+					<ignore_activation_dynamics>true</ignore_activation_dynamics>
+					<!--Active-force-length curve.-->
+					<ActiveForceLengthCurve name="M2_l_ActiveForceLengthCurve">
+						<!--Minimum value of the active-force-length curve-->
+						<minimum_value>0</minimum_value>
+					</ActiveForceLengthCurve>
+					<!--Force-velocity curve.-->
+					<ForceVelocityCurve name="M2_l_ForceVelocityCurve">
+						<!--Curve slope at the maximum normalized concentric (shortening) velocity (normalized velocity of -1)-->
+						<concentric_slope_at_vmax>0</concentric_slope_at_vmax>
+						<!--Curve slope just before reaching concentric_slope_at_vmax-->
+						<concentric_slope_near_vmax>0.25</concentric_slope_near_vmax>
+						<!--Curve slope at isometric (normalized velocity of 0)-->
+						<isometric_slope>5</isometric_slope>
+						<!--Curve slope at the maximum normalized eccentric (lengthening) velocity (normalized velocity of 1)-->
+						<eccentric_slope_at_vmax>0</eccentric_slope_at_vmax>
+						<!--Curve slope just before reaching eccentric_slope_at_vmax-->
+						<eccentric_slope_near_vmax>0.14999999999999999</eccentric_slope_near_vmax>
+						<!--Curve value at the maximum normalized eccentric contraction velocity-->
+						<max_eccentric_velocity_force_multiplier>1.3999999999999999</max_eccentric_velocity_force_multiplier>
+					</ForceVelocityCurve>
+					<!--Passive-force-length curve.-->
+					<FiberForceLengthCurve name="M2_l_FiberForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</FiberForceLengthCurve>
+					<!--Tendon-force-length curve.-->
+					<TendonForceLengthCurve name="M2_l_TendonForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</TendonForceLengthCurve>
+				</Millard2012EquilibriumMuscle>
+				<Millard2012EquilibriumMuscle name="M3_l">
 					<!--Minimum allowed value for control signal. Used primarily when solving for control values.-->
-					<min_control>0</min_control>
+					<min_control>0.01</min_control>
 					<!--Maximum allowed value for control signal. Used primarily when solving for control values.-->
 					<max_control>1</max_control>
 					<!--The path of the actuator which defines length and lengthening speed.-->
@@ -6113,7 +6531,7 @@
 						<!--Default appearance attributes for this AbstractGeometryPath.-->
 						<Appearance>
 							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.90000000000000002 0.59999999999999998 0.10000000000000001</color>
+							<color>0.90000000000000002 0.48999999999999999 0.13</color>
 						</Appearance>
 						<!--The set of points defining the path-->
 						<PathPointSet>
@@ -6146,12 +6564,50 @@
 							<groups />
 						</PathPointSet>
 					</GeometryPath>
-					<!--The maximum force this actuator can produce.-->
-					<optimal_force>2132.9711746897619</optimal_force>
-				</PathActuator>
-				<PathActuator name="M4_l">
+					<!--Maximum isometric force that the fibers can generate-->
+					<max_isometric_force>2132.9711746897619</max_isometric_force>
+					<!--Optimal length of the muscle fibers-->
+					<optimal_fiber_length>0.47999999999999998</optimal_fiber_length>
+					<!--Resting length of the tendon-->
+					<tendon_slack_length>0.32000000000000006</tendon_slack_length>
+					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
+					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
+					<!--Compute muscle dynamics ignoring tendon compliance. Tendon is assumed to be rigid.-->
+					<ignore_tendon_compliance>true</ignore_tendon_compliance>
+					<!--Compute muscle dynamics ignoring activation dynamics. Activation is equivalent to excitation.-->
+					<ignore_activation_dynamics>true</ignore_activation_dynamics>
+					<!--Active-force-length curve.-->
+					<ActiveForceLengthCurve name="M3_l_ActiveForceLengthCurve">
+						<!--Minimum value of the active-force-length curve-->
+						<minimum_value>0</minimum_value>
+					</ActiveForceLengthCurve>
+					<!--Force-velocity curve.-->
+					<ForceVelocityCurve name="M3_l_ForceVelocityCurve">
+						<!--Curve slope at the maximum normalized concentric (shortening) velocity (normalized velocity of -1)-->
+						<concentric_slope_at_vmax>0</concentric_slope_at_vmax>
+						<!--Curve slope just before reaching concentric_slope_at_vmax-->
+						<concentric_slope_near_vmax>0.25</concentric_slope_near_vmax>
+						<!--Curve slope at isometric (normalized velocity of 0)-->
+						<isometric_slope>5</isometric_slope>
+						<!--Curve slope at the maximum normalized eccentric (lengthening) velocity (normalized velocity of 1)-->
+						<eccentric_slope_at_vmax>0</eccentric_slope_at_vmax>
+						<!--Curve slope just before reaching eccentric_slope_at_vmax-->
+						<eccentric_slope_near_vmax>0.14999999999999999</eccentric_slope_near_vmax>
+						<!--Curve value at the maximum normalized eccentric contraction velocity-->
+						<max_eccentric_velocity_force_multiplier>1.3999999999999999</max_eccentric_velocity_force_multiplier>
+					</ForceVelocityCurve>
+					<!--Passive-force-length curve.-->
+					<FiberForceLengthCurve name="M3_l_FiberForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</FiberForceLengthCurve>
+					<!--Tendon-force-length curve.-->
+					<TendonForceLengthCurve name="M3_l_TendonForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</TendonForceLengthCurve>
+				</Millard2012EquilibriumMuscle>
+				<Millard2012EquilibriumMuscle name="M4_l">
 					<!--Minimum allowed value for control signal. Used primarily when solving for control values.-->
-					<min_control>0</min_control>
+					<min_control>0.01</min_control>
 					<!--Maximum allowed value for control signal. Used primarily when solving for control values.-->
 					<max_control>1</max_control>
 					<!--The path of the actuator which defines length and lengthening speed.-->
@@ -6159,7 +6615,7 @@
 						<!--Default appearance attributes for this AbstractGeometryPath.-->
 						<Appearance>
 							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.59999999999999998 0.29999999999999999 0.80000000000000004</color>
+							<color>0.56000000000000005 0.27000000000000002 0.68000000000000005</color>
 						</Appearance>
 						<!--The set of points defining the path-->
 						<PathPointSet>
@@ -6192,12 +6648,50 @@
 							<groups />
 						</PathPointSet>
 					</GeometryPath>
-					<!--The maximum force this actuator can produce.-->
-					<optimal_force>3459.9019424059206</optimal_force>
-				</PathActuator>
-				<PathActuator name="M5_l">
+					<!--Maximum isometric force that the fibers can generate-->
+					<max_isometric_force>3459.9019424059206</max_isometric_force>
+					<!--Optimal length of the muscle fibers-->
+					<optimal_fiber_length>0.47999999999999998</optimal_fiber_length>
+					<!--Resting length of the tendon-->
+					<tendon_slack_length>0.32000000000000006</tendon_slack_length>
+					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
+					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
+					<!--Compute muscle dynamics ignoring tendon compliance. Tendon is assumed to be rigid.-->
+					<ignore_tendon_compliance>true</ignore_tendon_compliance>
+					<!--Compute muscle dynamics ignoring activation dynamics. Activation is equivalent to excitation.-->
+					<ignore_activation_dynamics>true</ignore_activation_dynamics>
+					<!--Active-force-length curve.-->
+					<ActiveForceLengthCurve name="M4_l_ActiveForceLengthCurve">
+						<!--Minimum value of the active-force-length curve-->
+						<minimum_value>0</minimum_value>
+					</ActiveForceLengthCurve>
+					<!--Force-velocity curve.-->
+					<ForceVelocityCurve name="M4_l_ForceVelocityCurve">
+						<!--Curve slope at the maximum normalized concentric (shortening) velocity (normalized velocity of -1)-->
+						<concentric_slope_at_vmax>0</concentric_slope_at_vmax>
+						<!--Curve slope just before reaching concentric_slope_at_vmax-->
+						<concentric_slope_near_vmax>0.25</concentric_slope_near_vmax>
+						<!--Curve slope at isometric (normalized velocity of 0)-->
+						<isometric_slope>5</isometric_slope>
+						<!--Curve slope at the maximum normalized eccentric (lengthening) velocity (normalized velocity of 1)-->
+						<eccentric_slope_at_vmax>0</eccentric_slope_at_vmax>
+						<!--Curve slope just before reaching eccentric_slope_at_vmax-->
+						<eccentric_slope_near_vmax>0.14999999999999999</eccentric_slope_near_vmax>
+						<!--Curve value at the maximum normalized eccentric contraction velocity-->
+						<max_eccentric_velocity_force_multiplier>1.3999999999999999</max_eccentric_velocity_force_multiplier>
+					</ForceVelocityCurve>
+					<!--Passive-force-length curve.-->
+					<FiberForceLengthCurve name="M4_l_FiberForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</FiberForceLengthCurve>
+					<!--Tendon-force-length curve.-->
+					<TendonForceLengthCurve name="M4_l_TendonForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</TendonForceLengthCurve>
+				</Millard2012EquilibriumMuscle>
+				<Millard2012EquilibriumMuscle name="M5_l">
 					<!--Minimum allowed value for control signal. Used primarily when solving for control values.-->
-					<min_control>0</min_control>
+					<min_control>0.01</min_control>
 					<!--Maximum allowed value for control signal. Used primarily when solving for control values.-->
 					<max_control>1</max_control>
 					<!--The path of the actuator which defines length and lengthening speed.-->
@@ -6205,7 +6699,7 @@
 						<!--Default appearance attributes for this AbstractGeometryPath.-->
 						<Appearance>
 							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.10000000000000001 0.69999999999999996 0.69999999999999996</color>
+							<color>0.089999999999999997 0.63 0.52000000000000002</color>
 						</Appearance>
 						<!--The set of points defining the path-->
 						<PathPointSet>
@@ -6238,12 +6732,50 @@
 							<groups />
 						</PathPointSet>
 					</GeometryPath>
-					<!--The maximum force this actuator can produce.-->
-					<optimal_force>589.92308328741797</optimal_force>
-				</PathActuator>
-				<PathActuator name="M6_l">
+					<!--Maximum isometric force that the fibers can generate-->
+					<max_isometric_force>589.92308328741797</max_isometric_force>
+					<!--Optimal length of the muscle fibers-->
+					<optimal_fiber_length>0.47999999999999998</optimal_fiber_length>
+					<!--Resting length of the tendon-->
+					<tendon_slack_length>0.32000000000000006</tendon_slack_length>
+					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
+					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
+					<!--Compute muscle dynamics ignoring tendon compliance. Tendon is assumed to be rigid.-->
+					<ignore_tendon_compliance>true</ignore_tendon_compliance>
+					<!--Compute muscle dynamics ignoring activation dynamics. Activation is equivalent to excitation.-->
+					<ignore_activation_dynamics>true</ignore_activation_dynamics>
+					<!--Active-force-length curve.-->
+					<ActiveForceLengthCurve name="M5_l_ActiveForceLengthCurve">
+						<!--Minimum value of the active-force-length curve-->
+						<minimum_value>0</minimum_value>
+					</ActiveForceLengthCurve>
+					<!--Force-velocity curve.-->
+					<ForceVelocityCurve name="M5_l_ForceVelocityCurve">
+						<!--Curve slope at the maximum normalized concentric (shortening) velocity (normalized velocity of -1)-->
+						<concentric_slope_at_vmax>0</concentric_slope_at_vmax>
+						<!--Curve slope just before reaching concentric_slope_at_vmax-->
+						<concentric_slope_near_vmax>0.25</concentric_slope_near_vmax>
+						<!--Curve slope at isometric (normalized velocity of 0)-->
+						<isometric_slope>5</isometric_slope>
+						<!--Curve slope at the maximum normalized eccentric (lengthening) velocity (normalized velocity of 1)-->
+						<eccentric_slope_at_vmax>0</eccentric_slope_at_vmax>
+						<!--Curve slope just before reaching eccentric_slope_at_vmax-->
+						<eccentric_slope_near_vmax>0.14999999999999999</eccentric_slope_near_vmax>
+						<!--Curve value at the maximum normalized eccentric contraction velocity-->
+						<max_eccentric_velocity_force_multiplier>1.3999999999999999</max_eccentric_velocity_force_multiplier>
+					</ForceVelocityCurve>
+					<!--Passive-force-length curve.-->
+					<FiberForceLengthCurve name="M5_l_FiberForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</FiberForceLengthCurve>
+					<!--Tendon-force-length curve.-->
+					<TendonForceLengthCurve name="M5_l_TendonForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</TendonForceLengthCurve>
+				</Millard2012EquilibriumMuscle>
+				<Millard2012EquilibriumMuscle name="M6_l">
 					<!--Minimum allowed value for control signal. Used primarily when solving for control values.-->
-					<min_control>0</min_control>
+					<min_control>0.01</min_control>
 					<!--Maximum allowed value for control signal. Used primarily when solving for control values.-->
 					<max_control>1</max_control>
 					<!--The path of the actuator which defines length and lengthening speed.-->
@@ -6251,7 +6783,7 @@
 						<!--Default appearance attributes for this AbstractGeometryPath.-->
 						<Appearance>
 							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.80000000000000004 0.29999999999999999 0.59999999999999998</color>
+							<color>0.82999999999999996 0.33000000000000002 0</color>
 						</Appearance>
 						<!--The set of points defining the path-->
 						<PathPointSet>
@@ -6284,12 +6816,50 @@
 							<groups />
 						</PathPointSet>
 					</GeometryPath>
-					<!--The maximum force this actuator can produce.-->
-					<optimal_force>3355.7368248858202</optimal_force>
-				</PathActuator>
-				<PathActuator name="M7_l">
+					<!--Maximum isometric force that the fibers can generate-->
+					<max_isometric_force>3355.7368248858202</max_isometric_force>
+					<!--Optimal length of the muscle fibers-->
+					<optimal_fiber_length>0.47999999999999998</optimal_fiber_length>
+					<!--Resting length of the tendon-->
+					<tendon_slack_length>0.32000000000000006</tendon_slack_length>
+					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
+					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
+					<!--Compute muscle dynamics ignoring tendon compliance. Tendon is assumed to be rigid.-->
+					<ignore_tendon_compliance>true</ignore_tendon_compliance>
+					<!--Compute muscle dynamics ignoring activation dynamics. Activation is equivalent to excitation.-->
+					<ignore_activation_dynamics>true</ignore_activation_dynamics>
+					<!--Active-force-length curve.-->
+					<ActiveForceLengthCurve name="M6_l_ActiveForceLengthCurve">
+						<!--Minimum value of the active-force-length curve-->
+						<minimum_value>0</minimum_value>
+					</ActiveForceLengthCurve>
+					<!--Force-velocity curve.-->
+					<ForceVelocityCurve name="M6_l_ForceVelocityCurve">
+						<!--Curve slope at the maximum normalized concentric (shortening) velocity (normalized velocity of -1)-->
+						<concentric_slope_at_vmax>0</concentric_slope_at_vmax>
+						<!--Curve slope just before reaching concentric_slope_at_vmax-->
+						<concentric_slope_near_vmax>0.25</concentric_slope_near_vmax>
+						<!--Curve slope at isometric (normalized velocity of 0)-->
+						<isometric_slope>5</isometric_slope>
+						<!--Curve slope at the maximum normalized eccentric (lengthening) velocity (normalized velocity of 1)-->
+						<eccentric_slope_at_vmax>0</eccentric_slope_at_vmax>
+						<!--Curve slope just before reaching eccentric_slope_at_vmax-->
+						<eccentric_slope_near_vmax>0.14999999999999999</eccentric_slope_near_vmax>
+						<!--Curve value at the maximum normalized eccentric contraction velocity-->
+						<max_eccentric_velocity_force_multiplier>1.3999999999999999</max_eccentric_velocity_force_multiplier>
+					</ForceVelocityCurve>
+					<!--Passive-force-length curve.-->
+					<FiberForceLengthCurve name="M6_l_FiberForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</FiberForceLengthCurve>
+					<!--Tendon-force-length curve.-->
+					<TendonForceLengthCurve name="M6_l_TendonForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</TendonForceLengthCurve>
+				</Millard2012EquilibriumMuscle>
+				<Millard2012EquilibriumMuscle name="M7_l">
 					<!--Minimum allowed value for control signal. Used primarily when solving for control values.-->
-					<min_control>0</min_control>
+					<min_control>0.01</min_control>
 					<!--Maximum allowed value for control signal. Used primarily when solving for control values.-->
 					<max_control>1</max_control>
 					<!--The path of the actuator which defines length and lengthening speed.-->
@@ -6297,7 +6867,7 @@
 						<!--Default appearance attributes for this AbstractGeometryPath.-->
 						<Appearance>
 							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
-							<color>0.5 0.5 0.10000000000000001</color>
+							<color>0.5 0.55000000000000004 0.55000000000000004</color>
 						</Appearance>
 						<!--The set of points defining the path-->
 						<PathPointSet>
@@ -6330,9 +6900,47 @@
 							<groups />
 						</PathPointSet>
 					</GeometryPath>
-					<!--The maximum force this actuator can produce.-->
-					<optimal_force>3242.099003233488</optimal_force>
-				</PathActuator>
+					<!--Maximum isometric force that the fibers can generate-->
+					<max_isometric_force>3242.099003233488</max_isometric_force>
+					<!--Optimal length of the muscle fibers-->
+					<optimal_fiber_length>0.47999999999999998</optimal_fiber_length>
+					<!--Resting length of the tendon-->
+					<tendon_slack_length>0.32000000000000006</tendon_slack_length>
+					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
+					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
+					<!--Compute muscle dynamics ignoring tendon compliance. Tendon is assumed to be rigid.-->
+					<ignore_tendon_compliance>true</ignore_tendon_compliance>
+					<!--Compute muscle dynamics ignoring activation dynamics. Activation is equivalent to excitation.-->
+					<ignore_activation_dynamics>true</ignore_activation_dynamics>
+					<!--Active-force-length curve.-->
+					<ActiveForceLengthCurve name="M7_l_ActiveForceLengthCurve">
+						<!--Minimum value of the active-force-length curve-->
+						<minimum_value>0</minimum_value>
+					</ActiveForceLengthCurve>
+					<!--Force-velocity curve.-->
+					<ForceVelocityCurve name="M7_l_ForceVelocityCurve">
+						<!--Curve slope at the maximum normalized concentric (shortening) velocity (normalized velocity of -1)-->
+						<concentric_slope_at_vmax>0</concentric_slope_at_vmax>
+						<!--Curve slope just before reaching concentric_slope_at_vmax-->
+						<concentric_slope_near_vmax>0.25</concentric_slope_near_vmax>
+						<!--Curve slope at isometric (normalized velocity of 0)-->
+						<isometric_slope>5</isometric_slope>
+						<!--Curve slope at the maximum normalized eccentric (lengthening) velocity (normalized velocity of 1)-->
+						<eccentric_slope_at_vmax>0</eccentric_slope_at_vmax>
+						<!--Curve slope just before reaching eccentric_slope_at_vmax-->
+						<eccentric_slope_near_vmax>0.14999999999999999</eccentric_slope_near_vmax>
+						<!--Curve value at the maximum normalized eccentric contraction velocity-->
+						<max_eccentric_velocity_force_multiplier>1.3999999999999999</max_eccentric_velocity_force_multiplier>
+					</ForceVelocityCurve>
+					<!--Passive-force-length curve.-->
+					<FiberForceLengthCurve name="M7_l_FiberForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</FiberForceLengthCurve>
+					<!--Tendon-force-length curve.-->
+					<TendonForceLengthCurve name="M7_l_TendonForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</TendonForceLengthCurve>
+				</Millard2012EquilibriumMuscle>
 			</objects>
 			<groups>
 				<ObjectGroup name="right_leg">

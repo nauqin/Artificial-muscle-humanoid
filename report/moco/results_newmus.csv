@@ -73,3 +73,15 @@ newmus_subject4_walking1_k8_axisV,8,True,0.0,1909.144,0.0,0.0,0.0,0.0,0.0,0.0,0.
 newmus_subject5_walking1_k8_axisV,8,True,0.0,1288.968,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 newmus_subject7_walking1_k8_axisV,8,True,0.0,1915.836,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 newmus_subject8_walking1_k8_axisV,8,True,0.0,1428.910,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+newmus_subject3_walking1_k8_design2_scaled_rw100,8,True,0.1,1069.896,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+newmus_subject3_walking2_k8_design2_scaled_rw100,8,True,0.1,934.785,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+newmus_subject3_walking3_k8_design2_scaled_rw100,8,True,0.1,1580.755,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+newmus_subject3_walkingTS2_k8_design2_scaled_rw100,8,True,0.1,1499.185,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+newmus_subject3_walkingTS3_k8_design2_scaled_rw100,8,True,0.1,1381.710,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+newmus_subject3_walkingTS4_k8_design2_scaled_rw100,8,True,0.1,884.528,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+newmus_subject4_walking1_k8_design2_scaled_rw100,8,True,0.1,1910.890,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+newmus_subject5_walking1_k8_design2_scaled_rw100,8,True,0.1,108974.662,195.7,19.7,170.7,3.9,38.8,16.2,195.7,3.5,24.9
+newmus_subject7_walking1_k8_design2_scaled_rw100,8,True,0.1,1917.586,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+newmus_subject8_walking1_k8_design2_scaled_rw100,8,True,0.1,1431.314,0.8,0.6,0.0,0.2,0.0,0.8,0.0,0.4,0.0
+newmus_subject10_walking1_k8_design2_scaled_rw100,8,True,0.1,3947.776,124.8,0.0,124.8,0.0,23.4,0.0,36.0,0.0,21.2
+newmus_subject11_walking2_k8_design2_scaled_rw100,8,True,0.1,50297.005,0.6,0.0,0.2,0.0,0.6,0.0,0.4,0.0,0.4

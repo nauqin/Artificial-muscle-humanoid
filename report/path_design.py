@@ -33,17 +33,20 @@ for f in font_manager.findSystemFonts():
 plt.rcParams["axes.unicode_minus"] = False
 
 
-def poses(n_walk=10, n_other=30, seed=0):
-    """자세 표본 (N × 5): 4 설계 좌표 + hip_rotation, rad."""
-    rng = np.random.default_rng(seed); rows = []
+def poses(n_walk=10, n_sq=60, seed=0):
+    """자세 표본 Q (N × 5: 4 설계 좌표 + hip_rotation, rad) 와 같은 프레임의 ID 토크 T (N × 4, Nm).
+    걷기 6 시행 + 스쿼트 (모두 AddB 변환 짝이라 IK·ID 가 일관). 스쿼트는 무릎이 가장 굽은 프레임을 반드시 넣는다."""
+    rng = np.random.default_rng(seed); Q, T = [], []
     cols = list(COORDS) + list(EXTRA)
-    for f in sorted(glob.glob(os.path.join(ROOT, "data/subject3/walking*_ik.mot"))):
-        m = io.read_mot(f); idx = rng.choice(len(m.time), n_walk, replace=False)
-        rows.append(np.column_stack([m.column(c) for c in cols])[idx])
-    for task in ("squats1", "STS1"):
-        m = io.read_mot(os.path.join(LAB, "subject3/OpenSimData/Mocap/IK", f"{task}.mot")); idx = rng.choice(len(m.time), n_other, replace=False)
-        rows.append(np.deg2rad(np.column_stack([m.column(c) for c in cols])[idx]))
-    return np.vstack(rows)
+    trials = [os.path.basename(f).replace("_ik.mot", "") for f in sorted(glob.glob(os.path.join(ROOT, "data/subject3/walking*_ik.mot")))] + ["squats1_segment_0"]
+    for tr in trials:
+        m = io.read_mot(os.path.join(ROOT, "data/subject3", f"{tr}_ik.mot")); idm = io.read_mot(os.path.join(ROOT, "out/real/subject3", tr, f"{tr}_id.sto"))
+        ok = (m.time >= idm.time[0]) & (m.time <= idm.time[-1]); tsel = m.time[ok]
+        t = rng.choice(tsel, n_walk if tr.startswith("walking") else n_sq, replace=False)
+        if not tr.startswith("walking"): t = np.append(t, tsel[np.argmax(m.column("knee_angle_r")[ok])])
+        Q.append(np.column_stack([np.interp(t, m.time, m.column(c)) for c in cols]))
+        T.append(np.column_stack([np.interp(t, idm.time, idm.column(c + "_moment")) for c in COORDS]))
+    return np.vstack(Q), np.vstack(T)
 
 
 class Frames:
@@ -93,7 +96,8 @@ def cost(x, fr, chain, v, cap, detail=False):
     P = x.reshape(len(chain), 3); r, L = moment_arms(fr, chain, P)
     nr = np.linalg.norm(r, axis=1); ok = nr > 1e-4
     if ok.sum() < len(r) * 0.5: return 1e3 if not detail else None
-    dir_err = float((np.linalg.norm(r[ok] / nr[ok, None] - v, axis=1) ** 2).mean())
+    e2 = np.linalg.norm(r[ok] / nr[ok, None] - v, axis=1) ** 2
+    dir_err = float(0.5 * e2.mean() + 0.5 * e2.max())          # 평균 + 최악 자세 (깊은 스쿼트에서 방향이 틀어지는 것을 막는다, 9/15)
     arm_eff = (r @ v)                                          # 설계 방향으로의 유효 모멘트암 (m)
     arm_min = float(arm_eff.min()); arm_mean = float(arm_eff.mean())
     stroke = float((L.max() - L.min()) / L.mean())
@@ -105,10 +109,12 @@ def cost(x, fr, chain, v, cap, detail=False):
 
 def main():
     d = np.load(os.path.join(ROOT, "report/newmus_V_design_k8.npz")); V, c = d["V"], d["c"]
-    Q = poses(); print(f"자세 표본 {len(Q)}개", flush=True)
+    Q, T = poses(); print(f"자세 표본 {len(Q)}개", flush=True)
     tic = time.time(); fr = Frames(os.path.join(ROOT, "data/subject3/subject3_scaled.osim"), Q); print(f"뼈 변환 저장 {time.time()-tic:.0f}s", flush=True)
     out = {"coords": COORDS, "bodies": BODIES, "muscles": []}
-    for i in range(8):
+    if "--refine-from-json" in sys.argv:                       # 1단계 결과를 다시 쓰고 2단계만 돌린다
+        out = json.load(open(os.path.join(ROOT, "report/newmus_paths_k8.json")))
+    for i in range(8 if "--refine-from-json" not in sys.argv else 0):
         v = V[i]; chain = chain_for(v)
         bounds = [b for n in chain for b in BOX[BODIES[n]]]
         tic = time.time()
@@ -123,8 +129,66 @@ def main():
         out["muscles"].append(dict(name=f"M{i}", v=v.tolist(), capacity_Nm=float(c[i]), chain=[BODIES[n] for n in chain],
                                    points=x.reshape(len(chain), 3).tolist(), force_N=float(det["force"]), arm_min=det["arm_min"], arm_mean=det["arm_mean"],
                                    stroke=det["stroke"], dir_err=det["dir_err"], angle_deg=float(ang), r_mean=rm.tolist()))
+    refine(out, fr, T)
     json.dump(out, open(os.path.join(ROOT, "report/newmus_paths_k8.json"), "w"), indent=1, ensure_ascii=False)
     build_model(out); plot(out, fr, V)
+
+
+def batch_boxlsq(A, b, iters=400):
+    """프레임마다 min ||A_t u − b_t||², 0 ≤ u ≤ 1 을 한꺼번에 (FISTA, 벡터화). A (T,4,8), b (T,4) → u (T,8)."""
+    L = np.linalg.svd(A, compute_uv=False)[:, 0] ** 2 + 1e-9; step = 1.0 / L
+    u = np.zeros((len(A), A.shape[2])); y = u.copy(); tk = 1.0
+    AtA = np.einsum("tij,tik->tjk", A, A); Atb = np.einsum("tij,ti->tj", A, b)
+    for _ in range(iters):
+        g = np.einsum("tjk,tk->tj", AtA, y) - Atb
+        un = np.clip(y - step[:, None] * g, 0.0, 1.0)
+        tn = (1 + np.sqrt(1 + 4 * tk * tk)) / 2; y = un + ((tk - 1) / tn) * (un - u); u, tk = un, tn
+    return u
+
+
+def refine(out, fr, T, maxfev=20000, w_dir=3.0):
+    """2단계: 8개 경로를 한꺼번에 조정해, 표본 프레임 전부에서 ID 토크×여유를 u∈[0,1] 로 재현하도록 한다.
+    1단계는 근육 하나씩 '방향'만 맞추므로 깊은 스쿼트처럼 모멘트암이 크게 변하는 자세에서 부족분이 생겼다 (9/15).
+    변수 = 부착점 + 힘 배율 f_i ≥ 1 (힘 = f_i × 여유 × 용량 / 최소 유효 모멘트암, 즉 설계 용량은 항상 보장).
+    비용 = 최악 잔차 + 0.3 평균 잔차 + w_dir × 방향오차(설계 방향 유지) + 작은 힘 벌점 + 스트로크·힘 상한 벌점."""
+    chains = [[BODIES.index(b) for b in m["chain"]] for m in out["muscles"]]; sizes = [len(c) * 3 for c in chains]
+    V = np.array([m["v"] for m in out["muscles"]]); cap = np.array([m["capacity_Nm"] for m in out["muscles"]])
+    x0 = np.concatenate([np.array(m["points"]).ravel() for m in out["muscles"]] + [np.ones(8)])
+    bounds = [b for m, c in zip(out["muscles"], chains) for n in c for b in BOX[BODIES[n]]] + [(1.0, 3.0)] * 8
+    pk = np.abs(T).max(axis=0); Tm = MARGIN * T
+    def arms(x):
+        R, Ls = [], []; off = 0
+        for c, sz in zip(chains, sizes):
+            r, l = moment_arms(fr, c, x[off:off + sz].reshape(-1, 3)); R.append(r); Ls.append(l); off += sz
+        return np.stack(R, axis=2), np.stack(Ls, axis=1)              # (T,4,8), (T,8)
+    def cost_joint(x, detail=False):
+        R, Ls = arms(x); f = x[-8:]
+        nr = np.linalg.norm(R, axis=1) + 1e-9                            # (T,8)
+        e2 = ((R / nr[:, None, :] - V.T[None]) ** 2).sum(axis=1)         # (T,8) 방향오차
+        dir_err = 0.5 * e2.mean(axis=0) + 0.5 * e2.max(axis=0)
+        arm_eff = np.einsum("tji,ij->ti", R, V); arm_min = np.maximum(arm_eff.min(axis=0), 1e-4)
+        F = f * MARGIN * cap / arm_min; A = R * F[None, None, :]
+        u = batch_boxlsq(A, Tm); res = (np.einsum("tij,tj->ti", A, u) - Tm) / pk
+        stroke = (Ls.max(axis=0) - Ls.min(axis=0)) / Ls.mean(axis=0)
+        worst = np.abs(res).max(); mean = np.abs(res).mean()
+        pen = 20 * (np.maximum(0.0, stroke - STROKE) ** 2).sum() + 5 * (np.maximum(0.0, F / F_MODULE - 1) ** 2).sum() + 1e4 * (np.maximum(0.0, 0.015 - arm_min) ** 2).sum() + 0.02 * (f - 1).mean()
+        if detail: return dict(worst_pct=worst * 100, worst_coord=np.abs(res).max(axis=0) * 100, mean_pct=mean * 100, stroke=stroke, F=F, u_max=u.max(axis=0), R=R, Ls=Ls, arm_min=arm_min, arm_mean=arm_eff.mean(axis=0), dir_err=dir_err, f=f)
+        return worst + 0.3 * mean + w_dir * dir_err.sum() + pen
+    d0 = cost_joint(x0, detail=True); print(f"2단계 시작: 최악 잔차 {d0['worst_pct']:.1f} % (좌표별 {np.round(d0['worst_coord'],1)})  평균 {d0['mean_pct']:.2f} %  방향오차합 {d0['dir_err'].sum():.3f}", flush=True)
+    tic = time.time(); n = [0]
+    def cb(xk): n[0] += 1; d = cost_joint(xk, detail=True); print(f"  반복 {n[0]}: 최악 {d['worst_pct']:.1f} %  평균 {d['mean_pct']:.2f} %  방향오차합 {d['dir_err'].sum():.3f}  힘배율 {np.round(d['f'],2)}  {time.time()-tic:.0f}s", flush=True)
+    res = minimize(cost_joint, x0, method="Powell", bounds=bounds, callback=cb, options=dict(maxfev=maxfev, xtol=1e-4, ftol=1e-6))
+    print(f"  Powell: fun={res.fun:.4f} (시작 {cost_joint(x0):.4f})  nfev={res.nfev}  {res.message}", flush=True)
+    x = res.x if res.fun < cost_joint(x0) else x0
+    d = cost_joint(x, detail=True); print(f"2단계 끝: 최악 잔차 {d['worst_pct']:.1f} % (좌표별 {np.round(d['worst_coord'],1)})  평균 {d['mean_pct']:.2f} %  {time.time()-tic:.0f}s", flush=True)
+    off = 0
+    for i, (m, c, sz) in enumerate(zip(out["muscles"], chains, sizes)):
+        P = x[off:off + sz].reshape(-1, 3); off += sz; r = d["R"][:, :, i]; v = V[i]; rm = r.mean(axis=0)
+        m.update(points=P.tolist(), force_N=float(d["F"][i]), force_mult=float(d["f"][i]), arm_min=float(d["arm_min"][i]), arm_mean=float(d["arm_mean"][i]), stroke=float(d["stroke"][i]),
+                 dir_err=float(d["dir_err"][i]), angle_deg=float(np.degrees(np.arccos(np.clip(rm @ v / np.linalg.norm(rm), -1, 1)))), r_mean=rm.tolist(), u_max_design=float(d["u_max"][i]))
+        print(f"  M{i}: 힘 {m['force_N']:.0f} N (배율 {m['force_mult']:.2f})  유효 모멘트암 {m['arm_min']*100:.1f}~{m['arm_mean']*100:.1f} cm  스트로크 {m['stroke']:.2f}  각도차 {m['angle_deg']:.1f}°  u최대 {m['u_max_design']:.2f}", flush=True)
+    out["refine"] = dict(worst_pct=float(d["worst_pct"]), worst_coord=d["worst_coord"].tolist(), mean_pct=float(d["mean_pct"]), n_frames=int(len(T)), margin=MARGIN, w_dir=w_dir)
+
 
 
 def build_model(out):

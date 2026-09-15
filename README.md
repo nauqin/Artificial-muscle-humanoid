@@ -257,10 +257,12 @@ VAF(설명된 분산)로 고른다. 두 기준을 나란히 보고한다.
 | `report/plot_newmuscles_cross.py` | 방향 V 출처별 교차 검증 막대그림 (`fig_newmuscles_cross.png`) |
 | `report/newmus_video.py` | 새 근육으로 걷는 모습 mp4 — 스틱피겨 + GRF + 신호 막대 + 토크 추적 (GUI 없이) |
 | `report/emg_check.py` | 실측 EMG(LabValidation) 대 SO 활성도·시너지 검산 — soleus 0.78, tibant 0.10 |
-| `report/path_design.py` | 설계 방향 → 케이블 부착점 최적화 (tendon excursion 모멘트암, DE + Powell). `newmus_paths_k8.json`, 모델 `moco/newmus_paths_subject3_model.osim` |
-| `report/moco_path_muscles.py` | 경로 근육(PathActuator) 8개/다리로 MocoInverse 재현 — 걷기 6걸음 중 5걸음 ≤ 10 %, 스쿼트 5.6 % (`--ik --ext --id --t0 --t1` 로 임의 입력, 단 모델과 짝이어야 함) |
-| `report/paths_video.py` | 케이블 근육 영상 — 뼈대 + 케이블(신호로 진하기) + GRF + 토크 추적 |
-| `report/design_directions.py` | **새 근육 8개 방향을 ID 토크에서 직접 설계** (LP + Powell) — 394 Nm, 축 정렬 532 대비 −26 %. 결과 `newmus_V_design_k8.npz`, 검증 `design_validation.csv` |
+| `report/path_design.py` | 설계 방향 → 케이블 부착점 최적화. 1단계 근육별 방향 맞추기(tendon excursion 모멘트암, DE + Powell) + 2단계 8개 동시 토크 재현 미세조정(Powell + 벡터화 box-lsq, 9/15). `newmus_paths_k8.json`, 모델 `moco/newmus_paths_subject3_model.osim`, `fig_path_design.png` |
+| `report/plot_path_layout.py` | 케이블 경로를 자세 3개(서기·다리 흔들기·깊은 스쿼트)에서 그린 `fig_path_layout.png` — 최적화 결과는 눈으로 확인 |
+| `report/moco_path_muscles.py` | 경로 근육(PathActuator) 8개/다리로 MocoInverse 재현 — v3 경로: 걷기 6걸음 2.8~6.3 %(TS2 는 Moco 튐 노드 제외 19 %), 스쿼트 9.5 % (`--ik --ext --id --t0 --t1` 로 임의 입력, 단 모델과 짝이어야 함) |
+| `report/paths_video.py` | 케이블 근육 영상 — 뼈대 + 케이블(신호로 진하기) + GRF + 토크 추적 + 보조 액추에이터 토크 패널. `video_paths_subject3_{walking1,squats1}.mp4` |
+| `report/gui_export.py` | GUI 용: 같은 경로의 Millard 근육 모델 `moco/gui_muscles_model.osim` + 관절각·활성도 모션 `moco/gui_paths_*_v3.mot` |
+| `report/design_directions.py` | **새 근육 8개 방향을 ID 토크에서 직접 설계** (LP + Powell) — v2(걷기 7명 + 스쿼트, 9/15) 394 Nm, 축 정렬 522 대비 −25 %. 결과 `newmus_V_design_k8.npz`, `design_directions.csv`. v1(앉았다 서기 포함)은 `report/archive_v1/` |
 | `raw_b3d/` | 내려받은 `.b3d`를 여기에 둔다 |
 | `data/` | AddBiomechanics 다운로드를 여기에 푼다 |
 | `out/` | 결과 |
@@ -568,13 +570,16 @@ Uhlrich2023은 무릎 부하를 줄이는 보행 수정을 다루는 연구다. 
      (7명 걷기 + 스쿼트 + STS, 피험자3 크기). 총용량 394 Nm(축 정렬 532, NMF 513). 한 설계로 7명
      12걸음 오차 ≤ 10 %(walkingTS2 무릎 20 %). Moco 내부 토크가 ID 와 어긋나는 노드가 있어 검증
      지표는 "새 근육 토크 vs ID" — NOTES 3절. 설계 파일 `report/newmus_V_design_k8.npz`.
-     **결정 (9/14)**: 동작 범위 = 걷기 + 스쿼트 + 앉았다 서기(점프 제외), 용량 여유 10 %
-     (max force = 1.1 × c_i ÷ 모멘트암). 다음 = 경로 설계.
-     **경로 설계 1차 (9/14 밤)**: 8개 방향 전부 케이블 경로로 구현(각도차 ≤ 4°, 힘 ≤ 4.6 kN,
-     스트로크 ≤ 0.18), PathActuator 모델로 6걸음 중 5걸음 ≤ 10 %. 한계: 뼈 간섭·wrap 없음,
-     7/8 이 4바디 경로 — NOTES 3절.
-     다음: ① 경로 2차(관절 중심 최소거리 + wrap + 건너는 관절 수 벌점), ② Moco 노드 튐 원인, ③ hip_rotation
-     포함 5 DOF, ③ 접촉 모델로 스스로 걷기(균형), ④ 그 토크 서명을 내는 실제 부착 경로.
+     **결정 (9/14, 9/15 수정)**: 동작 범위 = 걷기 + 스쿼트(점프 제외; 앉았다 서기는 의자 힘이 측정에
+     없어 제외 — NOTES 3절), 용량 여유 10 % (max force = 1.1 × c_i ÷ 모멘트암).
+     **경로 설계 1차 (9/14 밤)**: 8개 방향 전부 케이블 경로로 구현, PathActuator 모델로 6걸음 중 5걸음 ≤ 10 %.
+     **설계 v2 + 경로 2단계 (9/15)**: 걷기+스쿼트로 방향을 다시 설계(394 Nm, 걷기 400·스쿼트 262).
+     근육별로만 방향을 맞춘 경로는 깊은 스쿼트에서 고관절이 17~28 % 모자라 실패 → 8개 부착점·힘을
+     한꺼번에 조정하는 2단계(`path_design.py refine`)를 추가. 결과: 걷기 6걸음 2.8~6.3 %(TS2 는 Moco
+     튐 노드 제외 19 %), 스쿼트 9.5 %, 힘 590~3,460 N, 스트로크 ≤ 0.19. 영상·GUI 파일은 이 경로 기준.
+     한계: 뼈 간섭·wrap 없음, 6/8 이 4바디 경로.
+     다음: ① 경로 3차(관절 중심 최소거리 + wrap + 건너는 관절 수 벌점), ② Moco 노드 튐 원인, ③ hip_rotation
+     포함 5 DOF, ④ 접촉 모델로 스스로 걷기(균형), ⑤ KIMM 모듈 측정값 반영.
 4. **하지 배치 과제 Phase 1~5**는 아래 "하지 인공근육 배치 과제" 절과 NOTES 4-A.
    Phase 0의 열린 질문(어느 봉투를 쓰나)은 오늘 닫혔다 — subject6·9는 데이터 탓이므로
    **`phase0_no69` 봉투를 쓰고**, subject10이 들어왔으니 7명으로 다시 뽑는다.
