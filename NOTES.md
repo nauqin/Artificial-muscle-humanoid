@@ -986,9 +986,17 @@ squats1 을 우리 모델 짝으로 변환(`b3d_to_opensim.py`, 1,184 프레임 
 보조 22 %(반복 상한 도달, 미수렴). 영상 `report/video_paths_subject3_squats1.mp4`
 (`report/paths_video.py`: 케이블을 신호 u 로 진하기·굵기 표시).
 
-STS1(앉았다 서기)은 AddB 에서 절반이 `unmeasuredExternalForceDetected` — 의자가 미는 힘이
-힘판에 없어서 ID 가 틀리므로 **시뮬레이션 대상에서 뺀다**(설계 데이터의 STS 토크는 논문 팀 ID
-로, 의자 힘을 포함한 것인지 확인 필요 — 열린 질문).
+STS1(앉았다 서기)은 AddB 에서 절반이 `unmeasuredExternalForceDetected`(의자가 미는 힘이 힘판에
+없음)라 잘렸지만, **남은 9.16~10.81 s 는 엉덩이가 의자에서 떨어진 뒤 완전히 일어서는 구간**(골반
+높이 0.56 → 0.94 m, 잔차 1 %)이라 쓸 수 있다. 케이블 근육으로 재현: 오른다리 토크 오차 최악
+**3.8 %**, 보조 4.2 %. 영상 `report/video_paths_subject3_STS1.mp4`. 설계 데이터에 넣은 논문 팀
+STS ID 가 의자 힘을 포함한 값인지는 여전히 확인 필요(열린 질문).
+
+GUI 로 보기 (2026-09-15): `report/gui_export.py` 가 PathActuator 를 같은 경로의 Millard 근육으로
+바꾼 `report/moco/gui_muscles_model.osim`(GUI 는 Muscle 만 활성도 색을 칠한다)과, 관절 각도 +
+`/forceset/M*_*/activation`(= Moco 신호 u) 을 합친 `gui_<name>.mot` 을 만든다. 걷기는 지지 구간만
+이 아니라 시행 전체(0.03~1.27 s, `paths_subject3_walking1_full`)로 다시 돌렸다 — 보조 최악 8 %.
+이때 "토크 vs ID" 지표는 ID 창(0.25~1.12) 밖에서 무의미하다(np.interp 가 끝값을 붙듦).
 
 교훈: 운동학·힘판·ID 는 **한 모델에서 나온 짝**으로만 쓴다. 다른 출처를 섞으면 발목부터 깨진다.
 `moco_path_muscles.py` 에 `--ik --ext --id --t0 --t1 --name` 을 넣어 임의 입력을 받게 했지만,
