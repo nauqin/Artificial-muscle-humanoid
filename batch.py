@@ -52,8 +52,8 @@ def process_trial(subject, trial, model_path, out_root, args, log=print):
     summary = None
     if not cached:
         summary = rt.run_trial(model_path, trial.ik, trial.grf, out_dir, trial.name,
-                               lowpass=args.lowpass, start=args.start, end=args.end,
-                               log=log)
+                               lowpass=args.lowpass, grf_lowpass=args.grf_lowpass,
+                               start=args.start, end=args.end, log=log)
     else:
         # ID 툴은 다시 안 돌리되 요약·검산은 다시 만든다 — 안 그러면 그 줄이 빈다.
         summary = rt.summarize(model_path, trial.ik, trial.grf, id_path, out_dir,
@@ -153,6 +153,8 @@ def main():
     ap.add_argument("--start", type=float, default=None)
     ap.add_argument("--end", type=float, default=None)
     ap.add_argument("--lowpass", type=float, default=rt.LOWPASS)
+    ap.add_argument("--grf-lowpass", type=float, default=None,
+                    help="GRF 힘·모멘트 저역통과 Hz (트레드밀 데이터는 --lowpass 와 같게)")
     ap.add_argument("--min-duration", type=float, default=MIN_DURATION)
     args = ap.parse_args()
 

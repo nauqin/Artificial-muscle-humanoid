@@ -222,6 +222,38 @@ python report/gui_export.py paths_subject3_walking1_full_tutorial paths_subject3
 
 순서 추천: ① 팔 동작 데이터로 ID만 먼저 돌려 관절 토크 범위를 본다(`batch.py --no-muscle`) → ② 팔 근육 모델을 구한다 → ③ `models.py`와 `--coords`를 바꿔 SO·시너지 → ④ `spanning_check.py`로 근육 수 하한 → ⑤ 설계.
 
+### 7-1. 팔 포함 보행 데이터(Moore2015)로 ID 까지 해 보기
+
+`data/moore2015/` 에 Moore2015(트레드밀 보행, 팔 포함) subject3·subject9 가 변환돼 있다. 기존
+`data/subject3` 과 다른 사람이다. 트레드밀 데이터라 옵션이 다르다 — **GRF 도 좌표와 같은 컷오프로
+필터**해야 잔차가 5 % 대로 떨어진다(안 하면 16 %).
+
+```bash
+conda activate osim
+# 한 조각만 (1.6 m/s, 20초)
+python run_trial.py --model data/moore2015/subject3/subject3_scaled.osim \
+  --ik data/moore2015/subject3/T048_segment_26_ik.mot \
+  --grf data/moore2015/subject3/T048_segment_26_grf.mot \
+  --out out/moore2015 --name s3_T048_26 --lowpass 15 --grf-lowpass 15
+# 전부 (189조각, 20~30분)
+python batch.py --data data/moore2015 --out out/moore2015 --no-muscle --lowpass 15 --grf-lowpass 15
+```
+
+`out/moore2015/summary.csv` 의 `residual` 이 8 % 이하이고 `t1-t0` 가 5초 이상인 조각만 쓴다.
+trial 이름 뜻: subject3 T046/T047/T048, subject9 T025/T026/T027 = 0.8/1.2/1.6 m/s. 0.8 m/s 는
+쓸 만한 조각이 없다. 보행 방향은 +z 다. ID 결과(`*_id.sto`)에 `lumbar_*_moment`, `arm_flex_r_moment`,
+`elbow_flex_r_moment` 등 상체 토크가 들어 있으므로 상체 설계의 첫 입력으로 쓴다.
+
+새 `.b3d` 를 더 받으면(맥 `b3d` 환경, `nimblephysics` 는 윈도 휠이 없다):
+
+```bash
+conda activate b3d
+python b3d_to_opensim.py /Volumes/MRLAB/인공근육휴머노이드/subjectN.b3d --out data/moore2015
+```
+
+`--walking-only` 는 쓰지 않는다(이름에 walk 가 없어 다 걸러진다). 로그의 `[GRF 보정]` 줄은 떠 있는
+발의 잡음 힘을 0 으로 만들고 발 밖에 찍힌 COP 를 발 아래로 옮긴 프레임 수다(NOTES 2026-10-30 참고).
+
 ---
 
 ## 8. 막혔을 때

@@ -148,10 +148,41 @@ def summarize(model_path, ik_path, grf_path, id_path, out_dir, name, *, feet=FEE
     return summary
 
 
+def filter_grf(grf_path, cutoff, out_path, log=print):
+    """GRF의 힘·자유모멘트 열을 영위상 Butterworth(4차)로 저역통과해 새 .mot으로 쓴다.
+    COP 열은 접촉 시작·끝에서 점프하므로 건드리지 않는다.
+
+    좌표 컷오프와 같은 값을 쓰는 것이 원칙이다 — 가속도(좌표)에 남긴 주파수와
+    힘에 남긴 주파수가 다르면 그 차이가 그대로 잔차로 나온다. Moore2015
+    트레드밀(subject3 T048_segment_3)에서 좌표 6 Hz·GRF 무필터는 잔차 16.3 %,
+    좌표 15·GRF 15 는 5.6 %.
+    """
+    from scipy.signal import butter, filtfilt
+
+    mot = io.read_mot(grf_path)
+    fs = 1.0 / np.median(np.diff(mot.time))
+    b, a = butter(4, cutoff / (fs / 2.0))
+    data = mot.data.copy()
+    n = 0
+    for j, name in enumerate(mot.names):
+        kind = io.parse_grf_column(name)
+        if kind and kind[1] in ("force", "torque"):
+            data[:, j] = filtfilt(b, a, data[:, j])
+            n += 1
+    io.write_mot(out_path, mot.names, mot.time, data, name=os.path.basename(out_path)[:-4])
+    log(f"  GRF 저역통과 {cutoff:g} Hz ({n}열) → {out_path}")
+    return out_path
+
+
 def run_trial(model_path, ik_path, grf_path, out_dir, name, *, feet=FEET,
-              lowpass=LOWPASS, start=None, end=None, plot=True, log=print):
+              lowpass=LOWPASS, grf_lowpass=None, start=None, end=None, plot=True, log=print):
     """trial 하나를 끝까지. 요약 dict를 돌려준다."""
     import opensim as osim
+
+    if grf_lowpass:
+        os.makedirs(out_dir, exist_ok=True)
+        grf_path = filter_grf(grf_path, grf_lowpass,
+                              os.path.join(out_dir, f"{name}_grf_f{grf_lowpass:g}.mot"), log=log)
 
     model = osim.Model(os.path.abspath(model_path))
     model.initSystem()
@@ -226,6 +257,8 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--name", required=True)
     ap.add_argument("--lowpass", type=float, default=LOWPASS)
+    ap.add_argument("--grf-lowpass", type=float, default=None,
+                    help="GRF 힘·모멘트 저역통과 Hz (트레드밀 데이터는 --lowpass 와 같게)")
     ap.add_argument("--start", type=float, default=None)
     ap.add_argument("--end", type=float, default=None)
     ap.add_argument("--feet", default=",".join(FEET))
@@ -237,7 +270,7 @@ def main():
 
     run_trial(args.model, args.ik, args.grf, args.out, args.name,
               feet=tuple(args.feet.split(",")), lowpass=args.lowpass,
-              start=args.start, end=args.end, plot=not args.no_plot)
+              grf_lowpass=args.grf_lowpass, start=args.start, end=args.end, plot=not args.no_plot)
 
 
 if __name__ == "__main__":

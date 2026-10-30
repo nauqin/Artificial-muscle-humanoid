@@ -122,6 +122,48 @@ def grf_columns(bodies) -> list:
     return names
 
 
+#: 수직력이 이보다 작으면 접촉이 아니라고 보고 힘·COP·모멘트를 전부 0으로 쓴다.
+#: 트레드밀 데이터(Moore2015)는 비접촉 구간에도 ±20 N 잡음이 남아 있고, AddB가
+#: 그 잡음으로 COP를 나눠 수백 m 밖에 찍어 둔다. 그대로 ID에 넣으면 관절 모멘트가
+#: 100 Nm/kg 넘게 튄다.
+MIN_FY = 30.0
+#: 접촉 중인데 COP가 발(calcn)에서 이보다 멀면 힘판 분해 오류로 보고 COP를 발
+#: 바로 아래로 옮기고 자유모멘트는 버린다 (힘 벡터는 유지). 발 길이가 0.25 m 내외.
+MAX_COP_DIST = 0.3
+
+
+def clean_grf(wrench, foot, n_bodies):
+    """월드 원점 기준 렌치 [M(3), F(3)]×바디 → OpenSim 외력 열 [F, COP, T]×바디.
+
+    COP는 지면(y=0) 위에서 M = COP×F + (0,Ty,0) 이 되도록 고른다:
+        px = Mz/Fy,  pz = -Mx/Fy,  Ty = My - (pz·Fx - px·Fz).
+    총 렌치가 같으면 ID 결과는 COP 분해 방식과 무관하므로, 정상 프레임에서는
+    AddB가 준 COP와 같은 결과가 난다.
+    """
+    n = len(wrench)
+    out = np.zeros((n, n_bodies * 9))
+    n_zero = n_moved = 0
+    for b in range(n_bodies):
+        M = wrench[:, b * 6: b * 6 + 3]
+        F = wrench[:, b * 6 + 3: b * 6 + 6]
+        fy = F[:, 1]
+        contact = fy > MIN_FY
+        n_zero += int((~contact).sum())
+        px = np.zeros(n); pz = np.zeros(n); ty = np.zeros(n)
+        px[contact] = M[contact, 2] / fy[contact]
+        pz[contact] = -M[contact, 0] / fy[contact]
+        ty[contact] = M[contact, 1] - (pz[contact] * F[contact, 0] - px[contact] * F[contact, 2])
+        dist = np.hypot(px - foot[:, b, 0], pz - foot[:, b, 2])
+        bad = contact & (dist > MAX_COP_DIST)
+        n_moved += int(bad.sum())
+        px[bad] = foot[bad, b, 0]; pz[bad] = foot[bad, b, 2]; ty[bad] = 0.0
+        out[contact, b * 9 + 0: b * 9 + 3] = F[contact]
+        out[:, b * 9 + 3] = px
+        out[:, b * 9 + 5] = pz
+        out[:, b * 9 + 7] = ty
+    return out, n_zero, n_moved
+
+
 def convert_trial(subject, nimble, trial, pass_idx, out_dir, subject_name, args, log=print):
     name = subject.getTrialName(trial) or f"trial{trial}"
     length = subject.getTrialLength(trial)
@@ -145,22 +187,26 @@ def convert_trial(subject, nimble, trial, pass_idx, out_dir, subject_name, args,
                                 includeProcessingPasses=True)
     bodies = list(subject.getGroundForceBodies())
     dofs = dof_names(subject, pass_idx)
+    skel = subject.readOpenSimFile(pass_idx, "", True).skeleton
 
     times = np.empty(len(frames))
     pos = np.empty((len(frames), len(dofs)))
-    grf = np.zeros((len(frames), len(bodies) * 9))
+    wrench = np.empty((len(frames), len(bodies) * 6))
+    foot = np.empty((len(frames), len(bodies), 3))
 
     for i, frame in enumerate(frames):
         p = frame.processingPasses[min(pass_idx, len(frame.processingPasses) - 1)]
         times[i] = (start + i) * dt
         pos[i] = np.asarray(p.pos).ravel()[:len(dofs)]
-        force = np.asarray(p.groundContactForce).ravel()
-        cop = np.asarray(p.groundContactCenterOfPressure).ravel()
-        torque = np.asarray(p.groundContactTorque).ravel()
-        for b in range(len(bodies)):
-            grf[i, b * 9 + 0: b * 9 + 3] = force[b * 3: b * 3 + 3]
-            grf[i, b * 9 + 3: b * 9 + 6] = cop[b * 3: b * 3 + 3]
-            grf[i, b * 9 + 6: b * 9 + 9] = torque[b * 3: b * 3 + 3]
+        wrench[i] = np.asarray(p.groundContactWrenches).ravel()
+        skel.setPositions(np.asarray(p.pos).ravel())
+        for b, body in enumerate(bodies):
+            foot[i, b] = skel.getBodyNode(body).getWorldTransform().translation()
+
+    grf, n_zero, n_moved = clean_grf(wrench, foot, len(bodies))
+    if n_moved:
+        log(f"  [GRF 보정] {name}: 힘 {MIN_FY} N 미만 {n_zero}프레임 0 처리, "
+            f"COP가 발에서 {MAX_COP_DIST} m 밖이라 발 위치로 옮긴 {n_moved}프레임")
 
     os.makedirs(out_dir, exist_ok=True)
     ik_path = os.path.join(out_dir, f"{name}_ik.mot")
