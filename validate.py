@@ -30,6 +30,7 @@ BANDS = {
     "recon":    (None, 5.0, "%",    "SO 미수렴 / 시간축 불일치 / 근육 누락"),
     "reserve":  (None, 10.0, "%",   "근육만으로 모멘트 부족 — 모델·구간·GRF 확인"),
     "moment_arm": (0.02, 0.08, "m",  "모델 스케일 / 길이 단위(mm vs m)"),
+    "upper":    (None, None, "Nm/kg", "상체 검산 밴드 없음 — 값만 기록"),
 }
 
 #: 한 걸음의 대략적 길이. 분석 구간이 이보다 짧으면 push-off가 잘렸을 수 있다.
@@ -90,7 +91,9 @@ class Report:
         lines = []
         for c in self.checks:
             lo, hi, unit, suspect = BANDS[c.band]
-            if lo is None:
+            if lo is None and hi is None:
+                rng = "밴드 없음"
+            elif lo is None:
                 rng = f"< {hi:g}"
             elif hi is None:
                 rng = f"> {lo:g}"
@@ -183,6 +186,22 @@ def validate_id(id_mot, *, mass_kg, grf_peak_bw, grf_peak_n, cop_dist,
 # ─────────────────────────────────────────────────────────────────────────────
 # SO 검산
 # ─────────────────────────────────────────────────────────────────────────────
+
+
+#: 상체 ID 에서 값만 보고할 좌표 (검산 밴드 없음 — 문헌값 확보 전). 잔차·GRF 검산은 GRF 가 없으니 생략.
+UPPER_COORDS = ("lumbar_extension", "lumbar_bending", "lumbar_rotation",
+                "arm_flex_r", "arm_add_r", "arm_rot_r", "elbow_flex_r",
+                "arm_flex_l", "arm_add_l", "arm_rot_l", "elbow_flex_l")
+
+
+def validate_id_upper(id_mot, *, mass_kg) -> Report:
+    """GRF 없는 ID 의 상체 피크 토크를 Nm/kg 로 적는다. 밴드가 없어 전부 PASS 로 두고 값만 남긴다."""
+    rep = Report()
+    for coord in UPPER_COORDS:
+        peak = peak_moment(id_mot, coord)
+        if peak is not None:
+            rep.add(coord, peak / mass_kg, "upper")
+    return rep
 
 
 def validate_so(id_mot, force_mot, ma_by_coord, coords, *, reserve_prefix="reserve_") -> Report:

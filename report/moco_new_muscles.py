@@ -9,6 +9,9 @@ SynergyController 로 묶고 시너지 벡터 = V_i (부호 있음). 운동학·
 
     python report/moco_new_muscles.py --k 8
     python report/moco_new_muscles.py --k 5
+    python report/moco_new_muscles.py --space arm_r --v-from design report/newmus_V_design_arm_r_k6.npz --ext none \
+        --model data/moore2015/subject3/subject3_scaled.osim --ik data/moore2015/subject3/T048_segment_26_ik.mot \
+        --id out/moore2015/subject3/T048_segment_26/T048_segment_26_id.sto --v-scale 0.96 --reserve-weight 100 --name arm_s3_T048_26
 """
 import argparse, csv, glob, os, sys, time
 import numpy as np
@@ -19,9 +22,11 @@ sys.path.insert(0, ROOT); sys.path.insert(0, os.path.join(ROOT, "report"))
 import addb_io as io                                   # noqa: E402
 from moco_synergy_inverse import strip_locked, complete_kinematics   # noqa: E402
 import lumped_actuator_test as lat                     # noqa: E402
+import design_space as ds                              # noqa: E402
+import path_design as pd                               # noqa: E402
 
 osim.Logger.setLevelString("Error")
-COORDS = lat.COORDS
+SP = ds.get("lower"); COORDS = SP["base"]
 EDGE = 0.05   # s. 보조 % 를 잴 때 구간 양 끝에서 뺄 폭 (MocoInverse 는 마지막 몇 노드에서 토크가 튄다)
 
 
@@ -33,17 +38,18 @@ def build_model(model_path, ext_loads, k, sub, trial, out_dir, name, umax, v_fro
     sv = osim.StdVectorString()
     for j in welds: sv.append(j)
     proc.append(osim.ModOpReplaceJointsWithWelds(sv))
-    proc.append(osim.ModOpAddExternalLoads(os.path.abspath(ext_loads)))
+    if ext_loads: proc.append(osim.ModOpAddExternalLoads(os.path.abspath(ext_loads)))   # 상체 전용이면 외력 없음
     proc.append(osim.ModOpRemoveMuscles())                 # 사람 근육 80개 전부 제거
     proc.append(osim.ModOpAddReserves(1.0))                # 모든 좌표에 보조 — 새 근육이 못 내는 몫을 잰다
     model = proc.process(); model.initSystem()
+    pd.remove_design_actuators(model)                      # 설계 좌표의 원래 토크 모터(shoulder_flex_r 등) 제거
 
     V_all = {}
-    for side in ("r", "l"):
+    for side in SP["sides"]:
         vs, vt = v_from if v_from else (sub, trial)
         if v_from and vt.endswith(".npz"):                      # 설계 파일: V_nm (8×4, 최대 신호 u=1 일 때 Nm), 좌우 같은 설계
-            V = np.load(vt)["V_nm"] * v_scale                 # 몸 크기 비율(질량×키 / 피험자3)로 용량을 맞춘다
-        elif vt == "ALL":                                     # 그 피험자의 모든 걸음을 합쳐서 V
+            V = np.load(vt if os.path.isabs(vt) else os.path.join(ROOT, vt))["V_nm"] * v_scale   # 몸 크기 비율(질량×키 / 피험자3)로 용량을 맞춘다
+        elif vt == "ALL" and SP["name"] == "lower":                                     # 그 피험자의 모든 걸음을 합쳐서 V
             trials = sorted(os.path.basename(p) for p in glob.glob(os.path.join(ROOT, "out/real", vs, "walking*")))
             A, F, R, tau = lat.load_pooled(vs, trials, side); V = lat.directions(A, F, R, k)
         else:
@@ -51,11 +57,11 @@ def build_model(model_path, ext_loads, k, sub, trial, out_dir, name, umax, v_fro
         V_all[side] = V
         acts = []
         for c in COORDS:
-            coord = f"{c}_{side}"
+            coord = ds.full(c, side)
             a = osim.CoordinateActuator(coord); a.setName(f"newmus_{coord}")
             a.setOptimalForce(1.0); a.setMinControl(-1e4); a.setMaxControl(1e4)
             model.addForce(a); acts.append(a)
-        ctrl = osim.SynergyController(); ctrl.setName(f"newmuscles_{side}")
+        ctrl = osim.SynergyController(); ctrl.setName(f"newmuscles_{side or 'c'}")
         model.finalizeConnections()
         for a in acts: ctrl.addActuator(a)
         for i in range(k):
@@ -64,8 +70,14 @@ def build_model(model_path, ext_loads, k, sub, trial, out_dir, name, umax, v_fro
         model.addController(ctrl)
     model.finalizeConnections(); model.initSystem()
     out = os.path.join(out_dir, f"{name}_model.osim"); model.printToXML(out)
-    print(f"[{name}] 근육 제거, 새 근육 {k}개×2  (weld {welds}, 뗀 팔 액추에이터 {len(removed)}개)", flush=True)
+    print(f"[{name}] 근육 제거, 새 근육 {k}개×{len(SP['sides'])}  (weld {welds}, 뗀 잠긴 액추에이터 {len(removed)}개)", flush=True)
     return out, V_all
+
+
+def msol_names(study):
+    """문제에 들어간 제어 이름 목록 (보조 가중치를 좌표별로 매기려고)."""
+    rep = study.getProblem().createRep(); m = rep.getModelBase()
+    return [f"/forceset/{m.getForceSet().get(i).getName()}" for i in range(m.getForceSet().getSize())]
 
 
 def main():
@@ -80,15 +92,24 @@ def main():
     ap.add_argument("--v-scale", type=float, default=None, help="설계 V(Nm) 에 곱할 비율. 기본: 피험자 (질량×키)/(63.5×1.69) 자동")
     ap.add_argument("--v-from", nargs=2, metavar=("SUBJECT", "TRIAL"), default=None,
                     help="새 근육 방향 V 를 이 (subject, trial) 로 만든다. TRIAL=ALL 이면 그 피험자 전체, .npz 면 설계 파일(V_nm). 기본은 자기 자신")
+    ap.add_argument("--space", default="lower", help=f"설계 공간 {list(ds.SPACES)}")
+    ap.add_argument("--model", default=None); ap.add_argument("--ik", default=None); ap.add_argument("--id", default=None)
+    ap.add_argument("--ext", default=None, help="외력 xml. 'none' 이면 외력 없이 (상체 전용)"); ap.add_argument("--name", default=None)
+    ap.add_argument("--t0", type=float, default=None); ap.add_argument("--t1", type=float, default=None)
     args = ap.parse_args()
+    global SP, COORDS
+    SP = ds.get(args.space); COORDS = SP["base"]; pd.configure(args.space)
     sub, trial, k = args.subject, args.trial, args.k
-    name = f"newmus_{sub}_{trial.replace('_segment_0','')}_k{k}{args.tag}"
+    if args.v_from and args.v_from[1].endswith(".npz"): k = len(np.load(args.v_from[1] if os.path.isabs(args.v_from[1]) else os.path.join(ROOT, args.v_from[1]))["V_nm"])
+    name = args.name or f"newmus_{sub}_{trial.replace('_segment_0','')}_k{k}{args.tag}"
     out_dir = os.path.join(ROOT, "report", "moco"); os.makedirs(out_dir, exist_ok=True)
     base = os.path.join(ROOT, "out/real", sub, trial)
-    model_path = os.path.join(ROOT, "data", sub, f"{sub}_scaled.osim")
-    ik_raw = os.path.join(ROOT, "data", sub, f"{trial}_ik.mot")
-    ext = os.path.join(base, f"{trial}_external_loads.xml")
-    idm = io.read_mot(os.path.join(base, f"{trial}_id.sto")); t0, t1 = float(idm.t0), float(idm.t1)
+    model_path = args.model or os.path.join(ROOT, "data", sub, f"{sub}_scaled.osim")
+    ik_raw = args.ik or os.path.join(ROOT, "data", sub, f"{trial}_ik.mot")
+    ext = None if (args.ext or "").lower() == "none" else (args.ext or os.path.join(base, f"{trial}_external_loads.xml"))
+    idm = io.read_mot(args.id or os.path.join(base, f"{trial}_id.sto")); t0, t1 = float(idm.t0), float(idm.t1)
+    if args.t0 is not None: t0 = args.t0
+    if args.t1 is not None: t1 = args.t1
     ik_path, _ = complete_kinematics(model_path, ik_raw, os.path.join(out_dir, f"{name}_ik_full.mot"))
 
     v_scale = args.v_scale
@@ -124,6 +145,13 @@ def main():
     goal.setWeightForControlPattern("/forceset/reserve_.*", args.reserve_weight)
     # 골반 6개 보조는 ID 의 잔차와 같은 역할 — 힘판 접촉 시작 순간의 가짜 모멘트를 여기서 흡수해야지 다리로 밀리면 안 된다.
     goal.setWeightForControlPattern("/forceset/reserve_jointset_ground_pelvis_.*", 0.01)
+    if ext is None:                                        # 외력 없음: 다리·골반·비설계 좌표의 보조는 싸게 — 설계 좌표만 잰다
+        design = {ds.full(c, s) for c in COORDS for s in SP["sides"]}
+        for i in range(study.getProblem().createRep().getModelBase().getForceSet().getSize()):
+            pass
+        for cn in list(msol_names(study)):
+            if "reserve" in cn and cn.split("_")[-1] not in {d.split("_")[-1] for d in design} and not any(cn.endswith("_" + d) for d in design):
+                goal.setWeightForControlPattern(cn, 0.01)
     tic = time.time(); msol = study.solve(); dt = time.time() - tic
     ok = msol.success(); msol.unseal()
     print(f"[{name}] 성공={ok}  {dt/60:.1f} 분  목적함수={msol.getObjective():.3f}  반복 {msol.getNumIterations()}", flush=True)
@@ -132,8 +160,8 @@ def main():
     names = list(msol.getControlNames()); rows = []
     print(f"[{name}] 좌표            reserve 피크(Nm)   ID 피크(Nm)   reserve/ID")
     for c in COORDS:
-        for side in ("r", "l"):
-            coord = f"{c}_{side}"; cands = [n for n in names if "reserve" in n and n.endswith("_" + coord)]
+        for side in SP["sides"]:
+            coord = ds.full(c, side); cands = [n for n in names if "reserve" in n and n.endswith("_" + coord)]
             if not cands: continue
             tt = np.asarray(msol.getTimeMat()).ravel(); inner = (tt >= t0 + EDGE) & (tt <= t1 - EDGE)   # 구간 양 끝은 뺀다 — 최적화 경계에서 토크가 튄다
             res = float(np.abs(np.asarray(msol.getControlMat(cands[0])).ravel()[inner]).max()); idpk = float(np.abs(idm.column(f"{coord}_moment")).max())

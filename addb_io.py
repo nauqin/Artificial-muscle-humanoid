@@ -564,6 +564,19 @@ def find_trials(root: str, min_duration=0.5, log=print) -> list:
     return trials
 
 
+def find_ik_only_trials(root: str, min_duration=0.5, log=print) -> list:
+    """GRF 없이 IK 파일만으로 trial 을 만든다 (상체 전용 ID). 이름은 `_ik` 접미를 뗀 것."""
+    trials = []
+    for path in find_mots(root):
+        kind, mot = classify_mot(path)
+        if kind != "kinematics" or mot is None or mot.duration < min_duration:
+            continue
+        name = re.sub(r"_?ik(_full)?$", "", _stem(path)) or _stem(path)
+        trials.append(Trial(name=name, ik=path, grf=None))
+    trials.sort(key=lambda t: t.name)
+    return trials
+
+
 def _stem(path: str) -> str:
     return os.path.splitext(os.path.basename(path))[0]
 

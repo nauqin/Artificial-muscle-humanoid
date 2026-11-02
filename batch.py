@@ -26,6 +26,8 @@ COLUMNS = [
     "subject", "trial", "model", "mass_kg", "t0", "t1",
     "ankle_r", "ankle_l", "knee_r", "knee_l", "hip_r", "hip_l",
     "grf_peak", "residual", "cop_dist",
+    "lumbar_extension", "lumbar_bending", "lumbar_rotation",
+    "arm_flex_r", "arm_add_r", "arm_rot_r", "elbow_flex_r", "arm_flex_l", "arm_add_l", "arm_rot_l", "elbow_flex_l",
     "so_recon_max", "so_reserve_max",
     "syn_k_r", "syn_k_l", "syn_vaf_r", "syn_vaf_l",
     "syn_kglobal_r", "syn_kglobal_l", "syn_kdual_r", "syn_kdual_l",
@@ -54,6 +56,9 @@ def process_trial(subject, trial, model_path, out_root, args, log=print):
         summary = rt.run_trial(model_path, trial.ik, trial.grf, out_dir, trial.name,
                                lowpass=args.lowpass, grf_lowpass=args.grf_lowpass,
                                start=args.start, end=args.end, log=log)
+    elif trial.grf is None:
+        summary = rt.run_trial(model_path, trial.ik, None, out_dir, trial.name, lowpass=args.lowpass,
+                               start=args.start, end=args.end, log=log)   # 외력 없는 ID 는 몇 초라 그냥 다시 돈다
     else:
         # ID 툴은 다시 안 돌리되 요약·검산은 다시 만든다 — 안 그러면 그 줄이 빈다.
         summary = rt.summarize(model_path, trial.ik, trial.grf, id_path, out_dir,
@@ -155,6 +160,8 @@ def main():
     ap.add_argument("--lowpass", type=float, default=rt.LOWPASS)
     ap.add_argument("--grf-lowpass", type=float, default=None,
                     help="GRF 힘·모멘트 저역통과 Hz (트레드밀 데이터는 --lowpass 와 같게)")
+    ap.add_argument("--no-grf", action="store_true",
+                    help="지면반력 없이 IK 만으로 ID (상체 토크만 유효). *_ik.mot 전부를 trial 로 잡는다")
     ap.add_argument("--min-duration", type=float, default=MIN_DURATION)
     args = ap.parse_args()
 
@@ -184,7 +191,10 @@ def main():
             print(f"  [WARN] 모델이 없다 — 건너뜀")
             continue
 
-        trials = io.find_trials(subject_dir, min_duration=args.min_duration)
+        if args.no_grf:
+            trials = io.find_ik_only_trials(subject_dir, min_duration=args.min_duration)
+        else:
+            trials = io.find_trials(subject_dir, min_duration=args.min_duration)
         print(f"  trial: {len(trials)}개  {[t.name for t in trials]}")
 
         rows = []

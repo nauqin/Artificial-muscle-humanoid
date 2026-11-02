@@ -83,7 +83,8 @@ def run_inverse_dynamics(model_path, ik_path, ext_path, out_dir, name, t0, t1,
     tool.setName(name)
     tool.setModelFileName(os.path.abspath(model_path))
     tool.setCoordinatesFileName(os.path.abspath(ik_path))
-    tool.setExternalLoadsFileName(os.path.abspath(ext_path))
+    if ext_path:                                   # 상체 전용(--no-grf)이면 외력 없이 — 팔·몸통 토크는 그래도 정확하다
+        tool.setExternalLoadsFileName(os.path.abspath(ext_path))
     tool.setLowpassCutoffFrequency(lowpass)
     tool.setStartTime(t0)
     tool.setEndTime(t1)
@@ -174,11 +175,40 @@ def filter_grf(grf_path, cutoff, out_path, log=print):
     return out_path
 
 
+def run_trial_no_grf(model_path, ik_path, out_dir, name, *, lowpass=LOWPASS, start=None, end=None, log=print):
+    """지면반력 없이 ID — 상체(요추·어깨·팔꿈치) 토크만 믿는다.
+
+    관절 토크는 그 관절보다 말단 쪽 분절만으로 정해지므로 팔·몸통 토크는 GRF 와 무관하다
+    (Moore2015 T048_seg26 에서 GRF 유무 차이 0.00 N·m, 2026-11-02). 다리·골반 토크는 틀리므로 요약에 넣지 않는다.
+    구간은 IK 전체에서 양 끝 1/컷오프 를 뺀 것."""
+    import opensim as osim
+    model = osim.Model(os.path.abspath(model_path)); model.initSystem()
+    mass = io.total_mass(model)
+    log(f"모델 : {model_path}  (체중 {mass:.2f} kg)  [GRF 없음 — 상체 토크만 유효]")
+    ik_mot = io.read_mot(ik_path)
+    margin = 1.0 / lowpass if lowpass and lowpass > 0 else 0.0
+    t0 = start if start is not None else ik_mot.t0 + margin
+    t1 = end if end is not None else ik_mot.t1 - margin
+    if t1 <= t0: raise ValueError(f"분석 구간이 비었다 (t0={t0:.3f}, t1={t1:.3f})")
+    log(f"  구간 : {t0:.3f} ~ {t1:.3f} s  (IK 전체, 마진 {margin:.3f})")
+    id_path, setup_path = run_inverse_dynamics(model_path, ik_path, None, out_dir, name, t0, t1, lowpass=lowpass, log=log)
+    id_mot = io.read_mot(id_path)
+    rep = validate.validate_id_upper(id_mot, mass_kg=mass)
+    log(rep.render()); log(f"  판정 : {rep.verdict} (상체는 검산 밴드 없음 — 값만 본다)")
+    summary = {"model": os.path.basename(model_path), "mass_kg": round(mass, 3), "t0": round(t0, 3), "t1": round(t1, 3),
+               "grf_peak": None, "cop_dist": None, "id_verdict": rep.verdict, "id_path": id_path, "external_loads": None,
+               "setup": setup_path, "png": None, "mapping": {}}
+    for check in rep.checks: summary[check.name] = round(check.value, 3)
+    return summary
+
+
 def run_trial(model_path, ik_path, grf_path, out_dir, name, *, feet=FEET,
               lowpass=LOWPASS, grf_lowpass=None, start=None, end=None, plot=True, log=print):
-    """trial 하나를 끝까지. 요약 dict를 돌려준다."""
+    """trial 하나를 끝까지. 요약 dict를 돌려준다. grf_path 가 None 이면 상체 전용 ID."""
     import opensim as osim
 
+    if grf_path is None:
+        return run_trial_no_grf(model_path, ik_path, out_dir, name, lowpass=lowpass, start=start, end=end, log=log)
     if grf_lowpass:
         os.makedirs(out_dir, exist_ok=True)
         grf_path = filter_grf(grf_path, grf_lowpass,
@@ -253,7 +283,7 @@ def main():
     ap = argparse.ArgumentParser(description="trial 1개 역동역학")
     ap.add_argument("--model", required=True)
     ap.add_argument("--ik", required=True)
-    ap.add_argument("--grf", required=True)
+    ap.add_argument("--grf", default=None, help="지면반력 .mot (생략 = --no-grf 와 같음: 상체 토크만)")
     ap.add_argument("--out", required=True)
     ap.add_argument("--name", required=True)
     ap.add_argument("--lowpass", type=float, default=LOWPASS)
@@ -263,7 +293,11 @@ def main():
     ap.add_argument("--end", type=float, default=None)
     ap.add_argument("--feet", default=",".join(FEET))
     ap.add_argument("--no-plot", action="store_true")
+    ap.add_argument("--no-grf", action="store_true", help="지면반력 없이 ID (팔·몸통 토크만 유효)")
     args = ap.parse_args()
+    if args.no_grf: args.grf = None
+    if args.grf is None and not args.no_grf:
+        ap.error("--grf 를 주거나 --no-grf 를 명시하세요")
 
     import opensim as osim
     osim.Logger.setLevelString("Error")

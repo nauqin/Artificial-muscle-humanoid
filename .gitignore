@@ -4,9 +4,11 @@ out/*
 !out/moore2015/
 out/moore2015/*
 !out/moore2015/summary.csv
+!out/upper/
 !out/inspect_uhlrich2023.txt
 data/
 !data/moore2015/
+!data/carrt/
 raw_b3d/
 dryrun/
 dryrun_addbfmt/

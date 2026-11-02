@@ -1,0 +1,5 @@
+trial,task,load_kg,bimanual,ik_rms_cm,ik_max_cm,model
+PB1,상자 들기,0.52,True,1.77,13.15,data/carrt/subject1/subject1_load0.52_bi.osim
+PFWJ2,찬 물병 들기,3.79,False,3.03,8.69,data/carrt/subject1/subject1_load3.79.osim
+PEWJ2,빈 물병 들기,0.9,False,3.03,8.64,data/carrt/subject1/subject1_load0.9.osim
+OCH2,위 찬장 열기,0.0,False,3.08,9.86,data/carrt/subject1/subject1_scaled.osim

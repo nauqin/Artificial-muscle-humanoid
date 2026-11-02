@@ -6,28 +6,34 @@
 
     python report/path_design.py            → report/newmus_paths_k8.json, report/moco/newmus_paths_subject3_model.osim,
                                               report/fig_path_design.png
+    python report/path_design.py --space arm_r --tasks report/upper/tasks.csv --design report/newmus_V_design_arm_r_k6.npz \
+                                 --model data/moore2015/subject3/subject3_scaled.osim
+                                            → report/newmus_paths_arm_r_k6.json, report/moco/newmus_paths_arm_r_k6_model.osim
 """
-import glob, json, os, sys, time
+import argparse, csv, glob, json, os, sys, time
 import numpy as np
 from scipy.optimize import differential_evolution, minimize
 import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
 from matplotlib import font_manager
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))); sys.path.insert(0, ROOT)
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))); sys.path.insert(0, ROOT); sys.path.insert(0, os.path.join(ROOT, "report"))
 import addb_io as io                                   # noqa: E402
+import design_space as ds                              # noqa: E402
 LAB = os.path.join(os.path.dirname(ROOT), "LabValidation_withoutVideos")
-COORDS = ("hip_flexion_r", "hip_adduction_r", "knee_angle_r", "ankle_angle_r")
-EXTRA = ("hip_rotation_r",)                           # 자세에는 반영하되 설계 방향에는 없음
-BODIES = ("pelvis", "femur_r", "tibia_r", "calcn_r")
 DELTA = 0.01                                          # rad, 중앙차분
 STROKE = 0.40                                         # 모듈 스트로크 (변형률)
-F_MODULE = 5000.0                                     # N, 초대형 모듈 상한
 MARGIN = 1.1                                          # 용량 여유 10 %
-#: 부착 허용 상자 (바디 좌표계, m). 오른다리 기준 (z+ 가 바깥쪽).
-BOX = {"pelvis": ((-0.12, 0.08), (-0.12, 0.05), (0.02, 0.16)),
-       "femur_r": ((-0.07, 0.07), (-0.42, -0.02), (-0.06, 0.07)),
-       "tibia_r": ((-0.07, 0.06), (-0.40, -0.02), (-0.05, 0.05)),
-       "calcn_r": ((-0.03, 0.18), (-0.02, 0.06), (-0.05, 0.05))}
+SP = COORDS = EXTRA = BODIES = BOX = F_MODULE = None
+
+
+def configure(space="lower"):
+    """설계 공간을 고른다 — 모듈 전역 COORDS/EXTRA/BODIES/BOX/F_MODULE 이 바뀐다. 다른 스크립트는 import 뒤 이걸 부른다."""
+    global SP, COORDS, EXTRA, BODIES, BOX, F_MODULE
+    SP = ds.get(space); COORDS = SP["coords"]; EXTRA = SP["extra"]; BODIES = SP["bodies"]; BOX = SP["box"]; F_MODULE = SP["f_module"]
+    return SP
+
+
+configure("lower")
 for f in font_manager.findSystemFonts():
     if "AppleSDGothicNeo" in f: plt.rcParams["font.family"] = font_manager.FontProperties(fname=f).get_name(); break
 plt.rcParams["axes.unicode_minus"] = False
@@ -44,6 +50,24 @@ def poses(n_walk=10, n_sq=60, seed=0):
         ok = (m.time >= idm.time[0]) & (m.time <= idm.time[-1]); tsel = m.time[ok]
         t = rng.choice(tsel, n_walk if tr.startswith("walking") else n_sq, replace=False)
         if not tr.startswith("walking"): t = np.append(t, tsel[np.argmax(m.column("knee_angle_r")[ok])])
+        Q.append(np.column_stack([np.interp(t, m.time, m.column(c)) for c in cols]))
+        T.append(np.column_stack([np.interp(t, idm.time, idm.column(c + "_moment")) for c in COORDS]))
+    return np.vstack(Q), np.vstack(T)
+
+
+def poses_from_tasks(path, n_per=None, seed=0):
+    """tasks.csv 의 trial 마다 n개 프레임 + 설계 좌표별 극값 프레임(최대·최소). n_per 기본: 걷기 5, 그 외 10."""
+    rng = np.random.default_rng(seed); Q, T = [], []; cols = list(COORDS) + list(EXTRA)
+    for row in csv.DictReader(open(path, encoding="utf-8")):
+        if not row.get("id") or row["id"].startswith("#"): continue
+        ik = row["ik"] if os.path.isabs(row["ik"]) else os.path.join(ROOT, row["ik"]); idp = row["id"] if os.path.isabs(row["id"]) else os.path.join(ROOT, row["id"])
+        m = io.read_mot(ik); idm = io.read_mot(idp)
+        if not all(c in m.names for c in cols) or not all(c + "_moment" in idm.names for c in COORDS): print(f"  [건너뜀] {row['trial']}: 열 없음"); continue
+        ok = (m.time >= idm.time[0]) & (m.time <= idm.time[-1]); tsel = m.time[ok]
+        n = n_per or (5 if row["task"].startswith("walk") else 10)
+        t = rng.choice(tsel, min(n, len(tsel)), replace=False)
+        for c in COORDS:                                       # 극값 자세는 반드시 넣는다 (깊은 스쿼트 교훈)
+            q = m.column(c)[ok]; t = np.append(t, [tsel[np.argmax(q)], tsel[np.argmin(q)]])
         Q.append(np.column_stack([np.interp(t, m.time, m.column(c)) for c in cols]))
         T.append(np.column_stack([np.interp(t, idm.time, idm.column(c + "_moment")) for c in COORDS]))
     return np.vstack(Q), np.vstack(T)
@@ -87,9 +111,7 @@ def moment_arms(fr, chain, P):
 
 
 def chain_for(v, thr=0.12):
-    hip, knee, ankle = max(abs(v[0]), abs(v[1])) > thr, abs(v[2]) > thr, abs(v[3]) > thr
-    first = 0 if hip else (1 if knee else 2); last = 3 if ankle else (2 if knee else 1)
-    return list(range(first, last + 1))
+    return ds.chain_for(SP, v, thr)
 
 
 def cost(x, fr, chain, v, cap, detail=False):
@@ -108,13 +130,27 @@ def cost(x, fr, chain, v, cap, detail=False):
 
 
 def main():
-    d = np.load(os.path.join(ROOT, "report/newmus_V_design_k8.npz")); V, c = d["V"], d["c"]
-    Q, T = poses(); print(f"자세 표본 {len(Q)}개", flush=True)
-    tic = time.time(); fr = Frames(os.path.join(ROOT, "data/subject3/subject3_scaled.osim"), Q); print(f"뼈 변환 저장 {time.time()-tic:.0f}s", flush=True)
-    out = {"coords": COORDS, "bodies": BODIES, "muscles": []}
-    if "--refine-from-json" in sys.argv:                       # 1단계 결과를 다시 쓰고 2단계만 돌린다
-        out = json.load(open(os.path.join(ROOT, "report/newmus_paths_k8.json")))
-    for i in range(8 if "--refine-from-json" not in sys.argv else 0):
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--space", default="lower"); ap.add_argument("--tasks", default=None, help="자세 표본을 뽑을 trial 목록 CSV (없으면 하체 기본)")
+    ap.add_argument("--design", default=None, help="방향 설계 npz (기본: report/newmus_V_design_k8.npz 또는 _<space>_k<k>)")
+    ap.add_argument("--k", type=int, default=None); ap.add_argument("--model", default=None, help="뼈대 모델 .osim (기본 data/subject3)")
+    ap.add_argument("--out", default=None, help="결과 json (기본 report/newmus_paths_k8.json 또는 _<space>_k<k>)")
+    ap.add_argument("--refine-from-json", action="store_true", help="1단계 결과를 다시 쓰고 2단계만")
+    ap.add_argument("--maxfev", type=int, default=20000)
+    a = ap.parse_args(); configure(a.space)
+    legacy = (a.space == "lower" and not a.tasks)
+    k = a.k or SP["k"]; tag = "_k8" if legacy else f"_{a.space}_k{k}"
+    design = a.design or os.path.join(ROOT, f"report/newmus_V_design{tag}.npz")
+    d = np.load(design); V, c = d["V"], d["c"]; k = len(V)
+    model_path = a.model or os.path.join(ROOT, "data/subject3/subject3_scaled.osim")
+    out_json = a.out or os.path.join(ROOT, f"report/newmus_paths{tag}.json")
+    Q, T = poses_from_tasks(os.path.join(ROOT, a.tasks) if not os.path.isabs(a.tasks) else a.tasks) if a.tasks else poses()
+    print(f"[{a.space}] 근육 {k}개, 자세 표본 {len(Q)}개, 모델 {model_path}", flush=True)
+    tic = time.time(); fr = Frames(model_path, Q); print(f"뼈 변환 저장 {time.time()-tic:.0f}s", flush=True)
+    out = {"space": a.space, "coords": COORDS, "bodies": BODIES, "model": os.path.relpath(model_path, ROOT), "muscles": []}
+    if a.refine_from_json:                                      # 1단계 결과를 다시 쓰고 2단계만 돌린다
+        out = json.load(open(out_json))
+    for i in range(k if not a.refine_from_json else 0):
         v = V[i]; chain = chain_for(v)
         bounds = [b for n in chain for b in BOX[BODIES[n]]]
         tic = time.time()
@@ -129,9 +165,10 @@ def main():
         out["muscles"].append(dict(name=f"M{i}", v=v.tolist(), capacity_Nm=float(c[i]), chain=[BODIES[n] for n in chain],
                                    points=x.reshape(len(chain), 3).tolist(), force_N=float(det["force"]), arm_min=det["arm_min"], arm_mean=det["arm_mean"],
                                    stroke=det["stroke"], dir_err=det["dir_err"], angle_deg=float(ang), r_mean=rm.tolist()))
-    refine(out, fr, T)
-    json.dump(out, open(os.path.join(ROOT, "report/newmus_paths_k8.json"), "w"), indent=1, ensure_ascii=False)
-    build_model(out); plot(out, fr, V)
+    refine(out, fr, T, maxfev=a.maxfev)
+    json.dump(out, open(out_json, "w"), indent=1, ensure_ascii=False); print("저장", out_json)
+    model_out = os.path.join(ROOT, "report/moco/newmus_paths_subject3_model.osim") if legacy else os.path.join(ROOT, f"report/moco/newmus_paths{tag}_model.osim")
+    build_model(out, model_path, model_out); plot(out, fr, V, os.path.join(ROOT, f"report/fig_path_design{'' if legacy else tag}.png"))
 
 
 def batch_boxlsq(A, b, iters=400):
@@ -151,10 +188,10 @@ def refine(out, fr, T, maxfev=20000, w_dir=3.0):
     1단계는 근육 하나씩 '방향'만 맞추므로 깊은 스쿼트처럼 모멘트암이 크게 변하는 자세에서 부족분이 생겼다 (9/15).
     변수 = 부착점 + 힘 배율 f_i ≥ 1 (힘 = f_i × 여유 × 용량 / 최소 유효 모멘트암, 즉 설계 용량은 항상 보장).
     비용 = 최악 잔차 + 0.3 평균 잔차 + w_dir × 방향오차(설계 방향 유지) + 작은 힘 벌점 + 스트로크·힘 상한 벌점."""
-    chains = [[BODIES.index(b) for b in m["chain"]] for m in out["muscles"]]; sizes = [len(c) * 3 for c in chains]
+    chains = [[BODIES.index(b) for b in m["chain"]] for m in out["muscles"]]; sizes = [len(c) * 3 for c in chains]; k = len(chains)
     V = np.array([m["v"] for m in out["muscles"]]); cap = np.array([m["capacity_Nm"] for m in out["muscles"]])
-    x0 = np.concatenate([np.array(m["points"]).ravel() for m in out["muscles"]] + [np.ones(8)])
-    bounds = [b for m, c in zip(out["muscles"], chains) for n in c for b in BOX[BODIES[n]]] + [(1.0, 3.0)] * 8
+    x0 = np.concatenate([np.array(m["points"]).ravel() for m in out["muscles"]] + [np.ones(k)])
+    bounds = [b for m, c in zip(out["muscles"], chains) for n in c for b in BOX[BODIES[n]]] + [(1.0, 3.0)] * k
     pk = np.abs(T).max(axis=0); Tm = MARGIN * T
     def arms(x):
         R, Ls = [], []; off = 0
@@ -162,7 +199,7 @@ def refine(out, fr, T, maxfev=20000, w_dir=3.0):
             r, l = moment_arms(fr, c, x[off:off + sz].reshape(-1, 3)); R.append(r); Ls.append(l); off += sz
         return np.stack(R, axis=2), np.stack(Ls, axis=1)              # (T,4,8), (T,8)
     def cost_joint(x, detail=False):
-        R, Ls = arms(x); f = x[-8:]
+        R, Ls = arms(x); f = x[-k:]
         nr = np.linalg.norm(R, axis=1) + 1e-9                            # (T,8)
         e2 = ((R / nr[:, None, :] - V.T[None]) ** 2).sum(axis=1)         # (T,8) 방향오차
         dir_err = 0.5 * e2.mean(axis=0) + 0.5 * e2.max(axis=0)
@@ -191,29 +228,49 @@ def refine(out, fr, T, maxfev=20000, w_dir=3.0):
 
 
 
-def build_model(out):
-    """피험자3 모델(근육 제거)에 PathActuator 8개 × 좌우. 왼쪽은 z 부호를 뒤집는다."""
+def remove_design_actuators(model):
+    """모델에 원래 있던 설계 좌표의 토크 모터(shoulder_flex_r, lumbar_ext …)를 뗀다 — 남겨 두면 새 근육 대신 그게 토크를 낸다.
+    하체 모델에는 다리 토크 모터가 없어서 아무것도 안 뗀다."""
     import opensim as osim
-    proc = osim.ModelProcessor(os.path.join(ROOT, "data/subject3/subject3_scaled.osim")); proc.append(osim.ModOpRemoveMuscles()); model = proc.process()
-    colors = [(0.9, 0.2, 0.2), (0.2, 0.6, 0.9), (0.2, 0.8, 0.3), (0.9, 0.6, 0.1), (0.6, 0.3, 0.8), (0.1, 0.7, 0.7), (0.8, 0.3, 0.6), (0.5, 0.5, 0.1)]
-    for side, sgn in (("r", 1.0), ("l", -1.0)):
+    targets = {ds.full(b, s) for b in SP["base"] for s in SP["sides"]}
+    fs = model.updForceSet(); removed = []
+    for i in reversed(range(fs.getSize())):
+        ca = osim.CoordinateActuator.safeDownCast(fs.get(i))
+        if ca is not None and ca.get_coordinate() in targets:
+            removed.append(ca.getName()); fs.remove(i)
+    if removed: print(f"  설계 좌표의 토크 모터 제거: {removed}")
+    model.finalizeConnections(); model.initSystem()
+    return removed
+
+
+def build_model(out, model_path=None, out_path=None):
+    """뼈대 모델(근육 제거)에 PathActuator k개 (× 좌우, mirror 공간이면 왼쪽은 z 부호 반전)."""
+    import opensim as osim
+    model_path = model_path or os.path.join(ROOT, "data/subject3/subject3_scaled.osim")
+    out_path = out_path or os.path.join(ROOT, "report/moco/newmus_paths_subject3_model.osim")
+    proc = osim.ModelProcessor(model_path); proc.append(osim.ModOpRemoveMuscles()); model = proc.process()
+    remove_design_actuators(model)
+    colors = [(0.9, 0.2, 0.2), (0.2, 0.6, 0.9), (0.2, 0.8, 0.3), (0.9, 0.6, 0.1), (0.6, 0.3, 0.8), (0.1, 0.7, 0.7), (0.8, 0.3, 0.6), (0.5, 0.5, 0.1), (0.3, 0.3, 0.3), (0.7, 0.5, 0.3)]
+    sides = (("r", 1.0), ("l", -1.0)) if SP["mirror"] else (("", 1.0),)
+    for side, sgn in sides:
         for i, m in enumerate(out["muscles"]):
-            pa = osim.PathActuator(); pa.setName(f"{m['name']}_{side}"); pa.setOptimalForce(m["force_N"]); pa.setMinControl(0.0); pa.setMaxControl(1.0)
-            for k, (bn, pt) in enumerate(zip(m["chain"], m["points"])):
-                body = bn if bn == "pelvis" else bn[:-1] + side
-                pa.addNewPathPoint(f"{m['name']}_{side}_p{k}", model.getBodySet().get(body), osim.Vec3(pt[0], pt[1], sgn * pt[2]))
-            pa.updGeometryPath().setDefaultColor(osim.Vec3(*colors[i]))
+            nm = f"{m['name']}_{side}" if side else m["name"]
+            pa = osim.PathActuator(); pa.setName(nm); pa.setOptimalForce(m["force_N"]); pa.setMinControl(0.0); pa.setMaxControl(1.0)
+            for kk, (bn, pt) in enumerate(zip(m["chain"], m["points"])):
+                pa.addNewPathPoint(f"{nm}_p{kk}", model.getBodySet().get(ds.mirror_body(SP, bn, side)), osim.Vec3(pt[0], pt[1], sgn * pt[2]))
+            pa.updGeometryPath().setDefaultColor(osim.Vec3(*colors[i % len(colors)]))
             model.addForce(pa)
     model.finalizeConnections(); model.initSystem()
-    p = os.path.join(ROOT, "report/moco/newmus_paths_subject3_model.osim"); model.printToXML(p); print("모델 저장", p)
+    model.printToXML(out_path); print("모델 저장", out_path)
 
 
-def plot(out, fr, V):
-    fig, axes = plt.subplots(2, 4, figsize=(16, 7))
-    labels = ["고관절 굴곡", "고관절 내전", "무릎", "발목"]
+def plot(out, fr, V, png=None):
+    k = len(out["muscles"]); ncol = 4 if k > 4 else k; nrow = int(np.ceil(k / ncol))
+    fig, axes = plt.subplots(nrow, ncol, figsize=(4 * ncol, 3.5 * nrow), squeeze=False)
+    labels = list(SP["labels"])
     for i, (ax, m) in enumerate(zip(axes.ravel(), out["muscles"])):
         chain = [BODIES.index(b) for b in m["chain"]]; r, _ = moment_arms(fr, chain, np.array(m["points"]))
-        x = np.arange(4); w = 0.38
+        x = np.arange(len(COORDS)); w = 0.38
         ax.bar(x - w / 2, np.array(m["v"]) * m["arm_mean"] * 100, w, color="0.6", label="설계 방향 × 평균 모멘트암")
         ax.bar(x + w / 2, r.mean(axis=0) * 100, w, color="#1e8449", label="경로의 평균 모멘트암")
         ax.errorbar(x + w / 2, r.mean(axis=0) * 100, yerr=[r.mean(axis=0) * 100 - r.min(axis=0) * 100, r.max(axis=0) * 100 - r.mean(axis=0) * 100], fmt="none", ecolor="k", lw=0.8)
@@ -221,7 +278,7 @@ def plot(out, fr, V):
         ax.set_title(f"{m['name']}: {'→'.join(b.replace('_r','') for b in m['chain'])}  각도차 {m['angle_deg']:.0f}°  {m['force_N']:.0f} N  스트로크 {m['stroke']:.2f}", fontsize=9)
         if i == 0: ax.legend(fontsize=7); ax.set_ylabel("모멘트암 (cm)")
     fig.suptitle("케이블 경로 설계 — 설계 방향 vs 경로가 실제로 내는 모멘트암 (막대 = 자세 평균, 선 = 자세에 따른 범위)", fontsize=11)
-    fig.tight_layout(); fig.savefig(os.path.join(ROOT, "report/fig_path_design.png"), dpi=150); print("그림 저장")
+    fig.tight_layout(); fig.savefig(png or os.path.join(ROOT, "report/fig_path_design.png"), dpi=150); print("그림 저장")
 
 
 if __name__ == "__main__":
