@@ -5826,13 +5826,13 @@
 									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
 									<socket_parent_frame>/bodyset/torso</socket_parent_frame>
 									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.041720463032017062 0.29993974883634567 0.029662767013772601</location>
+									<location>-0.0082358020265802471 0.25945806667203414 0.16219784336145546</location>
 								</PathPoint>
 								<PathPoint name="shoulder_M0_r_p1">
 									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
 									<socket_parent_frame>/bodyset/humerus_r</socket_parent_frame>
 									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.036252061787540993 -0.041714732383271218 -0.01310812858264856</location>
+									<location>-0.030615263814600703 -0.12086514271307927 -0.058330999502548359</location>
 								</PathPoint>
 							</objects>
 							<groups />
@@ -5851,7 +5851,7 @@
 						</PathWrapSet>
 					</GeometryPath>
 					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>574.51660359025448</max_isometric_force>
+					<max_isometric_force>1193.2323861251089</max_isometric_force>
 					<!--Optimal length of the muscle fibers-->
 					<optimal_fiber_length>0.17999999999999999</optimal_fiber_length>
 					<!--Resting length of the tendon-->
@@ -5910,13 +5910,13 @@
 									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
 									<socket_parent_frame>/bodyset/torso</socket_parent_frame>
 									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.0045316965217940429 0.29834745114633066 0.15719816596560904</location>
+									<location>0.0031851759348234393 0.29998799988405966 0.15595477046750245</location>
 								</PathPoint>
 								<PathPoint name="shoulder_M1_r_p1">
 									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
 									<socket_parent_frame>/bodyset/humerus_r</socket_parent_frame>
 									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.04965261840505239 -0.13761638787898672 -0.054907719055360502</location>
+									<location>0.058330999774437502 -0.1008944183062314 -0.058330999495516754</location>
 								</PathPoint>
 							</objects>
 							<groups />
@@ -5935,7 +5935,7 @@
 						</PathWrapSet>
 					</GeometryPath>
 					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>1709.4284757681946</max_isometric_force>
+					<max_isometric_force>1936.7016816810603</max_isometric_force>
 					<!--Optimal length of the muscle fibers-->
 					<optimal_fiber_length>0.17999999999999999</optimal_fiber_length>
 					<!--Resting length of the tendon-->
@@ -5994,13 +5994,13 @@
 									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
 									<socket_parent_frame>/bodyset/torso</socket_parent_frame>
 									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.0076135154472069845 0.26759902024502746 0.10105969963252234</location>
+									<location>0.0016415069728614555 0.29884560423932949 0.15713373222826174</location>
 								</PathPoint>
 								<PathPoint name="shoulder_M2_r_p1">
 									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
 									<socket_parent_frame>/bodyset/humerus_r</socket_parent_frame>
 									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.058154377713989909 -0.10625853275708903 0.017497940212486938</location>
+									<location>0.058330998027127601 -0.12699130046659596 -0.045657171553735026</location>
 								</PathPoint>
 							</objects>
 							<groups />
@@ -6019,7 +6019,7 @@
 						</PathWrapSet>
 					</GeometryPath>
 					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>1113.361359199841</max_isometric_force>
+					<max_isometric_force>768.54874830690324</max_isometric_force>
 					<!--Optimal length of the muscle fibers-->
 					<optimal_fiber_length>0.17999999999999999</optimal_fiber_length>
 					<!--Resting length of the tendon-->
@@ -6078,13 +6078,13 @@
 									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
 									<socket_parent_frame>/bodyset/torso</socket_parent_frame>
 									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.0081802769144027291 0.24391316680106442 0.18332599999979332</location>
+									<location>0.0015039153588741402 0.2794813350599043 0.18332599972309588</location>
 								</PathPoint>
 								<PathPoint name="shoulder_M3_r_p1">
 									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
 									<socket_parent_frame>/bodyset/humerus_r</socket_parent_frame>
 									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.0042602786013293788 -0.22440605996562557 -0.058296505002024587</location>
+									<location>0.040098174673635224 -0.16925464029484341 0.0053133364569171318</location>
 								</PathPoint>
 							</objects>
 							<groups />
@@ -6103,7 +6103,7 @@
 						</PathWrapSet>
 					</GeometryPath>
 					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>1308.192326245106</max_isometric_force>
+					<max_isometric_force>1538.0713822293992</max_isometric_force>
 					<!--Optimal length of the muscle fibers-->
 					<optimal_fiber_length>0.17999999999999999</optimal_fiber_length>
 					<!--Resting length of the tendon-->
@@ -6162,13 +6162,13 @@
 									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
 									<socket_parent_frame>/bodyset/torso</socket_parent_frame>
 									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.0036755835930623445 0.25826261046747845 0.18328348221998184</location>
+									<location>0.0036174230482805374 0.28203887224937879 0.081235582313744684</location>
 								</PathPoint>
 								<PathPoint name="shoulder_M4_r_p1">
 									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
 									<socket_parent_frame>/bodyset/humerus_r</socket_parent_frame>
 									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.013059873248142628 -0.19642336300535035 -0.057364852466420424</location>
+									<location>0.036125244280351049 -0.22496361381937663 0.0064555734292094692</location>
 								</PathPoint>
 							</objects>
 							<groups />
@@ -6187,7 +6187,7 @@
 						</PathWrapSet>
 					</GeometryPath>
 					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>624.09544737476813</max_isometric_force>
+					<max_isometric_force>1044.2638378238523</max_isometric_force>
 					<!--Optimal length of the muscle fibers-->
 					<optimal_fiber_length>0.17999999999999999</optimal_fiber_length>
 					<!--Resting length of the tendon-->
@@ -6227,6 +6227,90 @@
 						<!--All properties of this object have their default values.-->
 					</TendonForceLengthCurve>
 				</Millard2012EquilibriumMuscle>
+				<Millard2012EquilibriumMuscle name="shoulder_M5_r">
+					<!--Minimum allowed value for control signal. Used primarily when solving for control values.-->
+					<min_control>0.01</min_control>
+					<!--Maximum allowed value for control signal. Used primarily when solving for control values.-->
+					<max_control>1</max_control>
+					<!--The path of the actuator which defines length and lengthening speed.-->
+					<GeometryPath name="path">
+						<!--Default appearance attributes for this AbstractGeometryPath.-->
+						<Appearance>
+							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
+							<color>0.59999999999999998 0.59999999999999998 0.10000000000000001</color>
+						</Appearance>
+						<!--The set of points defining the path-->
+						<PathPointSet>
+							<objects>
+								<PathPoint name="shoulder_M5_r_p0">
+									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
+									<socket_parent_frame>/bodyset/torso</socket_parent_frame>
+									<!--The fixed location of the path point expressed in its parent frame.-->
+									<location>-0.0042859850371557533 0.26150488454582571 0.10127093039574515</location>
+								</PathPoint>
+								<PathPoint name="shoulder_M5_r_p1">
+									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
+									<socket_parent_frame>/bodyset/humerus_r</socket_parent_frame>
+									<!--The fixed location of the path point expressed in its parent frame.-->
+									<location>-0.0085277005662985229 -0.14568031043076907 -0.0581938362179657</location>
+								</PathPoint>
+							</objects>
+							<groups />
+						</PathPointSet>
+						<!--The wrap objects that are associated with this path-->
+						<PathWrapSet>
+							<objects>
+								<PathWrap name="pathwrap">
+									<!--A WrapObject that this PathWrap interacts with.-->
+									<wrap_object>wrap_shoulder_r_r</wrap_object>
+									<!--The wrapping method used to solve the path around the wrap object.-->
+									<method>hybrid</method>
+								</PathWrap>
+							</objects>
+							<groups />
+						</PathWrapSet>
+					</GeometryPath>
+					<!--Maximum isometric force that the fibers can generate-->
+					<max_isometric_force>1356.2669289100554</max_isometric_force>
+					<!--Optimal length of the muscle fibers-->
+					<optimal_fiber_length>0.17999999999999999</optimal_fiber_length>
+					<!--Resting length of the tendon-->
+					<tendon_slack_length>0.12</tendon_slack_length>
+					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
+					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
+					<!--Compute muscle dynamics ignoring tendon compliance. Tendon is assumed to be rigid.-->
+					<ignore_tendon_compliance>true</ignore_tendon_compliance>
+					<!--Compute muscle dynamics ignoring activation dynamics. Activation is equivalent to excitation.-->
+					<ignore_activation_dynamics>true</ignore_activation_dynamics>
+					<!--Active-force-length curve.-->
+					<ActiveForceLengthCurve name="shoulder_M5_r_ActiveForceLengthCurve">
+						<!--Minimum value of the active-force-length curve-->
+						<minimum_value>0</minimum_value>
+					</ActiveForceLengthCurve>
+					<!--Force-velocity curve.-->
+					<ForceVelocityCurve name="shoulder_M5_r_ForceVelocityCurve">
+						<!--Curve slope at the maximum normalized concentric (shortening) velocity (normalized velocity of -1)-->
+						<concentric_slope_at_vmax>0</concentric_slope_at_vmax>
+						<!--Curve slope just before reaching concentric_slope_at_vmax-->
+						<concentric_slope_near_vmax>0.25</concentric_slope_near_vmax>
+						<!--Curve slope at isometric (normalized velocity of 0)-->
+						<isometric_slope>5</isometric_slope>
+						<!--Curve slope at the maximum normalized eccentric (lengthening) velocity (normalized velocity of 1)-->
+						<eccentric_slope_at_vmax>0</eccentric_slope_at_vmax>
+						<!--Curve slope just before reaching eccentric_slope_at_vmax-->
+						<eccentric_slope_near_vmax>0.14999999999999999</eccentric_slope_near_vmax>
+						<!--Curve value at the maximum normalized eccentric contraction velocity-->
+						<max_eccentric_velocity_force_multiplier>1.3999999999999999</max_eccentric_velocity_force_multiplier>
+					</ForceVelocityCurve>
+					<!--Passive-force-length curve.-->
+					<FiberForceLengthCurve name="shoulder_M5_r_FiberForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</FiberForceLengthCurve>
+					<!--Tendon-force-length curve.-->
+					<TendonForceLengthCurve name="shoulder_M5_r_TendonForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</TendonForceLengthCurve>
+				</Millard2012EquilibriumMuscle>
 				<Millard2012EquilibriumMuscle name="shoulder_M0_l">
 					<!--Minimum allowed value for control signal. Used primarily when solving for control values.-->
 					<min_control>0.01</min_control>
@@ -6246,13 +6330,13 @@
 									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
 									<socket_parent_frame>/bodyset/torso</socket_parent_frame>
 									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.041720463032017062 0.29993974883634567 -0.029662767013772601</location>
+									<location>-0.0082358020265802471 0.25945806667203414 -0.16219784336145546</location>
 								</PathPoint>
 								<PathPoint name="shoulder_M0_l_p1">
 									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
 									<socket_parent_frame>/bodyset/humerus_l</socket_parent_frame>
 									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.036252061787540993 -0.041714732383271218 0.01310812858264856</location>
+									<location>-0.030615263814600703 -0.12086514271307927 0.058330999502548359</location>
 								</PathPoint>
 							</objects>
 							<groups />
@@ -6271,7 +6355,7 @@
 						</PathWrapSet>
 					</GeometryPath>
 					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>574.51660359025448</max_isometric_force>
+					<max_isometric_force>1193.2323861251089</max_isometric_force>
 					<!--Optimal length of the muscle fibers-->
 					<optimal_fiber_length>0.17999999999999999</optimal_fiber_length>
 					<!--Resting length of the tendon-->
@@ -6330,13 +6414,13 @@
 									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
 									<socket_parent_frame>/bodyset/torso</socket_parent_frame>
 									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.0045316965217940429 0.29834745114633066 -0.15719816596560904</location>
+									<location>0.0031851759348234393 0.29998799988405966 -0.15595477046750245</location>
 								</PathPoint>
 								<PathPoint name="shoulder_M1_l_p1">
 									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
 									<socket_parent_frame>/bodyset/humerus_l</socket_parent_frame>
 									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.04965261840505239 -0.13761638787898672 0.054907719055360502</location>
+									<location>0.058330999774437502 -0.1008944183062314 0.058330999495516754</location>
 								</PathPoint>
 							</objects>
 							<groups />
@@ -6355,7 +6439,7 @@
 						</PathWrapSet>
 					</GeometryPath>
 					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>1709.4284757681946</max_isometric_force>
+					<max_isometric_force>1936.7016816810603</max_isometric_force>
 					<!--Optimal length of the muscle fibers-->
 					<optimal_fiber_length>0.17999999999999999</optimal_fiber_length>
 					<!--Resting length of the tendon-->
@@ -6414,13 +6498,13 @@
 									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
 									<socket_parent_frame>/bodyset/torso</socket_parent_frame>
 									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.0076135154472069845 0.26759902024502746 -0.10105969963252234</location>
+									<location>0.0016415069728614555 0.29884560423932949 -0.15713373222826174</location>
 								</PathPoint>
 								<PathPoint name="shoulder_M2_l_p1">
 									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
 									<socket_parent_frame>/bodyset/humerus_l</socket_parent_frame>
 									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>0.058154377713989909 -0.10625853275708903 -0.017497940212486938</location>
+									<location>0.058330998027127601 -0.12699130046659596 0.045657171553735026</location>
 								</PathPoint>
 							</objects>
 							<groups />
@@ -6439,7 +6523,7 @@
 						</PathWrapSet>
 					</GeometryPath>
 					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>1113.361359199841</max_isometric_force>
+					<max_isometric_force>768.54874830690324</max_isometric_force>
 					<!--Optimal length of the muscle fibers-->
 					<optimal_fiber_length>0.17999999999999999</optimal_fiber_length>
 					<!--Resting length of the tendon-->
@@ -6498,13 +6582,13 @@
 									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
 									<socket_parent_frame>/bodyset/torso</socket_parent_frame>
 									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.0081802769144027291 0.24391316680106442 -0.18332599999979332</location>
+									<location>0.0015039153588741402 0.2794813350599043 -0.18332599972309588</location>
 								</PathPoint>
 								<PathPoint name="shoulder_M3_l_p1">
 									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
 									<socket_parent_frame>/bodyset/humerus_l</socket_parent_frame>
 									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.0042602786013293788 -0.22440605996562557 0.058296505002024587</location>
+									<location>0.040098174673635224 -0.16925464029484341 -0.0053133364569171318</location>
 								</PathPoint>
 							</objects>
 							<groups />
@@ -6523,7 +6607,7 @@
 						</PathWrapSet>
 					</GeometryPath>
 					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>1308.192326245106</max_isometric_force>
+					<max_isometric_force>1538.0713822293992</max_isometric_force>
 					<!--Optimal length of the muscle fibers-->
 					<optimal_fiber_length>0.17999999999999999</optimal_fiber_length>
 					<!--Resting length of the tendon-->
@@ -6582,13 +6666,13 @@
 									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
 									<socket_parent_frame>/bodyset/torso</socket_parent_frame>
 									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.0036755835930623445 0.25826261046747845 -0.18328348221998184</location>
+									<location>0.0036174230482805374 0.28203887224937879 -0.081235582313744684</location>
 								</PathPoint>
 								<PathPoint name="shoulder_M4_l_p1">
 									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
 									<socket_parent_frame>/bodyset/humerus_l</socket_parent_frame>
 									<!--The fixed location of the path point expressed in its parent frame.-->
-									<location>-0.013059873248142628 -0.19642336300535035 0.057364852466420424</location>
+									<location>0.036125244280351049 -0.22496361381937663 -0.0064555734292094692</location>
 								</PathPoint>
 							</objects>
 							<groups />
@@ -6607,7 +6691,7 @@
 						</PathWrapSet>
 					</GeometryPath>
 					<!--Maximum isometric force that the fibers can generate-->
-					<max_isometric_force>624.09544737476813</max_isometric_force>
+					<max_isometric_force>1044.2638378238523</max_isometric_force>
 					<!--Optimal length of the muscle fibers-->
 					<optimal_fiber_length>0.17999999999999999</optimal_fiber_length>
 					<!--Resting length of the tendon-->
@@ -6644,6 +6728,90 @@
 					</FiberForceLengthCurve>
 					<!--Tendon-force-length curve.-->
 					<TendonForceLengthCurve name="shoulder_M4_l_TendonForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</TendonForceLengthCurve>
+				</Millard2012EquilibriumMuscle>
+				<Millard2012EquilibriumMuscle name="shoulder_M5_l">
+					<!--Minimum allowed value for control signal. Used primarily when solving for control values.-->
+					<min_control>0.01</min_control>
+					<!--Maximum allowed value for control signal. Used primarily when solving for control values.-->
+					<max_control>1</max_control>
+					<!--The path of the actuator which defines length and lengthening speed.-->
+					<GeometryPath name="path">
+						<!--Default appearance attributes for this AbstractGeometryPath.-->
+						<Appearance>
+							<!--The color, (red, green, blue), [0, 1], used to display the geometry. -->
+							<color>0.59999999999999998 0.59999999999999998 0.10000000000000001</color>
+						</Appearance>
+						<!--The set of points defining the path-->
+						<PathPointSet>
+							<objects>
+								<PathPoint name="shoulder_M5_l_p0">
+									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
+									<socket_parent_frame>/bodyset/torso</socket_parent_frame>
+									<!--The fixed location of the path point expressed in its parent frame.-->
+									<location>-0.0042859850371557533 0.26150488454582571 -0.10127093039574515</location>
+								</PathPoint>
+								<PathPoint name="shoulder_M5_l_p1">
+									<!--Path to a Component that satisfies the Socket 'parent_frame' of type PhysicalFrame (description: The frame in which this path point is defined.).-->
+									<socket_parent_frame>/bodyset/humerus_l</socket_parent_frame>
+									<!--The fixed location of the path point expressed in its parent frame.-->
+									<location>-0.0085277005662985229 -0.14568031043076907 0.0581938362179657</location>
+								</PathPoint>
+							</objects>
+							<groups />
+						</PathPointSet>
+						<!--The wrap objects that are associated with this path-->
+						<PathWrapSet>
+							<objects>
+								<PathWrap name="pathwrap">
+									<!--A WrapObject that this PathWrap interacts with.-->
+									<wrap_object>wrap_shoulder_r_l</wrap_object>
+									<!--The wrapping method used to solve the path around the wrap object.-->
+									<method>hybrid</method>
+								</PathWrap>
+							</objects>
+							<groups />
+						</PathWrapSet>
+					</GeometryPath>
+					<!--Maximum isometric force that the fibers can generate-->
+					<max_isometric_force>1356.2669289100554</max_isometric_force>
+					<!--Optimal length of the muscle fibers-->
+					<optimal_fiber_length>0.17999999999999999</optimal_fiber_length>
+					<!--Resting length of the tendon-->
+					<tendon_slack_length>0.12</tendon_slack_length>
+					<!--Angle between tendon and fibers at optimal fiber length expressed in radians-->
+					<pennation_angle_at_optimal>0</pennation_angle_at_optimal>
+					<!--Compute muscle dynamics ignoring tendon compliance. Tendon is assumed to be rigid.-->
+					<ignore_tendon_compliance>true</ignore_tendon_compliance>
+					<!--Compute muscle dynamics ignoring activation dynamics. Activation is equivalent to excitation.-->
+					<ignore_activation_dynamics>true</ignore_activation_dynamics>
+					<!--Active-force-length curve.-->
+					<ActiveForceLengthCurve name="shoulder_M5_l_ActiveForceLengthCurve">
+						<!--Minimum value of the active-force-length curve-->
+						<minimum_value>0</minimum_value>
+					</ActiveForceLengthCurve>
+					<!--Force-velocity curve.-->
+					<ForceVelocityCurve name="shoulder_M5_l_ForceVelocityCurve">
+						<!--Curve slope at the maximum normalized concentric (shortening) velocity (normalized velocity of -1)-->
+						<concentric_slope_at_vmax>0</concentric_slope_at_vmax>
+						<!--Curve slope just before reaching concentric_slope_at_vmax-->
+						<concentric_slope_near_vmax>0.25</concentric_slope_near_vmax>
+						<!--Curve slope at isometric (normalized velocity of 0)-->
+						<isometric_slope>5</isometric_slope>
+						<!--Curve slope at the maximum normalized eccentric (lengthening) velocity (normalized velocity of 1)-->
+						<eccentric_slope_at_vmax>0</eccentric_slope_at_vmax>
+						<!--Curve slope just before reaching eccentric_slope_at_vmax-->
+						<eccentric_slope_near_vmax>0.14999999999999999</eccentric_slope_near_vmax>
+						<!--Curve value at the maximum normalized eccentric contraction velocity-->
+						<max_eccentric_velocity_force_multiplier>1.3999999999999999</max_eccentric_velocity_force_multiplier>
+					</ForceVelocityCurve>
+					<!--Passive-force-length curve.-->
+					<FiberForceLengthCurve name="shoulder_M5_l_FiberForceLengthCurve">
+						<!--All properties of this object have their default values.-->
+					</FiberForceLengthCurve>
+					<!--Tendon-force-length curve.-->
+					<TendonForceLengthCurve name="shoulder_M5_l_TendonForceLengthCurve">
 						<!--All properties of this object have their default values.-->
 					</TendonForceLengthCurve>
 				</Millard2012EquilibriumMuscle>
