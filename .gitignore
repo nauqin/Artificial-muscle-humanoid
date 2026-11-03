@@ -32,3 +32,6 @@ __pycache__/
 !report/moco/gui_upper_*_model.osim
 !report/moco/gui_upper_*.mot
 !report/moco/newmus_paths_*_40kg*_model.osim
+!data/robot40/
+!out/upper40/
+!out/lower40/
