@@ -125,28 +125,43 @@ N·m 로 소수점 둘째 자리까지 같았다(2026-11-02). 그래서 CARRT �
 없으면 팔을 폈을 때 모멘트암 0.3 cm, 6,021 N.
 
 어깨 (`report/newmus_V_design_shoulder_r_k{4,5,6}.npz`): 방향·용량은 4개 98 Nm, 5개 95 Nm, 6개 90 Nm(축정렬 6개 116). 토크형 검증(4개)은
-걷기·들기 보조 0.1 %. **케이블 실현은 5개가 최선이지만 걷기 기준은 못 맞춘다** — 직선 케이블의 정적 최악 잔차 4개 52 / 5개 27 / 6개 34 %
-(평균은 0.4~2 %). 어깨 굴곡 방향이 문제다: 팔을 내렸을 때 가슴→상완 케이블은 굴곡을 내지만 팔을 150° 올리면 같은 케이블이
-신전을 낸다(각도차 54°). 사람은 삼각근이 상완골두를 감아 돌아 이걸 피한다 → **어깨에는 감는 면(상완골두 구)이 필요**하고, 그게 다음 단계다.
+걷기·들기 보조 0.1 %. **직선 케이블로는 걷기를 못 낸다** — 정적 최악 잔차 4개 52 / 5개 27 / 6개 34 %(평균 0.4~2 %), 걷기 Moco 에서
+5개 직선 케이블은 보조 95퍼센타일 36 %. 팔을 내렸을 때 굴곡을 내는 가슴→상완 케이블이 팔을 150° 올리면 신전을 내기 때문이다.
+사람은 삼각근이 상완골두를 감아 돌아 이걸 피한다 → **어깨 중심에 반지름 4 cm 감는 구**(`design_space.py` `wrap`, OpenSim `WrapSphere`)를
+넣고 5개를 다시 설계했다(`newmus_paths_shoulder_r_k5_wrap.json`). 우리 구 경로 길이 계산은 OpenSim 과 0.01 cm 안에서 같다.
 
-어깨 5개 직선 케이블 (`report/newmus_paths_shoulder_r_k5.json`) 검증:
+어깨 5개 + 감는 구 검증 (정적 최악 잔차는 42.6 % 로 여전히 크지만 — 극단 자세 몇 개 — 실제 동작에서는 통과):
 
 | 단계 | 걷기 | 들기 |
 | --- | --- | --- |
-| 6-4 케이블 보조 최대 | 굴곡 331 % (1.42 s 한 노드) | 회전 14.6 % |
-| 6-4 케이블 보조 95퍼센타일 | 굴곡 36 %, 1 Nm 넘는 프레임 8 % | ≤1 % |
-| 6-4 케이블 토크 vs ID (95퍼센타일) | 굴곡 62 % (ID 피크 7 Nm 라 지표 무의미) | 1.1 % |
+| 6-4 케이블 보조 최대 | 회전 393 % (1.42 s 한 노드, ID 피크 1.3 Nm) | 회전 16 % |
+| 6-4 케이블 보조 95퍼센타일 | **6.4 %** (직선 케이블 36 %) | **0.0 %** |
+| 6-4 케이블 토크 vs ID (95퍼센타일) | ID 피크 7 Nm 라 지표 무의미 | 굴곡 9.9 / 내전 7.9 / 회전 8.8 % |
 
-즉 들기는 되고, 걷기 팔 흔들기는 92 %의 프레임에서 되지만 나머지에서 굴곡 토크가 모자란다. 힘은 994~1,937 N(상한 1,800 가정 초과 1개).
+케이블 (상완 부착점은 구 밖 y ≤ −5 cm):
+
+| | 용량 (N·m) | 힘 (N) | 유효 모멘트암 (cm) | 스트로크 | 길이 (cm) | 각도차 |
+| --- | --- | --- | --- | --- | --- | --- |
+| M0 굴곡+내전+내회전 | 17 | 785 | 2.9~3.9 | 0.42 | 16 | 6.9° |
+| M1 굴곡+외전 | 30 | 1,890 | 1.7~3.9 | 0.38 | 20 | 10.5° |
+| M2 내전+외회전 | 20 | 1,217 | 1.9~3.6 | 0.40 | 16 | 23.3° |
+| M3 신전 | 16 | 1,048 | 1.6~3.9 | 0.46 | 28 | 39.8° |
+| M4 외전 | 13 | 994 | 1.5~5.6 | 0.40 | 24 | 13.5° |
+
+M1 1,890 N 은 팔 모듈 상한 가정(1,800 N)을 넘는다 — 기계연 사양 확인 후 묶음 수를 정한다.
 
 ### 최종 구성 (2026-11-03)
 
 | 부위 | 근육 수 | 총용량 (N·m) | 케이블 힘 (N) | 상태 |
 | --- | --- | --- | --- | --- |
 | 몸통 (요추 3자유도) | 4 | 209 | 508~1,670 | 설계·검증 완료 |
-| 어깨 (3자유도) | 5 | 95 | 994~1,937 | 방향·용량 확정, 직선 케이블은 들기만 통과 — 감는 면 필요 |
+| 어깨 (3자유도) | 5 + 감는 구 | 95 | 785~1,890 | 설계·검증 완료 (어깨 중심 반지름 4 cm 구 전제) |
 | 팔꿈치 (1자유도) | 2 | 36 | 1,535~1,679 | 설계·검증 완료 (팔꿈치 뒤 지렛대 전제) |
 | 한쪽 팔 합계 | 7 | 131 | | 다관절 6개(118 Nm)보다 13 Nm 많지만 케이블로 만들 수 있다 |
+
+GUI 로 보기 (`report/gui_export_upper.py`, 하체 6-5 와 같은 방식): `report/moco/gui_upper_lift_s1_PFWJ2_model.osim` + `gui_upper_lift_s1_PFWJ2.mot`
+(찬 물병 들기), `gui_upper_walk_s3_T047_12_model.osim` + `.mot`(걷기). OpenSim GUI 에서 File → Open Model, File → Load Motion. 케이블이
+활성도 색으로 움직인다. 뼈 메시는 `report/moco/Geometry`.
 
 ## 7. 재실행
 
@@ -158,7 +173,7 @@ python report/design_directions.py --space shoulder_r --tasks report/upper/tasks
 python report/design_directions.py --space elbow_r --tasks report/upper/tasks.csv --k 2
 M=data/moore2015/subject3/subject3_scaled.osim
 python report/path_design.py --space trunk --tasks report/upper/tasks.csv --design report/newmus_V_design_trunk_k4.npz --model $M
-python report/path_design.py --space shoulder_r --tasks report/upper/tasks.csv --design report/newmus_V_design_shoulder_r_k5.npz --model $M
+python report/path_design.py --space shoulder_r --tasks report/upper/tasks.csv --design report/newmus_V_design_shoulder_r_k5.npz --model $M   # 감는 구는 design_space 의 wrap 이 자동 적용
 python report/path_design.py --space elbow_r --tasks report/upper/tasks.csv --design report/newmus_V_design_elbow_r_k2.npz --model $M
 ```
 Moco 검증 명령은 `TUTORIAL.md` 9절.

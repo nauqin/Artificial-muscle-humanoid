@@ -321,7 +321,9 @@ python report/moco_path_muscles.py --space trunk --paths report/newmus_paths_tru
 ```
 
 들기(CARRT) 검증은 README 6절의 방법대로 한다(설계 뼈대에 손 하중을 더한 모델 + CARRT 관절각).
-어깨·팔꿈치는 위 명령에서 `trunk`→`shoulder_r`/`elbow_r`, `k4`→`k5`/`k2` 로 바꾸면 된다. 걷기 검증에는 `--prefilter` 를 붙이고
+어깨·팔꿈치는 위 명령에서 `trunk`→`shoulder_r`/`elbow_r`, `k4`→`k5`/`k2` 로 바꾸면 된다(어깨는 `design_space.py` 의 `wrap` 으로
+어깨 중심에 반지름 4 cm 감는 구가 자동으로 붙는다 — 없으면 걷기 팔 흔들기를 못 낸다). GUI 파일은 `report/gui_export_upper.py`
+(docstring 의 명령) → `report/moco/gui_upper_<이름>_model.osim` + `.mot`. 걷기 검증에는 `--prefilter` 를 붙이고
 판정은 **95퍼센타일**로 본다(Moco 가 요구하는 토크가 한 노드에서 튀는 수치 잡음이 있다, NOTES 2026-11-03). 주의할 것 두 가지:
 - CARRT IK 는 **도 단위**(`inDegrees=yes`)다. `path_design.py`·`moco_path_muscles.py` 는 자동으로 라디안으로
   바꾸지만, 새 스크립트에서 `io.read_mot` 으로 직접 읽으면 `m.in_degrees` 를 꼭 본다.

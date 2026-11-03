@@ -28,3 +28,6 @@ __pycache__/
 !report/moco/newmus_paths_trunk_k4_model.osim
 !report/moco/newmus_paths_shoulder_r_k5_model.osim
 !report/moco/newmus_paths_elbow_r_k2_model.osim
+!report/moco/newmus_paths_shoulder_r_k5_wrap_model.osim
+!report/moco/gui_upper_*_model.osim
+!report/moco/gui_upper_*.mot

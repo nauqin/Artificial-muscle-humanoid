@@ -24,12 +24,14 @@ DELTA = 0.01                                          # rad, 중앙차분
 STROKE = 0.40                                         # 모듈 스트로크 (변형률)
 MARGIN = 1.1                                          # 용량 여유 10 %
 SP = COORDS = EXTRA = BODIES = BOX = F_MODULE = None
+WRAP = None                                           # 감는 구 (design_space 의 wrap), 없으면 None
 
 
 def configure(space="lower"):
     """설계 공간을 고른다 — 모듈 전역 COORDS/EXTRA/BODIES/BOX/F_MODULE 이 바뀐다. 다른 스크립트는 import 뒤 이걸 부른다."""
     global SP, COORDS, EXTRA, BODIES, BOX, F_MODULE
     SP = ds.get(space); COORDS = SP["coords"]; EXTRA = SP["extra"]; BODIES = SP["bodies"]; BOX = SP["box"]; F_MODULE = SP["f_module"]
+    global WRAP; WRAP = SP.get("wrap")
     return SP
 
 
@@ -103,10 +105,35 @@ class Frames:
         self.model = model
 
 
-def path_lengths(fr, chain, P):
-    """chain: 바디 인덱스 목록, P: (len(chain), 3) 바디 좌표. 반환 L (poses, nP)."""
+def wrap_segment(chain):
+    """감는 구가 있고 chain 에 그 뼈가 둘째 이후로 있으면, 구를 감는 구간 번호(점 n-1 → n). 없으면 None."""
+    if not WRAP: return None
+    wb = BODIES.index(WRAP["body"])
+    return chain.index(wb) - 1 if wb in chain and chain.index(wb) >= 1 else None
+
+
+def sphere_path(A, B, C, R):
+    """A→B 직선이 중심 C 반지름 R 인 구를 뚫으면 구 표면을 따라 도는 최단 경로 길이(A, B, C 가 만드는 평면 안의 접선+호).
+    직선이 구를 비켜 가면 |AB|. 점이 구 안에 있으면 R 로 당겨 계산하고 inside 로 알린다. 모양은 (..., 3)."""
+    CA, CB = A - C, B - C; a = np.linalg.norm(CA, axis=-1); b = np.linalg.norm(CB, axis=-1)
+    inside = (a < R) | (b < R); a_ = np.maximum(a, R * 1.0001); b_ = np.maximum(b, R * 1.0001)
+    cos_t = np.clip(np.einsum("...i,...i->...", CA, CB) / (a * b + 1e-12), -1.0, 1.0); theta = np.arccos(cos_t)
+    alpha = np.arccos(R / a_); beta = np.arccos(R / b_); arc = theta - alpha - beta
+    L_wrap = np.sqrt(a_ ** 2 - R ** 2) + np.sqrt(b_ ** 2 - R ** 2) + R * np.maximum(arc, 0.0)
+    L_line = np.linalg.norm(A - B, axis=-1)
+    return np.where(arc > 0, L_wrap, L_line), inside
+
+
+def path_lengths(fr, chain, P, with_inside=False):
+    """chain: 바디 인덱스 목록, P: (len(chain), 3) 바디 좌표. 반환 L (poses, nP). 감는 구가 걸린 구간은 구 표면 경로로 잰다."""
     pts = np.stack([np.einsum("tkij,j->tki", fr.R[:, :, b], P[n]) + fr.p[:, :, b] for n, b in enumerate(chain)], axis=2)  # (T, nP, n, 3)
-    return np.linalg.norm(np.diff(pts, axis=2), axis=3).sum(axis=2)
+    seg = np.linalg.norm(np.diff(pts, axis=2), axis=3)                                                             # (T, nP, n-1)
+    inside = np.zeros(seg.shape[:2], bool); ws = wrap_segment(chain)
+    if ws is not None:
+        wb = BODIES.index(WRAP["body"]); C = np.einsum("tkij,j->tki", fr.R[:, :, wb], np.asarray(WRAP["center"], float)) + fr.p[:, :, wb]
+        seg[:, :, ws], inside = sphere_path(pts[:, :, ws], pts[:, :, ws + 1], C, float(WRAP["radius"]))
+    L = seg.sum(axis=2)
+    return (L, inside) if with_inside else L
 
 
 def moment_arms(fr, chain, P):
@@ -121,6 +148,9 @@ def chain_for(v, thr=0.12):
 
 def cost(x, fr, chain, v, cap, detail=False):
     P = x.reshape(len(chain), 3); r, L = moment_arms(fr, chain, P)
+    if WRAP is not None and wrap_segment(chain) is not None:                       # 부착점이 감는 구 안에 들어가면 안 된다
+        _, inside = path_lengths(fr, chain, P, with_inside=True)
+        if inside.any(): return 1e3 + float(inside.mean()) if not detail else None
     nr = np.linalg.norm(r, axis=1); ok = nr > 1e-4
     if ok.sum() < len(r) * 0.5: return 1e3 if not detail else None
     e2 = np.linalg.norm(r[ok] / nr[ok, None] - v, axis=1) ** 2
@@ -258,11 +288,18 @@ def build_model(out, model_path=None, out_path=None):
     colors = [(0.9, 0.2, 0.2), (0.2, 0.6, 0.9), (0.2, 0.8, 0.3), (0.9, 0.6, 0.1), (0.6, 0.3, 0.8), (0.1, 0.7, 0.7), (0.8, 0.3, 0.6), (0.5, 0.5, 0.1), (0.3, 0.3, 0.3), (0.7, 0.5, 0.3)]
     sides = (("r", 1.0), ("l", -1.0)) if SP["mirror"] else (("", 1.0),)
     for side, sgn in sides:
+        wrap_obj = None
+        if WRAP:                                                                  # 감는 구를 그 뼈에 붙인다 (좌우 하나씩)
+            wbody = model.getBodySet().get(ds.mirror_body(SP, WRAP["body"], side)); c = WRAP["center"]
+            wrap_obj = osim.WrapSphere(); wrap_obj.setName(f"wrap_{WRAP['body'][:-2]}_{side}" if side else f"wrap_{WRAP['body']}")
+            wrap_obj.set_radius(float(WRAP["radius"])); wrap_obj.set_translation(osim.Vec3(c[0], c[1], sgn * c[2])); wbody.addWrapObject(wrap_obj)
         for i, m in enumerate(out["muscles"]):
             nm = f"{m['name']}_{side}" if side else m["name"]
             pa = osim.PathActuator(); pa.setName(nm); pa.setOptimalForce(m["force_N"]); pa.setMinControl(0.0); pa.setMaxControl(1.0)
             for kk, (bn, pt) in enumerate(zip(m["chain"], m["points"])):
                 pa.addNewPathPoint(f"{nm}_p{kk}", model.getBodySet().get(ds.mirror_body(SP, bn, side)), osim.Vec3(pt[0], pt[1], sgn * pt[2]))
+            if wrap_obj is not None and wrap_segment([BODIES.index(b) for b in m["chain"]]) is not None:
+                pa.updGeometryPath().addPathWrap(wrap_obj)
             pa.updGeometryPath().setDefaultColor(osim.Vec3(*colors[i % len(colors)]))
             model.addForce(pa)
     model.finalizeConnections(); model.initSystem()

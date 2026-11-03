@@ -1122,7 +1122,12 @@ arm_flex 15.08/15.08, lumbar 39.25/39.25 Nm — 차이 0.00. 그래서 CARRT 처
 어깨 케이블은 **직선으로는 안 된다**: 정적 최악 잔차 4개 52 / 5개 27 / 6개 34 %(평균 0.4~2 %). 순수 굴곡 방향의 각도차가 54° — 팔을
 내렸을 때 굴곡을 내는 가슴→상완 케이블이 팔을 150° 올리면 신전을 낸다. 5개 직선 케이블로 들기는 통과(보조 95퍼센타일 ≤1 %, vs ID 1.1 %),
 걷기는 프레임 92 % 에서 보조 0 이고 나머지에서 굴곡이 모자란다. 사람은 삼각근이 상완골두를 감아 돌아 해결 → 어깨에 감는 면(구)이 다음 단계.
-최종 구성: 몸통 4 (209 Nm) + 어깨 5 (95) + 팔꿈치 2 (36). 한쪽 팔 7개 131 Nm — 다관절 6개 118 Nm 보다 13 Nm 많지만 만들 수 있다.
+**감는 구를 넣었다(11/3 오전).** `design_space` 에 `wrap=dict(body, center, radius)`, `path_design.sphere_path` 가 A·B·구 중심이 만드는
+평면 안의 접선+호로 길이를 재고(OpenSim `WrapSphere` 와 0.01 cm 안에서 같음), `build_model` 이 `WrapSphere` 를 뼈에 붙여 `addPathWrap`.
+어깨 중심 반지름 4 cm. 정적 최악 잔차는 42.6 % 로 더 나빠 보이지만(극단 자세 몇 개) 실제 동작에서는 걷기 보조 95퍼센타일 36 → **6.4 %**,
+들기 0 % 로 통과. 정적 지표는 자세 표본의 최악값이라 동작 검증과 다를 수 있다 — 판정은 Moco.
+최종 구성: 몸통 4 (209 Nm) + 어깨 5 + 감는 구 (95) + 팔꿈치 2 (36). 한쪽 팔 7개 131 Nm — 다관절 6개 118 Nm 보다 13 Nm 많지만 만들 수 있다.
+GUI: `report/gui_export_upper.py` → `report/moco/gui_upper_{lift_s1_PFWJ2,walk_s3_T047_12}_model.osim` + `.mot`.
 
 **함정 셋.**
 1. CARRT IK(OpenSim IK 툴 출력)는 **도 단위**(`inDegrees=yes`), Moore 변환본은 라디안. `path_design.poses_from_tasks` 가 라디안으로 읽어
@@ -1145,7 +1150,7 @@ arm_flex 15.08/15.08, lumbar 39.25/39.25 Nm — 차이 0.00. 그래서 CARRT 처
 torso 에 붙어 있어(팔 들면 22 cm 오차) humerus 로 재부모; `MarkerPlacer` 가 파이썬에서 마커를 안 옮겨 정적 IK 로 직접 배치
 (`tools/carrt_prepare.place_markers`). "Half Body" 폴더는 마커 20개뿐. 최종 IK RMS 상자 1.8, 나머지 3.0~3.5 cm(기준 2 cm 미달 — 팔 회전은 믿지 말 것).
 
-남은 것: 기계연 팔 모듈 힘(지금 1,800 N 가정)·스트로크; 어깨 wrap 면; 팔 시너지(MoBL-ARMS, 정어진).
+남은 것: 기계연 팔 모듈 힘(지금 1,800 N 가정, 어깨 M1 1,890 N 초과)·스트로크; 팔 시너지(MoBL-ARMS, 정어진).
 
 ### 계획 파일이 없다
 
