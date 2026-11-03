@@ -31,3 +31,4 @@ __pycache__/
 !report/moco/newmus_paths_shoulder_r_k5_wrap_model.osim
 !report/moco/gui_upper_*_model.osim
 !report/moco/gui_upper_*.mot
+!report/moco/newmus_paths_*_40kg*_model.osim

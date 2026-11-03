@@ -37,7 +37,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--name", required=True); ap.add_argument("--base", required=True); ap.add_argument("--paths", nargs="+", required=True); ap.add_argument("--sol", nargs="+", required=True)
     ap.add_argument("--id", required=True); ap.add_argument("--title", default=""); ap.add_argument("--azimuth", default="auto", help="보는 방향(도). auto = 골반이 향한 방향을 화면 가로로 (옆모습), 거기에 90 을 더하면 앞모습")
-    ap.add_argument("--fps", type=int, default=30); ap.add_argument("--slow", type=float, default=1.5); ap.add_argument("--loops", type=int, default=1); ap.add_argument("--png", type=float, default=None); ap.add_argument("--tag", default="", help="출력 파일 이름 뒤에 붙일 말 (예: _side)")
+    ap.add_argument("--fps", type=int, default=30); ap.add_argument("--slow", type=float, default=1.5); ap.add_argument("--loops", type=int, default=1); ap.add_argument("--png", type=float, default=None); ap.add_argument("--tag", default="", help="출력 파일 이름 뒤에 붙일 말 (예: _side)"); ap.add_argument("--box-scale", type=float, default=1.0, help="감는 구 배율 (로봇 크기)")
     a = ap.parse_args(); import opensim as osim; osim.Logger.setLevelString("Error")
     mdir = os.path.join(ROOT, "report/moco"); paths_j = {k: (v if os.path.isabs(v) else os.path.join(ROOT, v)) for k, v in kv(a.paths).items()}; sols = kv(a.sol)
     gui_model = os.path.join(mdir, f"gui_upper_{a.name}_model.osim")
@@ -58,6 +58,7 @@ def main():
     ik = io.read_mot(ik_path)
     for sp in sols:
         spd = pd.configure(sp); pj = json.load(open(paths_j[sp])); side = spd["design_side"]
+        if pd.WRAP and a.box_scale != 1.0: pd.WRAP = dict(pd.WRAP, center=tuple(v * a.box_scale for v in pd.WRAP["center"]), radius=pd.WRAP["radius"] * a.box_scale)
         Q = np.column_stack([np.interp(times, ik.time, ik.column(c)) for c in list(pd.COORDS) + list(pd.EXTRA)]); fr = pd.Frames(base_model_path, Q)
         tt = np.zeros((n, len(pd.COORDS)))
         for m in pj["muscles"]:

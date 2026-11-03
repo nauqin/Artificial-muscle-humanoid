@@ -181,3 +181,31 @@ python report/path_design.py --space shoulder_r --tasks report/upper/tasks.csv -
 python report/path_design.py --space elbow_r --tasks report/upper/tasks.csv --design report/newmus_V_design_elbow_r_k2.npz --model $M
 ```
 Moco 검증 명령은 `TUTORIAL.md` 9절.
+
+## 8. 40 kg · 1.35 m 로봇 크기로 전신 재설계 (2026-11-03 오전)
+
+사용자 요청(40 kg, 키 130~140 → 1.35 m). `tools/rescale_body.py --mass 40 --height 1.35` 가 Moore subject3 뼈대(팔 포함)를
+길이 0.833배·질량 40 kg 으로 줄이고(`data/robot40/robot40.osim`), **손 하중은 그대로 둔 채** 상체 ID 16건을 다시 돌려
+`report/upper/tasks_40kg.csv` 를 만든다. 하체는 손 하중이 없으니 기존 토크를 질량×키 비율(0.503)로 환산해 설계하고, 검증용으로만
+지면반력·골반 위치를 같은 비율로 줄인 ID 를 만들었다(잔차 8.8~9.3 %, `report/lower/tasks_40kg.csv`).
+
+왜 상체는 다시 돌려야 하나: 걷기 토크는 0.40~0.47배로 줄었지만 찬 물병 들기는 **0.73~0.77배**밖에 안 줄었다 — 물병 3.79 kg 은
+로봇이 작아져도 그대로라 토크에서 하중 몫이 커진다. 40 kg 로봇에게 3.79 kg 은 63.5 kg 사람의 6 kg 에 해당한다.
+
+설계·검증 명령은 7절과 같고 `--ref-mass 40 --ref-height 1.35 --out-tag _40kg`(방향), `--model data/robot40/robot40.osim --box-scale 0.8333
+--out-tag _40kg`(경로), `--box-scale 0.8333`(GUI·영상)을 붙인다. 출력은 `*_40kg*`.
+
+| 부위 | 근육 수 | 총용량 (N·m) 63.5 kg → 40 kg | 케이블 힘 (N) | 걷기 보조 95퍼센타일 | 들기(찬 물병)·스쿼트 보조 95퍼센타일 | 상태 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 몸통 | 4 | 209 → 123 | 260~1,761 (상한 1,800 으로 낮춰 재설계) | 0.0 % | 0.0 % | 통과 |
+| 어깨 | 5 + 감는 구 3.3 cm | 95 → 69 (63.5 kg 방향 고정, 용량만 재계산) | 575~1,709 | 0.2 % | **24 % (굴곡 32 %) — 미달** | 걷기만 통과 |
+| 팔꿈치 | 2 | 36 → 26 | 1,361 / 1,380 | 0.0 % | 0.0 % | 통과 |
+| 하체 | 8 | ~300 → 200 | 438~2,443 | 무릎 13 % (기준 10 % 초과) | 스쿼트 8.9 % | 근사 통과 |
+
+어깨에서 막힌 것: 40 kg 자체 방향 설계(순수 굴곡·순수 회전 근육이 섞임)는 케이블 실현이 안 돼(정적 최악 잔차 72 %, 들기 보조 32 %),
+63.5 kg 에서 검증된 방향 5개를 고정하고 용량만 40 kg 토크로 다시 재서(`newmus_V_design_shoulder_r_k5_40kg_v635.npz`) 경로를 설계했다.
+걷기는 통과하지만 들기 굴곡이 24~32 % 모자라고, 감는 구를 4 cm 로 키워도(`*_40kg_w4`) 55 % 로 더 나빠졌다. 원인은 하중 비율이
+커져 어깨 굴곡 토크(19.7 Nm)가 어깨 전체 용량(69 Nm) 안에서 차지하는 몫이 커진 것 — 다음 시도는 어깨 6개, 또는 어깨 부착 상자를
+로봇 설계에 맞춰 다시 잡는 것. 하체 걷기 무릎 13 % 는 비율로 줄인 지면반력(잔차 8.8 %)과의 불일치가 섞인 값이라 참고치다.
+
+GUI·영상: `report/moco/gui_upper_robot40_lift_s1_PFWJ2_model.osim` + `.mot`, `report/video_upper_robot40_lift_s1_PFWJ2_side.mp4`.

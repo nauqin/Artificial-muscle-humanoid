@@ -57,7 +57,8 @@ def poses(n_walk=10, n_sq=60, seed=0):
     return np.vstack(Q), np.vstack(T)
 
 
-def poses_from_tasks(path, n_per=None, seed=0):
+def poses_from_tasks(path, n_per=None, seed=0, ref=None):
+    """ref=(mass, height) 를 주면 토크를 그 몸 크기로 맞춘다 (design_directions 와 같은 질량×키 비율)."""
     """tasks.csv 의 trial 마다 n개 프레임 + 설계 좌표별 극값 프레임(최대·최소). n_per 기본: 걷기 5, 그 외 10."""
     rng = np.random.default_rng(seed); Q, T = [], []; cols = list(COORDS) + list(EXTRA)
     for row in csv.DictReader(open(path, encoding="utf-8")):
@@ -71,8 +72,9 @@ def poses_from_tasks(path, n_per=None, seed=0):
         t = rng.choice(tsel, min(n, len(tsel)), replace=False)
         for c in COORDS:                                       # 극값 자세는 반드시 넣는다 (깊은 스쿼트 교훈)
             q = m.column(c)[ok]; t = np.append(t, [tsel[np.argmax(q)], tsel[np.argmin(q)]])
+        tscale = (ref[0] * ref[1]) / (float(row["mass_kg"]) * float(row["height_m"])) if ref else 1.0
         Q.append(np.column_stack([np.interp(t, m.time, m.column(c)) for c in cols]))
-        T.append(np.column_stack([np.interp(t, idm.time, idm.column(c + "_moment")) for c in COORDS]))
+        T.append(np.column_stack([np.interp(t, idm.time, idm.column(c + "_moment")) for c in COORDS]) * tscale)
     Q, T = np.vstack(Q), np.vstack(T)
     for cname, (lo, hi) in SP.get("pose_limit", {}).items():        # 특이점 근처 자세 제외 (design_space 참고)
         j = cols.index(cname); keep = (Q[:, j] >= lo) & (Q[:, j] <= hi)
@@ -158,7 +160,7 @@ def cost(x, fr, chain, v, cap, detail=False):
     arm_eff = (r @ v)                                          # 설계 방향으로의 유효 모멘트암 (m)
     arm_min = float(arm_eff.min()); arm_mean = float(arm_eff.mean())
     stroke = float((L.max() - L.min()) / L.mean())
-    force = MARGIN * cap / max(arm_min, 1e-4)                  # 설계 용량을 가장 불리한 자세에서 내는 데 필요한 힘
+    force = MARGIN * cap / max(arm_min, 0.005)                 # 설계 용량을 가장 불리한 자세에서 내는 데 필요한 힘 (모멘트암 하한 5 mm — 0 에 가까우면 힘 벌점이 폭발해 DE 가 퇴화 해로 도망간다, 2026-11-03)
     pen = 20 * max(0.0, stroke - STROKE) ** 2 + 5 * max(0.0, force / F_MODULE - 1) ** 2 + 1e4 * max(0.0, 0.015 - arm_min) ** 2
     if detail: return dict(dir_err=dir_err, arm_min=arm_min, arm_mean=arm_mean, stroke=stroke, force=force, L_mean=float(L.mean()), pen=pen)
     return dir_err + pen
@@ -171,15 +173,25 @@ def main():
     ap.add_argument("--k", type=int, default=None); ap.add_argument("--model", default=None, help="뼈대 모델 .osim (기본 data/subject3)")
     ap.add_argument("--out", default=None, help="결과 json (기본 report/newmus_paths_k8.json 또는 _<space>_k<k>)")
     ap.add_argument("--refine-from-json", action="store_true", help="1단계 결과를 다시 쓰고 2단계만")
+    ap.add_argument("--box-scale", type=float, default=1.0, help="부착 상자·감는 구를 이 배율로 (로봇 키 / 피험자3 키, 예: 1.35/1.62)")
+    ap.add_argument("--ref", type=float, nargs=2, metavar=("MASS", "HEIGHT"), default=None, help="자세 표본의 토크를 이 몸 크기로 맞춘다 (예: 40 1.35)")
+    ap.add_argument("--out-tag", default="", help="출력 파일 이름 뒤에 붙일 말 (예: _40kg)")
+    ap.add_argument("--wrap-radius", type=float, default=None, help="감는 구 반지름 m (기본 = 공간 값 × box-scale). 로봇 어깨 외피 크기")
+    ap.add_argument("--f-module", type=float, default=None, help="케이블 힘 상한 N (기본 = 공간의 f_module). 낮추면 모멘트암 큰 경로를 찾는다")
     ap.add_argument("--maxfev", type=int, default=20000)
     a = ap.parse_args(); configure(a.space)
-    legacy = (a.space == "lower" and not a.tasks)
-    k = a.k or SP["k"]; tag = "_k8" if legacy else f"_{a.space}_k{k}"
+    if a.f_module: global F_MODULE; F_MODULE = a.f_module
+    if a.box_scale != 1.0:                                      # 로봇 크기에 맞춰 상자·감는 구를 줄인다
+        global BOX, WRAP; BOX = {b: tuple(tuple(v * a.box_scale for v in ax) for ax in box) for b, box in BOX.items()}
+        if WRAP: WRAP = dict(WRAP, center=tuple(v * a.box_scale for v in WRAP["center"]), radius=WRAP["radius"] * a.box_scale)
+    if a.wrap_radius and WRAP: WRAP = dict(WRAP, radius=a.wrap_radius); print(f"감는 구 반지름 {a.wrap_radius} m")
+    legacy = (a.space == "lower" and not a.tasks and not a.out_tag)
+    k = a.k or SP["k"]; tag = ("_k8" if legacy else f"_{a.space}_k{k}") + a.out_tag
     design = a.design or os.path.join(ROOT, f"report/newmus_V_design{tag}.npz")
-    d = np.load(design); V, c = d["V"], d["c"]; k = len(V); tag = "_k8" if legacy else f"_{a.space}_k{k}"   # k 는 설계 파일이 정한다
+    d = np.load(design); V, c = d["V"], d["c"]; k = len(V); tag = ("_k8" if legacy else f"_{a.space}_k{k}") + a.out_tag   # k 는 설계 파일이 정한다
     model_path = a.model or os.path.join(ROOT, "data/subject3/subject3_scaled.osim")
     out_json = a.out or os.path.join(ROOT, f"report/newmus_paths{tag}.json")
-    Q, T = poses_from_tasks(os.path.join(ROOT, a.tasks) if not os.path.isabs(a.tasks) else a.tasks) if a.tasks else poses()
+    Q, T = poses_from_tasks(os.path.join(ROOT, a.tasks) if not os.path.isabs(a.tasks) else a.tasks, ref=a.ref) if a.tasks else poses()
     print(f"[{a.space}] 근육 {k}개, 자세 표본 {len(Q)}개, 모델 {model_path}", flush=True)
     tic = time.time(); fr = Frames(model_path, Q); print(f"뼈 변환 저장 {time.time()-tic:.0f}s", flush=True)
     out = {"space": a.space, "coords": COORDS, "bodies": BODIES, "model": os.path.relpath(model_path, ROOT), "muscles": []}
@@ -189,10 +201,14 @@ def main():
         v = V[i]; chain = chain_for(v)
         bounds = [b for n in chain for b in BOX[BODIES[n]]]
         tic = time.time()
-        res = differential_evolution(cost, bounds, args=(fr, chain, v, c[i]), seed=i, maxiter=400, popsize=25, tol=1e-7, polish=False)
-        res2 = minimize(cost, res.x, args=(fr, chain, v, c[i]), method="Powell", bounds=bounds)
-        x = res2.x if res2.fun < res.fun else res.x
-        det = cost(x, fr, chain, v, c[i], detail=True)
+        for attempt in range(4):                                   # 퇴화(모멘트암 0 / 구 안) 해가 나오면 시드를 바꿔 다시
+            res = differential_evolution(cost, bounds, args=(fr, chain, v, c[i]), seed=i + 10 * attempt, maxiter=400, popsize=25, tol=1e-7, polish=False)
+            res2 = minimize(cost, res.x, args=(fr, chain, v, c[i]), method="Powell", bounds=bounds)
+            x = res2.x if (res2.fun < res.fun and cost(res2.x, fr, chain, v, c[i], detail=True) is not None) else res.x
+            det = cost(x, fr, chain, v, c[i], detail=True)
+            if det is not None: break
+            print(f"  M{i}: 시도 {attempt} 퇴화 해 (cost {res.fun:.1f}) — 시드 바꿔 다시", flush=True)
+        if det is None: raise SystemExit(f"M{i}: 경로를 못 찾았다 — 상자/감는 구를 확인")
         r, _ = moment_arms(fr, chain, x.reshape(len(chain), 3)); rm = r.mean(axis=0)
         ang = np.degrees(np.arccos(np.clip(rm @ v / np.linalg.norm(rm), -1, 1)))
         print(f"M{i}: 바디 {[BODIES[n] for n in chain]}  방향오차 {det['dir_err']:.3f} (평균 모멘트암과 설계 방향 각도 {ang:.1f}°)  유효 모멘트암 {det['arm_min']*100:.1f}~{det['arm_mean']*100:.1f} cm  스트로크 {det['stroke']:.2f}  필요 힘 {det['force']:.0f} N  길이 {det['L_mean']*100:.0f} cm  벌점 {det['pen']:.3f}  {time.time()-tic:.0f}s", flush=True)
@@ -238,7 +254,7 @@ def refine(out, fr, T, maxfev=20000, w_dir=3.0):
         nr = np.linalg.norm(R, axis=1) + 1e-9                            # (T,8)
         e2 = ((R / nr[:, None, :] - V.T[None]) ** 2).sum(axis=1)         # (T,8) 방향오차
         dir_err = 0.5 * e2.mean(axis=0) + 0.5 * e2.max(axis=0)
-        arm_eff = np.einsum("tji,ij->ti", R, V); arm_min = np.maximum(arm_eff.min(axis=0), 1e-4)
+        arm_eff = np.einsum("tji,ij->ti", R, V); arm_min = np.maximum(arm_eff.min(axis=0), 0.005)
         F = f * MARGIN * cap / arm_min; A = R * F[None, None, :]
         u = batch_boxlsq(A, Tm); res = (np.einsum("tij,tj->ti", A, u) - Tm) / pk
         stroke = (Ls.max(axis=0) - Ls.min(axis=0)) / Ls.mean(axis=0)

@@ -25,11 +25,12 @@ def kv(items):
     return dict(s.split("=", 1) for s in items)
 
 
-def build(base, paths_by_space, out_path):
+def build(base, paths_by_space, out_path, box_scale=1.0):
     proc = osim.ModelProcessor(base); proc.append(osim.ModOpRemoveMuscles()); model = proc.process()
     for space, pj in paths_by_space.items():
         sp = pd.configure(space); pd.remove_design_actuators(model)
         paths = json.load(open(pj)); wrap = sp.get("wrap")
+        if wrap and box_scale != 1.0: wrap = dict(wrap, center=tuple(v * box_scale for v in wrap["center"]), radius=wrap["radius"] * box_scale)   # 로봇 크기
         sides = (("r", 1.0), ("l", -1.0)) if sp["mirror"] else (("", 1.0),)
         for side, sgn in sides:
             wrap_obj = None
@@ -69,6 +70,7 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--base", required=True); ap.add_argument("--paths", nargs="+", required=True, help="space=json …")
     ap.add_argument("--sol", nargs="+", required=True, help="space=Moco 이름 (paths_… ) …"); ap.add_argument("--name", required=True)
+    ap.add_argument("--box-scale", type=float, default=1.0, help="감는 구 배율 (로봇 키 / 피험자3 키, path_design 과 같게)")
     a = ap.parse_args(); paths = {k: (v if os.path.isabs(v) else os.path.join(ROOT, v)) for k, v in kv(a.paths).items()}; sols = kv(a.sol)
-    build(a.base if os.path.isabs(a.base) else os.path.join(ROOT, a.base), paths, os.path.join(ROOT, f"report/moco/gui_upper_{a.name}_model.osim"))
+    build(a.base if os.path.isabs(a.base) else os.path.join(ROOT, a.base), paths, os.path.join(ROOT, f"report/moco/gui_upper_{a.name}_model.osim"), a.box_scale)
     motion(sols, paths, os.path.join(ROOT, f"report/moco/gui_upper_{a.name}.mot"))

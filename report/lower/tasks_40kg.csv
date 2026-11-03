@@ -1,0 +1,3 @@
+dataset,subject,trial,ik,id,mass_kg,height_m,task,hand_load_kg,note
+LabValidation,subject3,walking1_segment_0,data/robot40/lower/walking1_segment_0_ik.mot,out/lower40/subject3/walking1_segment_0_id.sto,40,1.35,walk,0,"robot40 뼈대 + 질량·키 비율로 줄인 GRF 로 ID (잔차 8.8 %)"
+LabValidation,subject3,squats1_segment_0,data/robot40/lower/squats1_segment_0_ik.mot,out/lower40/subject3/squats1_segment_0_id.sto,40,1.35,squat,0,"robot40 뼈대 + 질량·키 비율로 줄인 GRF 로 ID (잔차 9.3 %)"

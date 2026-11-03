@@ -23,10 +23,12 @@ def main():
     ap.add_argument("--ext", default=None, help="외력 설정 xml (기본: out/real 의 것)"); ap.add_argument("--id", default=None, help="기준 ID .sto (기본: out/real 의 것)")
     ap.add_argument("--t0", type=float, default=None); ap.add_argument("--t1", type=float, default=None); ap.add_argument("--name", default=None)
     ap.add_argument("--space", default="lower"); ap.add_argument("--paths", default=None, help="경로 json (기본 report/newmus_paths_k8.json)")
+    ap.add_argument("--box-scale", type=float, default=1.0, help="감는 구 배율 (로봇 크기, path_design 과 같게) — 케이블 토크 vs ID 지표에만 쓴다")
     ap.add_argument("--prefilter", action="store_true", help="운동학을 전체 길이에서 6 Hz 로 미리 거른다 (Moco 내부 필터는 창으로 자른 뒤 걸어 양 끝·급변 구간이 튄다)")
     a = ap.parse_args(); sub, trial = a.subject, a.trial
     global COORDS
     SP = pd.configure(a.space); COORDS = SP["base"]; dside = SP["design_side"]
+    if pd.WRAP and a.box_scale != 1.0: pd.WRAP = dict(pd.WRAP, center=tuple(v * a.box_scale for v in pd.WRAP["center"]), radius=pd.WRAP["radius"] * a.box_scale)
     paths_json = a.paths or os.path.join(ROOT, "report/newmus_paths_k8.json")
     if a.space != "lower" and a.model == os.path.join(ROOT, "report/moco/newmus_paths_subject3_model.osim"):
         a.model = os.path.join(ROOT, f"report/moco/newmus_paths_{a.space}_k{len(json.load(open(paths_json))['muscles'])}_model.osim")

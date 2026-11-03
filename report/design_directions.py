@@ -27,7 +27,7 @@ import design_space as ds                              # noqa: E402
 LAB = os.path.join(os.path.dirname(ROOT), "LabValidation_withoutVideos")
 KEEP = ("subject3", "subject4", "subject5", "subject7", "subject8", "subject10", "subject11")
 SP = ds.get("lower"); COORDS = SP["base"]              # main() 에서 --space 로 바뀐다
-REF = 63.5 * 1.69                                      # 피험자3 질량×키
+REF = 63.5 * 1.69                                      # 피험자3 질량×키 (--ref-mass/--ref-height 로 바꾼다, 예: 로봇 40 kg 1.35 m)
 for f in font_manager.findSystemFonts():
     if "AppleSDGothicNeo" in f: plt.rcParams["font.family"] = font_manager.FontProperties(fname=f).get_name(); break
 plt.rcParams["axes.unicode_minus"] = False
@@ -135,7 +135,10 @@ def main():
     ap.add_argument("--space", default="lower", help=f"설계 공간 {list(ds.SPACES)}")
     ap.add_argument("--tasks", default=None, help="trial 목록 CSV (없으면 하체 기본 데이터)")
     ap.add_argument("--k", default=None, help="근육 수 (쉼표로 여러 개: 4,5,6). 기본 = 공간의 k")
+    ap.add_argument("--ref-mass", type=float, default=63.5); ap.add_argument("--ref-height", type=float, default=1.69, help="토크를 맞출 몸 크기 (기본 피험자3)")
+    ap.add_argument("--out-tag", default="", help="출력 파일 이름 뒤에 붙일 말 (예: _40kg)")
     a = ap.parse_args()
+    global REF; REF = a.ref_mass * a.ref_height
     SP = ds.get(a.space); COORDS = SP["base"]
     ks = [int(x) for x in a.k.split(",")] if a.k else [SP["k"]]
     data = dataset_from_tasks(a.tasks if os.path.isabs(a.tasks) else os.path.join(ROOT, a.tasks)) if a.tasks else dataset(a.with_dj)
@@ -148,10 +151,10 @@ def main():
 
 
 def design(a, data, k):
-    n = len(COORDS); legacy = (SP["name"] == "lower" and k == 8 and not a.tasks)
-    tag = "" if legacy else f"_{SP['name']}_k{k}"
+    n = len(COORDS); legacy = (SP["name"] == "lower" and k == 8 and not a.tasks and not a.out_tag)
+    tag = ("" if legacy else f"_{SP['name']}_k{k}") + a.out_tag
     tau_all = np.vstack(list(data.values()))
-    print(f"\n=== {SP['name']} 근육 {k}개 ===  데이터:", {kk: v.shape[0] for kk, v in data.items()}, "합계", tau_all.shape[0], "프레임 (side 합침, 피험자3 크기)")
+    print(f"\n=== {SP['name']} 근육 {k}개 ===  데이터:", {kk: v.shape[0] for kk, v in data.items()}, "합계", tau_all.shape[0], f"프레임 (side 합침, 기준 {a.ref_mass:g} kg × {a.ref_height:g} m)")
     print("좌표별 피크 (Nm):", dict(zip(COORDS, np.round(np.abs(tau_all).max(axis=0), 1))))
     tau_fit = subsample(tau_all, a.frames)
     tau_eval = subsample(tau_all, 3000, seed=7)
