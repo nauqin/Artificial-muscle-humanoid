@@ -200,7 +200,7 @@ Moco 검증 명령은 `TUTORIAL.md` 9절.
 | 몸통 | 4 | 209 → 123 | 260~1,761 (상한 1,800 으로 낮춰 재설계) | 0.0 % | 0.0 % | 통과 |
 | 어깨 | **6** + 감는 구 3.3 cm, 힘 ×1.5 | 95 → 69 (63.5 kg 6개 방향 고정, 용량만 재계산) | 768~1,937 | 0.2 % | **굴곡 10 %, 회전 19 % — 회전 미달** | 걷기 통과, 들기 회전만 부족 |
 | 팔꿈치 | 2 | 36 → 26 | 1,361 / 1,380 | 0.0 % | 0.0 % | 통과 |
-| 하체 | 8 | ~300 → 200 | 438~2,443 | 무릎 13 % (기준 10 % 초과) | 스쿼트 8.9 % | 근사 통과 |
+| 하체 | 8 | ~300 → 200 | 438~2,443 | Moore 걷기 2.8 % (LabValidation 걷기는 무릎 13 %) | 스쿼트 8.9 % | 통과 |
 
 어깨에서 해 본 것(들기 보조 95퍼센타일, 굴곡/회전):
 
@@ -218,4 +218,8 @@ Moco 검증 명령은 `TUTORIAL.md` 9절.
 하체 걷기 무릎 13 % 는 비율로 줄인 지면반력(잔차 8.8 %)과의 불일치가 섞인 값이라 참고치다.
 파일: `newmus_V_design_shoulder_r_k6_40kg_v635.npz`, `newmus_paths_shoulder_r_k6_40kg_v635_f15.json`(힘 1.5배), 다른 안은 `*_k5_40kg*`, `*_k6_40kg.json`.
 
-GUI·영상: `report/moco/gui_upper_robot40_lift_s1_PFWJ2_model.osim` + `.mot`, `report/video_upper_robot40_lift_s1_PFWJ2_side.mp4`.
+GUI·영상: 들기(상체만) `report/moco/gui_upper_robot40_lift_s1_PFWJ2_model.osim` + `.mot`, `report/video_upper_robot40_lift_s1_PFWJ2_side.mp4`.
+**전신(다리 8 + 몸통 4 + 어깨 6 + 팔꿈치 2)** 걷기: `report/moco/gui_upper_robot40_fullbody_walk_s3_T047_12_model.osim` + `.mot`,
+`report/video_upper_robot40_fullbody_walk_s3_T047_12_side.mp4` — Moore 걷기 지면반력을 질량·키 비율로 줄여 하체 ID(잔차 6.2 %) → 하체 Moco
+(보조 95퍼센타일 2.8 %) → 상체 해와 합침. 들기는 CARRT 에 힘판이 없어 하체 근육 활성도를 못 구하므로 상체만 보인다.
+`gui_export_upper.py`·`paths_video_upper.py` 에 `lower=` 를 더 주면 전신, `--grf` 로 지면반력 화살표.
