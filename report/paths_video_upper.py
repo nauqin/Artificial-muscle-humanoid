@@ -36,7 +36,7 @@ def kv(items): return dict(s.split("=", 1) for s in items)
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--name", required=True); ap.add_argument("--base", required=True); ap.add_argument("--paths", nargs="+", required=True); ap.add_argument("--sol", nargs="+", required=True)
-    ap.add_argument("--id", required=True); ap.add_argument("--title", default=""); ap.add_argument("--azimuth", type=float, default=0.0)
+    ap.add_argument("--id", required=True); ap.add_argument("--title", default=""); ap.add_argument("--azimuth", default="auto", help="보는 방향(도). auto = 골반이 향한 방향을 화면 가로로 (옆모습), 거기에 90 을 더하면 앞모습")
     ap.add_argument("--fps", type=int, default=30); ap.add_argument("--slow", type=float, default=1.5); ap.add_argument("--loops", type=int, default=1); ap.add_argument("--png", type=float, default=None); ap.add_argument("--tag", default="", help="출력 파일 이름 뒤에 붙일 말 (예: _side)")
     a = ap.parse_args(); import opensim as osim; osim.Logger.setLevelString("Error")
     mdir = os.path.join(ROOT, "report/moco"); paths_j = {k: (v if os.path.isabs(v) else os.path.join(ROOT, v)) for k, v in kv(a.paths).items()}; sols = kv(a.sol)
@@ -45,7 +45,13 @@ def main():
     first = next(iter(sols.values())); ik_path = os.path.join(mdir, f"{first}_ik_full.mot"); idm = io.read_mot(a.id)
     sol = {sp: io.read_mot(os.path.join(mdir, f"{n}_solution.sto")) for sp, n in sols.items()}
     t0 = max(float(s.time[0]) for s in sol.values()); t1 = min(float(s.time[-1]) for s in sol.values())
-    times = np.arange(t0, t1, 1.0 / (a.fps * a.slow)); n = len(times); az = np.radians(a.azimuth); hdir = np.array([np.cos(az), 0.0, np.sin(az)])
+    times = np.arange(t0, t1, 1.0 / (a.fps * a.slow)); n = len(times)
+    if str(a.azimuth).startswith("auto"):                                      # 골반 x 축(앞)을 지면에 내린 방향 = 옆모습의 가로축
+        mdl = osim.Model(a.base if os.path.isabs(a.base) else os.path.join(ROOT, a.base)); ps = io.Pose(mdl, ik_path); ps.set(float(times[n // 2]))
+        fwd = ps.station_position("pelvis", (1.0, 0.0, 0.0)) - ps.body_position("pelvis"); az = np.arctan2(fwd[2], fwd[0]) + np.radians(float(a.azimuth[4:] or 0))
+        print(f"azimuth auto: 골반 앞 방향 {np.degrees(np.arctan2(fwd[2], fwd[0])):.0f}° → 화면 가로 {np.degrees(az):.0f}°")
+    else: az = np.radians(float(a.azimuth))
+    hdir = np.array([np.cos(az), 0.0, np.sin(az)])
     # 근육 목록 (설계 공간 순서), 신호 U, 토크 tau, 보조 RES
     muscles = []; U = []; tau = {}; RES = {}; coords_all = []
     base_model_path = a.base if os.path.isabs(a.base) else os.path.join(ROOT, a.base)
@@ -87,7 +93,7 @@ def main():
     for s_ in ("top", "right"): axf.spines[s_].set_visible(False)
     bones = LineCollection([], linewidths=4, colors=[c for _, _, c in segs], zorder=1); axf.add_collection(bones)
     cables = [axf.plot([], [], "-", lw=2.5, color=GROUP_COLORS[sp], zorder=3)[0] for sp, _ in muscles]
-    tl = axf.text(0.02, 0.97, "", transform=axf.transAxes, fontsize=11, va="top"); span = 1.8
+    tl = axf.text(0.02, 0.97, "", transform=axf.transAxes, fontsize=11, va="top"); span = 1.4
     x = np.arange(nm); bars = axb.bar(x, np.zeros(nm), color=[GROUP_COLORS[sp] for sp, _ in muscles]); axb.set_xticks(x); axb.set_xticklabels([m.replace("shoulder_", "어깨").replace("elbow_", "팔꿈치").replace("trunk_", "몸통").replace("_r", "") for _, m in muscles], fontsize=8, rotation=20)
     axb.set_ylim(0, 1.05); axb.set_title("이 순간 케이블 근육의 신호 u (1 = 용량)", fontsize=11); axb.set_ylabel("u")
     for ax, cs, ttl in ((axt1, [c for c in coords_all if c.startswith("lumbar")], "몸통 토크 — 케이블(실선) vs 측정 ID(점선)"), (axt2, [c for c in coords_all if not c.startswith("lumbar")], "오른팔 토크 — 케이블(실선) vs 측정 ID(점선)")):
@@ -105,7 +111,7 @@ def main():
         i = fi % n; p = pos[i]; h = H(p)
         bones.set_segments([[(h[s0], p[s0][1]), (h[s1], p[s1][1])] for s0, s1, _ in segs])
         for j, ln in enumerate(cables):
-            P = cab[j][i]; ln.set_data(H(P), P[:, 1]); ln.set_alpha(0.15 + 0.85 * min(U[i, j], 1.0)); ln.set_linewidth(1.5 + 3 * min(U[i, j], 1.0))
+            P = cab[j][i]; ln.set_data(H(P), P[:, 1]); ln.set_alpha(0.35 + 0.65 * min(U[i, j], 1.0)); ln.set_linewidth(2.0 + 3 * min(U[i, j], 1.0))
         centre = float(h[0]); axf.set_xlim(centre - span / 2, centre + span / 2)
         tl.set_text(f"t = {times[i]:5.2f} s")
         for b, v in zip(bars, U[i]): b.set_height(v)
