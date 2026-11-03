@@ -1109,7 +1109,7 @@ GRF 피크가 합으로 1.6~1.9 BW 라 `grf_peak` 가 WARN 인데, 발 하나씩
 
 하체 파이프라인을 그대로 쓰되 좌표·뼈·부착 상자만 `report/design_space.py` 표로 뺐다(`--space lower/trunk/arm_r/shoulder_r/elbow_r`).
 입력은 `report/upper/tasks.csv`(걷기 Moore2015 8조각 + 들기 CARRT 8시행), 결과·가정·라이선스는 `report/upper/README.md`,
-명령은 TUTORIAL 9절. 서서 균형(Santos2017)은 아직 못 받아 빠졌다.
+명령은 TUTORIAL 9절. 서서 균형은 빼기로 했다(11/3) — 정적 서기 요추 토크는 몇 Nm 라 걷기·들기 범위 안이고, 후보 Santos2017 은 팔 마커가 없다.
 
 **원리.** 팔·몸통 토크는 지면반력 없이도 정확하다(위쪽 분절 운동 + 손 하중만으로 정해진다). Moore T048_seg26 에서 GRF 를 넣고 빼도
 arm_flex 15.08/15.08, lumbar 39.25/39.25 Nm — 차이 0.00. 그래서 CARRT 처럼 힘판 없는 데이터를 그대로 쓴다(`run_trial.py --no-grf`).
@@ -1145,7 +1145,7 @@ arm_flex 15.08/15.08, lumbar 39.25/39.25 Nm — 차이 0.00. 그래서 CARRT 처
 torso 에 붙어 있어(팔 들면 22 cm 오차) humerus 로 재부모; `MarkerPlacer` 가 파이썬에서 마커를 안 옮겨 정적 IK 로 직접 배치
 (`tools/carrt_prepare.place_markers`). "Half Body" 폴더는 마커 20개뿐. 최종 IK RMS 상자 1.8, 나머지 3.0~3.5 cm(기준 2 cm 미달 — 팔 회전은 믿지 말 것).
 
-남은 것: Santos2017 서기 → `task=stand`; 기계연 팔 모듈 힘(지금 1,800 N 가정)·스트로크; 어깨 wrap 면; 팔 시너지(MoBL-ARMS, 정어진).
+남은 것: 기계연 팔 모듈 힘(지금 1,800 N 가정)·스트로크; 어깨 wrap 면; 팔 시너지(MoBL-ARMS, 정어진).
 
 ### 계획 파일이 없다
 

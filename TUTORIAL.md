@@ -328,7 +328,7 @@ python report/moco_path_muscles.py --space trunk --paths report/newmus_paths_tru
 - 모델에 원래 있던 토크 모터(`lumbar_ext`, `shoulder_flex_r` …)는 설계 좌표에서 떼고 **그 뒤에** 보조를
   붙인다. 순서가 바뀌면 설계 좌표에 보조가 안 붙어 검증이 무의미해진다(코드가 이미 그렇게 한다).
 
-### 9-5. 서서 균형(Santos2017)을 넣으려면
+### 9-5. 서서 균형 데이터를 넣고 싶다면 (설계에는 필요 없음 — 2026-11-03 제외 결정)
 
 AddB 드라이브 `train/Santos2017/no_arm` 에서 2명 `.b3d` 를 받아 `b3d_to_opensim.py --out data/santos2017`
 (`--walking-only` 금지) → `batch.py --data data/santos2017 --out out/upper/santos2017 --no-grf --no-muscle --lowpass 6`

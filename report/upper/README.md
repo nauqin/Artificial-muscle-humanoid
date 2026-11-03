@@ -9,10 +9,10 @@
 | --- | --- | --- | --- | --- | --- |
 | 걷기 1.2 / 1.6 m/s | Moore2015 (AddBiomechanics `train/Moore2015/With_Arm`) | subject3·subject9 × 속도 2 × 조각 2 = 8 | 있음 | 상체용 ID 는 GRF 없이 | Moore, Hnat, van den Bogert 2015, PeerJ 3:e918. 데이터 Zenodo 10.5281/zenodo.13030, **CC0** |
 | 물건 들기·옮기기·찬장 열기 | CARRT (Univ. South Florida) | subject1·subject6 × (상자, 찬 물병, 빈 물병, 찬장) = 8 | 있음 | 물체 질량을 손 바디에 더해 ID, GRF 없이 | Trivedi 외 2023, Sensors 23:8354 (CC BY 4.0). 데이터 Zenodo 10.5281/zenodo.8034000 (레코드에 라이선스 란 없음, "open access") |
-| 서서 균형 | Santos2017 (AddB `train/Santos2017/no_arm`) | **아직 없음** — 드라이브에서 2명 받아야 함 | 없음 | GRF 있음 | Santos & Duarte 2017, PeerJ 5:e3626 |
+| 서서 균형 | (제외, 2026-11-03 결정) | — | — | — | 정적 서기 요추 토크는 몇 Nm 라 걷기·들기 범위 안에 든다. 후보였던 Santos2017(PeerJ 5:e3626)은 팔 마커가 없어 팔 설계에도 못 쓴다 |
 
-서기 데이터가 없으므로 이번 설계의 "서서 균형"은 걷기·들기 안의 직립 구간으로 대신했다. Santos 가 오면
-`b3d_to_opensim.py --out data/santos2017` → `batch.py --no-grf` → `tasks.csv` 에 `task=stand` 줄 추가 → 아래 명령 재실행.
+"서서 균형"은 걷기·들기 안의 직립 구간으로 대신한다. 따로 서기 데이터를 넣어도 몸통 용량은 바뀌지 않는다(용량은 걷기·들기가 정한다).
+균형 제어를 다룰 때 검증용으로 쓰고 싶으면 `tasks.csv` 에 `task=stand` 줄을 추가하면 같은 명령이 그대로 돈다.
 
 ## 2. 상체 토크를 지면반력 없이 구해도 되는 이유
 
