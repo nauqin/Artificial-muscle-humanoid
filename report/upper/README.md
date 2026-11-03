@@ -159,6 +159,10 @@ M1 1,890 N 은 팔 모듈 상한 가정(1,800 N)을 넘는다 — 기계연 사�
 | 팔꿈치 (1자유도) | 2 | 36 | 1,535~1,679 | 설계·검증 완료 (팔꿈치 뒤 지렛대 전제) |
 | 한쪽 팔 합계 | 7 | 131 | | 다관절 6개(118 Nm)보다 13 Nm 많지만 케이블로 만들 수 있다 |
 
+영상 (`report/paths_video_upper.py`, 하체 `paths_video.py` 와 같은 화면: 뼈대 + 케이블(신호로 진하기) + 신호 막대 + 토크 추적 + 보조):
+`report/video_upper_lift_s1_PFWJ2_side.mp4`(찬 물병 들기, 옆), `_front.mp4`(앞), `video_upper_walk_s3_T047_12_side.mp4`(걷기). 케이블은
+OpenSim 이 실제로 계산한 경로(감는 구를 돌아가는 점 포함)다. `--azimuth` 로 보는 방향(0 = x 축 가로, 90 = z 축 가로)을 고른다.
+
 GUI 로 보기 (`report/gui_export_upper.py`, 하체 6-5 와 같은 방식): `report/moco/gui_upper_lift_s1_PFWJ2_model.osim` + `gui_upper_lift_s1_PFWJ2.mot`
 (찬 물병 들기), `gui_upper_walk_s3_T047_12_model.osim` + `.mot`(걷기). OpenSim GUI 에서 File → Open Model, File → Load Motion. 케이블이
 활성도 색으로 움직인다. 뼈 메시는 `report/moco/Geometry`.
