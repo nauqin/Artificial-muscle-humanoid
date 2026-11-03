@@ -40,9 +40,11 @@ def build_model(model_path, ext_loads, k, sub, trial, out_dir, name, umax, v_fro
     proc.append(osim.ModOpReplaceJointsWithWelds(sv))
     if ext_loads: proc.append(osim.ModOpAddExternalLoads(os.path.abspath(ext_loads)))   # 상체 전용이면 외력 없음
     proc.append(osim.ModOpRemoveMuscles())                 # 사람 근육 80개 전부 제거
-    proc.append(osim.ModOpAddReserves(1.0))                # 모든 좌표에 보조 — 새 근육이 못 내는 몫을 잰다
     model = proc.process(); model.initSystem()
-    pd.remove_design_actuators(model)                      # 설계 좌표의 원래 토크 모터(shoulder_flex_r 등) 제거
+    pd.remove_design_actuators(model)                      # 설계 좌표의 원래 토크 모터(shoulder_flex_r, lumbar_ext …) 제거
+    # 보조는 모터를 뗀 **뒤에** 붙인다 — ModOpAddReserves 는 CoordinateActuator 가 이미 있는 좌표를 건너뛰어, 먼저 붙이면 설계 좌표에 보조가 없다 (2026-11-03)
+    proc = osim.ModelProcessor(model); proc.append(osim.ModOpAddReserves(1.0))   # 모든 좌표에 보조 — 새 근육이 못 내는 몫을 잰다
+    model = proc.process(); model.initSystem()
 
     V_all = {}
     for side in SP["sides"]:
@@ -74,10 +76,10 @@ def build_model(model_path, ext_loads, k, sub, trial, out_dir, name, umax, v_fro
     return out, V_all
 
 
-def msol_names(study):
-    """문제에 들어간 제어 이름 목록 (보조 가중치를 좌표별로 매기려고)."""
-    rep = study.getProblem().createRep(); m = rep.getModelBase()
-    return [f"/forceset/{m.getForceSet().get(i).getName()}" for i in range(m.getForceSet().getSize())]
+def msol_names(model_osim):
+    """문제에 들어간 제어 이름 목록 (보조 가중치를 좌표별로 매기려고). createRep() 의 모델은 파이썬에서 바로 깨져서 파일에서 다시 읽는다."""
+    m = osim.Model(model_osim); fs = m.getForceSet()
+    return [f"/forceset/{fs.get(i).getName()}" for i in range(fs.getSize())]
 
 
 def main():
@@ -147,9 +149,7 @@ def main():
     goal.setWeightForControlPattern("/forceset/reserve_jointset_ground_pelvis_.*", 0.01)
     if ext is None:                                        # 외력 없음: 다리·골반·비설계 좌표의 보조는 싸게 — 설계 좌표만 잰다
         design = {ds.full(c, s) for c in COORDS for s in SP["sides"]}
-        for i in range(study.getProblem().createRep().getModelBase().getForceSet().getSize()):
-            pass
-        for cn in list(msol_names(study)):
+        for cn in msol_names(model_osim):
             if "reserve" in cn and cn.split("_")[-1] not in {d.split("_")[-1] for d in design} and not any(cn.endswith("_" + d) for d in design):
                 goal.setWeightForControlPattern(cn, 0.01)
     tic = time.time(); msol = study.solve(); dt = time.time() - tic

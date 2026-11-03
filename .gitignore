@@ -25,3 +25,6 @@ __pycache__/
 !report/moco/gui_muscles_model.osim
 !report/moco/gui_paths_subject3_walking1_full_v3.mot
 !report/moco/gui_paths_subject3_squats1_v3.mot
+!report/moco/newmus_paths_trunk_k4_model.osim
+!report/moco/newmus_paths_shoulder_r_k5_model.osim
+!report/moco/newmus_paths_elbow_r_k2_model.osim

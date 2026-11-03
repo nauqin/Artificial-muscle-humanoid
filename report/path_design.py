@@ -62,6 +62,7 @@ def poses_from_tasks(path, n_per=None, seed=0):
         if not row.get("id") or row["id"].startswith("#"): continue
         ik = row["ik"] if os.path.isabs(row["ik"]) else os.path.join(ROOT, row["ik"]); idp = row["id"] if os.path.isabs(row["id"]) else os.path.join(ROOT, row["id"])
         m = io.read_mot(ik); idm = io.read_mot(idp)
+        if m.in_degrees: m.data = np.radians(m.data)          # CARRT IK(OpenSim IK 툴 출력)는 도 단위, 설계 좌표는 전부 회전
         if not all(c in m.names for c in cols) or not all(c + "_moment" in idm.names for c in COORDS): print(f"  [건너뜀] {row['trial']}: 열 없음"); continue
         ok = (m.time >= idm.time[0]) & (m.time <= idm.time[-1]); tsel = m.time[ok]
         n = n_per or (5 if row["task"].startswith("walk") else 10)
@@ -70,7 +71,11 @@ def poses_from_tasks(path, n_per=None, seed=0):
             q = m.column(c)[ok]; t = np.append(t, [tsel[np.argmax(q)], tsel[np.argmin(q)]])
         Q.append(np.column_stack([np.interp(t, m.time, m.column(c)) for c in cols]))
         T.append(np.column_stack([np.interp(t, idm.time, idm.column(c + "_moment")) for c in COORDS]))
-    return np.vstack(Q), np.vstack(T)
+    Q, T = np.vstack(Q), np.vstack(T)
+    for cname, (lo, hi) in SP.get("pose_limit", {}).items():        # 특이점 근처 자세 제외 (design_space 참고)
+        j = cols.index(cname); keep = (Q[:, j] >= lo) & (Q[:, j] <= hi)
+        print(f"  자세 제외 {int((~keep).sum())}개: {cname} 가 [{lo:.2f}, {hi:.2f}] rad 밖"); Q, T = Q[keep], T[keep]
+    return Q, T
 
 
 class Frames:
@@ -141,7 +146,7 @@ def main():
     legacy = (a.space == "lower" and not a.tasks)
     k = a.k or SP["k"]; tag = "_k8" if legacy else f"_{a.space}_k{k}"
     design = a.design or os.path.join(ROOT, f"report/newmus_V_design{tag}.npz")
-    d = np.load(design); V, c = d["V"], d["c"]; k = len(V)
+    d = np.load(design); V, c = d["V"], d["c"]; k = len(V); tag = "_k8" if legacy else f"_{a.space}_k{k}"   # k 는 설계 파일이 정한다
     model_path = a.model or os.path.join(ROOT, "data/subject3/subject3_scaled.osim")
     out_json = a.out or os.path.join(ROOT, f"report/newmus_paths{tag}.json")
     Q, T = poses_from_tasks(os.path.join(ROOT, a.tasks) if not os.path.isabs(a.tasks) else a.tasks) if a.tasks else poses()

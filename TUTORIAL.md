@@ -263,3 +263,73 @@ python b3d_to_opensim.py /Volumes/MRLAB/인공근육휴머노이드/subjectN.b3d
 - ID 잔차가 크다(`residual` > 0.2): 지면반력이 없는 구간이 섞인 것. `run_trial.py`가 자동으로 자르지만, 로그의 "trial … 프레임 (…/… 사용)" 줄을 본다.
 - 시너지 k가 시행마다 다르다: 정상이다. `--criterion global`로 바꾸면 보수적으로 나온다. NOTES "시너지 개수" 절.
 - 그 밖의 모든 것: `NOTES.md`를 먼저 검색한다. 같은 실수를 이미 한 번 했을 확률이 높다.
+
+---
+
+## 9. 상체 설계 (몸통 3자유도 + 오른팔 4자유도) — 6절을 설계 공간만 바꿔 다시 돈다
+
+6절(하체)과 같은 코드다. `--space trunk` 또는 `--space arm_r` 를 붙이면 좌표·뼈·부착 상자가
+`report/design_space.py` 의 표로 바뀐다. 입력은 `report/upper/tasks.csv` 한 장 — 걷기(Moore2015 8조각)와
+들기(CARRT 8시행)의 IK·ID 경로, 질량, 키, 손 하중. 결과와 가정은 `report/upper/README.md`.
+
+### 9-0. 왜 지면반력 없이 되나
+
+팔·몸통 토크는 그 위쪽 분절의 운동만으로 정해진다(지면반력은 다리·골반에만 들어간다). 그래서 상체 ID 는
+`--no-grf` 로 돌리고, 좌표는 6 Hz 로 거른다(15 Hz 는 팔 토크에 잡음 스파이크가 남는다).
+
+```bash
+conda activate osim
+# 걷기: Moore2015 조각 하나를 상체용 ID (GRF 없이)
+python run_trial.py --model data/moore2015/subject3/subject3_scaled.osim \
+  --ik data/moore2015/subject3/T047_segment_12_ik.mot --no-grf --lowpass 6 \
+  --out out/upper/moore2015/subject3 --name T047_segment_12
+# 들기: CARRT c3d → trc → 스케일 → IK → 손 하중 모델 → ID (피험자 하나, 20분)
+python tools/carrt_prepare.py --subject subject1
+```
+
+### 9-1. 토크 범위 → 9-2. 방향·용량 → 9-3. 경로
+
+```bash
+python report/upper/torque_summary.py                       # 과제별·좌표별 피크, fig_torque_summary.png
+python report/design_directions.py --space trunk --tasks report/upper/tasks.csv --k 4,5,6
+python report/design_directions.py --space shoulder_r --tasks report/upper/tasks.csv --k 4,5,6
+python report/design_directions.py --space elbow_r --tasks report/upper/tasks.csv --k 2
+#   → report/newmus_V_design_<space>_k<k>.npz, csv, png. slack 0 인 최소 k 를 고른다 (몸통 4, 어깨 5, 팔꿈치 2)
+#   `--space arm_r`(어깨+팔꿈치 다관절 6개)도 되지만 직선 케이블로 못 만든다 — README 6절
+python report/path_design.py --space trunk --tasks report/upper/tasks.csv \
+  --design report/newmus_V_design_trunk_k4.npz --model data/moore2015/subject3/subject3_scaled.osim
+python report/path_design.py --space shoulder_r --tasks report/upper/tasks.csv \
+  --design report/newmus_V_design_shoulder_r_k5.npz --model data/moore2015/subject3/subject3_scaled.osim
+python report/path_design.py --space elbow_r --tasks report/upper/tasks.csv \
+  --design report/newmus_V_design_elbow_r_k2.npz --model data/moore2015/subject3/subject3_scaled.osim
+#   → report/newmus_paths_<space>_k<k>.json, report/moco/newmus_paths_<space>_k<k>_model.osim, fig_path_design_<space>_k<k>.png
+```
+
+### 9-4. 검증 (토크형 6-2, 케이블형 6-4)
+
+걷기 한 조각, 3초 창. `--ext none` 이 외력 없음. `--v-scale` 은 (질량×키)/(63.5×1.69).
+
+```bash
+python report/moco_new_muscles.py --space trunk --v-from design report/newmus_V_design_trunk_k4.npz --ext none \
+  --model data/moore2015/subject3/subject3_scaled.osim --ik data/moore2015/subject3/T047_segment_12_ik.mot \
+  --id out/upper/moore2015/subject3/T047_segment_12/T047_segment_12_id.sto --t0 1 --t1 4 --v-scale 0.961 \
+  --reserve-weight 100 --name trunk_k4_walk_s3_T047_12
+python report/moco_path_muscles.py --space trunk --paths report/newmus_paths_trunk_k4.json \
+  --model report/moco/newmus_paths_trunk_k4_model.osim --ik data/moore2015/subject3/T047_segment_12_ik.mot \
+  --id out/upper/moore2015/subject3/T047_segment_12/T047_segment_12_id.sto --ext none --t0 1 --t1 4 \
+  --name paths_trunk_k4_walk_s3_T047_12
+```
+
+들기(CARRT) 검증은 README 6절의 방법대로 한다(설계 뼈대에 손 하중을 더한 모델 + CARRT 관절각).
+어깨·팔꿈치는 위 명령에서 `trunk`→`shoulder_r`/`elbow_r`, `k4`→`k5`/`k2` 로 바꾸면 된다. 걷기 검증에는 `--prefilter` 를 붙이고
+판정은 **95퍼센타일**로 본다(Moco 가 요구하는 토크가 한 노드에서 튀는 수치 잡음이 있다, NOTES 2026-11-03). 주의할 것 두 가지:
+- CARRT IK 는 **도 단위**(`inDegrees=yes`)다. `path_design.py`·`moco_path_muscles.py` 는 자동으로 라디안으로
+  바꾸지만, 새 스크립트에서 `io.read_mot` 으로 직접 읽으면 `m.in_degrees` 를 꼭 본다.
+- 모델에 원래 있던 토크 모터(`lumbar_ext`, `shoulder_flex_r` …)는 설계 좌표에서 떼고 **그 뒤에** 보조를
+  붙인다. 순서가 바뀌면 설계 좌표에 보조가 안 붙어 검증이 무의미해진다(코드가 이미 그렇게 한다).
+
+### 9-5. 서서 균형(Santos2017)을 넣으려면
+
+AddB 드라이브 `train/Santos2017/no_arm` 에서 2명 `.b3d` 를 받아 `b3d_to_opensim.py --out data/santos2017`
+(`--walking-only` 금지) → `batch.py --data data/santos2017 --out out/upper/santos2017 --no-grf --no-muscle --lowpass 6`
+→ `tasks.csv` 에 `task=stand` 줄 추가 → 9-2 부터 다시. 팔 마커가 없으니 몸통 설계에만 들어간다.

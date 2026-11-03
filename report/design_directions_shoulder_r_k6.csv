@@ -1,0 +1,9 @@
+design,total_capacity_Nm,slack_max,c0,c1,c2,c3,c4,c5
+축 정렬 6개 (관절마다 굴근·신근),116.3,0.000,28.2,16.8,2.2,14.7,38.7,15.8
+최적화 6개,89.5,0.000,13.9,15.1,14.4,17.8,12.7,15.7
+design on walk1.2,28.7,
+design on walk1.6,47.6,
+design on lift_box,28.4,
+design on lift_jug_full,89.8,
+design on lift_jug_empty,43.4,
+design on reach_cabinet,23.6,

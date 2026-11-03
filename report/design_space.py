@@ -51,10 +51,37 @@ SPACES = {
         bodies=("torso", "humerus_r", "ulna_r"),
         joint_of=(0, 0, 0, 1),
         box={"torso": ((-0.13, 0.10), (0.08, 0.36), (0.00, 0.22)),
-             "humerus_r": ((-0.05, 0.05), (-0.27, -0.02), (-0.05, 0.05)),
+             "humerus_r": ((-0.07, 0.07), (-0.27, -0.02), (-0.07, 0.07)),
              "ulna_r": ((-0.05, 0.05), (-0.20, -0.02), (-0.04, 0.04))},
         mirror=True, k=6, f_module=1800.0,          # M3 450 N × 4 묶음 가정 (기계연 확인 전)
+        # 경로 설계 자세에서 뺄 범위: 외전 75° 를 넘으면(팔을 머리 위로) 어깨 오일러각이 특이점이라 IK 가 뒤집힌다 (2026-11-03, CARRT subject6 찬 물병)
+        pose_limit={"arm_add_r": (-1.31, 1.31)},
         labels=("어깨 굴곡", "어깨 내전", "어깨 회전", "팔꿈치 굴곡"),
+    ),
+    # 팔을 단관절로 나눈 것 (2026-11-03): 어깨·팔꿈치를 같이 당기는 직선 케이블은 어깨 굴곡 모멘트암이 안 나와 걷기(팔 흔들기)를 못 냈다.
+    "shoulder_r": dict(
+        base=("arm_flex", "arm_add", "arm_rot"),
+        sides=("r", "l"), design_side="r",
+        extra=("elbow_flex_r", "pro_sup_r"),
+        bodies=("torso", "humerus_r"),
+        joint_of=(0, 0, 0),
+        box={"torso": ((-0.13, 0.10), (0.08, 0.36), (0.00, 0.22)),
+             "humerus_r": ((-0.07, 0.07), (-0.27, -0.02), (-0.07, 0.07))},
+        mirror=True, k=4, f_module=1800.0,
+        labels=("어깨 굴곡", "어깨 내전", "어깨 회전"),
+        pose_limit={"arm_add_r": (-1.31, 1.31)},
+    ),
+    "elbow_r": dict(
+        base=("elbow_flex",),
+        sides=("r", "l"), design_side="r",
+        extra=("pro_sup_r",),
+        bodies=("humerus_r", "ulna_r"),
+        joint_of=(0,),
+        # 전완 상자는 팔꿈치 뒤·위(주두 자리, x −8 / y +4 cm)까지 — 직선 케이블로 신전을 내려면 팔꿈치 뒤에 지렛대가 있어야 한다 (2026-11-03)
+        box={"humerus_r": ((-0.07, 0.05), (-0.27, -0.02), (-0.05, 0.05)),
+             "ulna_r": ((-0.08, 0.05), (-0.20, 0.04), (-0.04, 0.04))},
+        mirror=True, k=2, f_module=1800.0,
+        labels=("팔꿈치 굴곡",),
     ),
 }
 

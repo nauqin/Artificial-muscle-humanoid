@@ -85,3 +85,11 @@ newmus_subject7_walking1_k8_design2_scaled_rw100,8,True,0.1,1917.586,0.0,0.0,0.0
 newmus_subject8_walking1_k8_design2_scaled_rw100,8,True,0.1,1431.314,0.8,0.6,0.0,0.2,0.0,0.8,0.0,0.4,0.0
 newmus_subject10_walking1_k8_design2_scaled_rw100,8,True,0.1,3947.776,124.8,0.0,124.8,0.0,23.4,0.0,36.0,0.0,21.2
 newmus_subject11_walking2_k8_design2_scaled_rw100,8,True,0.1,50297.005,0.6,0.0,0.2,0.0,0.6,0.0,0.4,0.0,0.4
+trunk_k4_walk_s3_T047_12,4,True,50.1,12705.205,0.0,0.0,0.0,0.0
+trunk_k4_lift_s1_PFWJ2,4,True,50.2,20821.993,0.0,0.0,0.0,0.0
+arm_k6_walk_s3_T047_12,6,True,9.4,243540.959,0.1,0.0,0.0,0.0,0.0,0.0,0.1,0.0,0.0
+arm_k6_lift_s1_PFWJ2,6,True,9.6,944791.187,0.1,0.0,0.0,0.0,0.0,0.0,0.1,0.0,0.0
+shoulder_k4_walk_s3_T047_12,4,True,0.4,243540.860,0.1,0.0,0.0,0.0,0.0,0.1,0.1
+elbow_k2_walk_s3_T047_12,2,True,0.5,243541.778,0.0,0.0,0.0
+elbow_k2_lift_s1_PFWJ2,2,True,0.5,944804.747,0.0,0.0,0.0
+shoulder_k4_lift_s1_PFWJ2,4,True,0.6,944790.059,0.1,0.0,0.0,0.0,0.0,0.0,0.1
