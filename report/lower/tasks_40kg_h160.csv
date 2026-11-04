@@ -1,0 +1,4 @@
+dataset,subject,trial,ik,id,mass_kg,height_m,task,hand_load_kg,note
+LabValidation,subject3,walking1_segment_0,data/robot40_h160/lower/walking1_segment_0_ik.mot,out/lower40_h160/subject3/walking1_segment_0_id.sto,40,1.6,walk,0,"robot40_h160 뼈대 + 질량·키 비율로 줄인 GRF 로 ID (잔차 6.1 %)"
+LabValidation,subject3,squats1_segment_0,data/robot40_h160/lower/squats1_segment_0_ik.mot,out/lower40_h160/subject3/squats1_segment_0_id.sto,40,1.6,squat,0,"robot40_h160 뼈대 + 질량·키 비율로 줄인 GRF 로 ID (잔차 4.8 %)"
+Moore2015,subject3,T047_segment_12,data/robot40_h160/moore/T047_segment_12_ik.mot,out/lower40_h160/moore/T047_segment_12_id.sto,40,1.6,walk1.2,0,"전신 걷기 검증용. robot40_h160 뼈대 + 비율로 줄인 GRF, 15 Hz 필터 (잔차 4.6 %)"

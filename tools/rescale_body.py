@@ -49,10 +49,11 @@ def main():
     ap.add_argument("--mass", type=float, required=True); ap.add_argument("--height", type=float, required=True)
     ap.add_argument("--out", default=None, help="모델 폴더 (기본 data/robot<mass>)"); ap.add_argument("--tasks", default="report/upper/tasks.csv")
     ap.add_argument("--lowpass", type=float, default=6.0); ap.add_argument("--skip-id", action="store_true")
+    ap.add_argument("--tag", default="", help="출력 이름 뒤에 붙일 말 (예: _h160 → data/robot40_h160, out/upper40_h160, tasks_40kg_h160.csv). 같은 질량·다른 키를 나란히 둘 때")
     a = ap.parse_args()
     import opensim as osim; osim.Logger.setLevelString("Error")
     import run_trial as rt; from carrt_prepare import with_hand_load
-    name = f"robot{a.mass:g}"; out_dir = os.path.join(ROOT, a.out or f"data/{name}"); os.makedirs(out_dir, exist_ok=True)
+    name = f"robot{a.mass:g}{a.tag}"; out_dir = os.path.join(ROOT, a.out or f"data/{name}"); os.makedirs(out_dir, exist_ok=True)
     lr = a.height / BASE_HEIGHT; base = os.path.join(ROOT, BASE)
     model = scale_model(base, os.path.join(out_dir, f"{name}.osim"), lr, a.mass)
     # 상체: 손 하중별 모델 + ID
@@ -63,17 +64,18 @@ def main():
             mp = os.path.join(out_dir, f"{name}_load{load:g}{'_bi' if bimanual else ''}.osim")
             if not os.path.exists(mp): with_hand_load(model, mp, load, bimanual)
         else: mp = model
-        od = os.path.join(ROOT, f"out/upper{a.mass:g}", row["dataset"].lower(), row["subject"], row["trial"]); idp = os.path.join(od, f"{row['trial']}_id.sto")
+        od = os.path.join(ROOT, f"out/upper{a.mass:g}{a.tag}", row["dataset"].lower(), row["subject"], row["trial"]); idp = os.path.join(od, f"{row['trial']}_id.sto")
         if not a.skip_id and not os.path.exists(idp):
             print(f"[ID] {row['dataset']} {row['subject']} {row['trial']} 하중 {load} kg 모델 {os.path.basename(mp)}", flush=True)
             rt.run_trial_no_grf(mp, os.path.join(ROOT, row["ik"]), od, row["trial"], lowpass=a.lowpass, log=lambda *x: None)
         r = dict(row); r.update(id=os.path.relpath(idp, ROOT), mass_kg=f"{a.mass:g}", height_m=f"{a.height:g}", note=f"{name} 뼈대로 ID 재계산, 손 하중 {load} kg 그대로"); rows_out.append(r)
-    tasks_out = os.path.join(ROOT, f"report/upper/tasks_{a.mass:g}kg.csv")
+    tasks_out = os.path.join(ROOT, f"report/upper/tasks_{a.mass:g}kg{a.tag}.csv")
     with open(tasks_out, "w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=list(rows_out[0].keys())); w.writeheader(); w.writerows(rows_out)
     print("tasks", tasks_out, len(rows_out), "행")
     # 하체 검증 입력 (data/subject3 걷기·스쿼트)
     scale_lower_inputs(os.path.join(ROOT, "data/subject3"), ("walking1_segment_0", "squats1_segment_0"), os.path.join(out_dir, "lower"), lr, a.mass / 63.5)
+    scale_lower_inputs(os.path.join(ROOT, "data/moore2015/subject3"), ("T047_segment_12",), os.path.join(out_dir, "moore"), lr, a.mass / 63.5)   # 전신 걷기 검증용
 
 
 if __name__ == "__main__":

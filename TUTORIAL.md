@@ -336,3 +336,29 @@ python report/moco_path_muscles.py --space trunk --paths report/newmus_paths_tru
 AddB 드라이브 `train/Santos2017/no_arm` 에서 2명 `.b3d` 를 받아 `b3d_to_opensim.py --out data/santos2017`
 (`--walking-only` 금지) → `batch.py --data data/santos2017 --out out/upper/santos2017 --no-grf --no-muscle --lowpass 6`
 → `tasks.csv` 에 `task=stand` 줄 추가 → 9-2 부터 다시. 팔 마커가 없으니 몸통 설계에만 들어간다.
+
+### 9-6. 로봇 크기로 다시 돌리기 + 모듈 스트로크 제약 (2026-11-04, 40 kg · 1.60 m)
+
+```bash
+python tools/rescale_body.py --mass 40 --height 1.60 --tag _h160        # 뼈대·손 하중 모델·상체 ID 16건·하체 검증 입력 → *_h160
+M=data/robot40_h160/robot40_h160.osim; T=report/upper/tasks_40kg_h160.csv; B=0.9877   # B = 1.60 / 1.62 (Moore subject3 키)
+# 하체 검증용 ID (지면반력을 질량·키 비율로 줄인 것). Moore 걷기는 15 Hz 로!
+python run_trial.py --model $M --ik data/robot40_h160/lower/walking1_segment_0_ik.mot --grf data/robot40_h160/lower/walking1_segment_0_grf.mot --out out/lower40_h160/subject3 --name walking1_segment_0
+python run_trial.py --model $M --ik data/robot40_h160/moore/T047_segment_12_ik.mot --grf data/robot40_h160/moore/T047_segment_12_grf.mot --out out/lower40_h160/moore --name T047_segment_12 --lowpass 15 --grf-lowpass 15
+# 방향·용량 (어깨는 63.5 kg 방향을 고정하고 용량만: --fix-v)
+python report/design_directions.py --space lower --ref-mass 40 --ref-height 1.60 --out-tag _40kg_h160
+python report/design_directions.py --space trunk --tasks $T --k 4 --ref-mass 40 --ref-height 1.60 --out-tag _40kg_h160
+python report/design_directions.py --space shoulder_r --tasks $T --k 6 --ref-mass 40 --ref-height 1.60 --out-tag _40kg_h160_v635 --fix-v report/newmus_V_design_shoulder_r_k6.npz
+python report/design_directions.py --space elbow_r --tasks $T --k 2 --ref-mass 40 --ref-height 1.60 --out-tag _40kg_h160
+# 경로: 모듈 스트로크 상한 (계획서 모듈표: M1 120 mm, M2·M6 80 mm)
+python report/path_design.py --space lower --design report/newmus_V_design_lower_k8_40kg_h160.npz --model $M --box-scale $B --ref 40 1.60 --out-tag _40kg_h160_s120 --stroke-max 0.12
+python report/path_design.py --space trunk --tasks $T --design report/newmus_V_design_trunk_k4_40kg_h160.npz --model $M --box-scale $B --out-tag _40kg_h160_s80 --f-module 1800 --stroke-max 0.08
+python report/path_design.py --space shoulder_r --tasks $T --design report/newmus_V_design_shoulder_r_k6_40kg_h160_v635.npz --model $M --box-scale $B --out-tag _40kg_h160_v635_s80 --stroke-max 0.08   # --wrap-radius 0.032 로 구 크기 실험
+python report/path_design.py --space elbow_r --tasks $T --design report/newmus_V_design_elbow_r_k2_40kg_h160.npz --model $M --box-scale $B --out-tag _40kg_h160_s80 --stroke-max 0.08
+# 모듈 배정표 (ΔL·힘 → 등급·묶음 수, SMA 비율은 참고)
+python report/stroke_check.py --space lower --paths report/newmus_paths_lower_k8_40kg_h160_s120.json --model $M
+python report/stroke_check.py --space shoulder_r --paths report/newmus_paths_shoulder_r_k6_40kg_h160_v635_s80_f15.json --tasks $T --model $M --box-scale $B
+```
+
+검증은 9-4 와 같되 `--model`/`--paths` 를 `*_40kg_h160_*` 로, ID 를 `out/upper40_h160/...`·`out/lower40_h160/...` 로, `--box-scale $B` 를 붙인다.
+결과와 어깨 미달 분석은 `report/upper/README.md` 9절.

@@ -137,6 +137,7 @@ def main():
     ap.add_argument("--k", default=None, help="근육 수 (쉼표로 여러 개: 4,5,6). 기본 = 공간의 k")
     ap.add_argument("--ref-mass", type=float, default=63.5); ap.add_argument("--ref-height", type=float, default=1.69, help="토크를 맞출 몸 크기 (기본 피험자3)")
     ap.add_argument("--out-tag", default="", help="출력 파일 이름 뒤에 붙일 말 (예: _40kg)")
+    ap.add_argument("--fix-v", default=None, help="방향 V 를 이 npz 에서 고정하고 용량 c 만 다시 LP 로 (예: 63.5 kg 어깨 방향을 40 kg 토크에)")
     a = ap.parse_args()
     global REF; REF = a.ref_mass * a.ref_height
     SP = ds.get(a.space); COORDS = SP["base"]
@@ -191,6 +192,10 @@ def design(a, data, k):
     while len(starts) < a.starts + 2: starts.append(unit(rng.normal(size=(k, n))))
     class Stop(Exception): pass
     best = (np.inf, None)
+    if a.fix_v:                                              # 방향 고정, 용량만
+        Vf = unit(np.load(a.fix_v if os.path.isabs(a.fix_v) else os.path.join(ROOT, a.fix_v))["V"]); assert Vf.shape == (k, n), f"--fix-v 모양 {Vf.shape} ≠ ({k}, {n})"
+        full = evaluate(Vf, tau_all); best = (full[0], Vf, full); starts = []
+        print(f"  방향 고정 ({a.fix_v}): 전체 {full[0]:.0f} Nm (slack {full[2]:.2f})", flush=True)
     for si, V0 in enumerate(starts):
         tic = time.time(); state = {"n": 0, "best": (np.inf, None), "t_lp": 0.0}
         def f(x):

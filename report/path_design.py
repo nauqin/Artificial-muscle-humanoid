@@ -22,6 +22,8 @@ import design_space as ds                              # noqa: E402
 LAB = os.path.join(os.path.dirname(ROOT), "LabValidation_withoutVideos")
 DELTA = 0.01                                          # rad, 중앙차분
 STROKE = 0.40                                         # 모듈 스트로크 (변형률)
+STROKE_MAX = None                                     # 모듈 스트로크 상한 m (--stroke-max, 과제 계획서 모듈표: M1 0.12, M2·M6 0.08, M3 0.06). None 이면 끔 (2026-11-04)
+SMA_EPS = None                                        # SMA 묶음 제약 (L_max − L_min)/L_min ≤ SMA_EPS (--sma-eps, park2019 수축률 0.5 ÷ 여유). None 이면 끔 (2026-11-04)
 MARGIN = 1.1                                          # 용량 여유 10 %
 SP = COORDS = EXTRA = BODIES = BOX = F_MODULE = None
 WRAP = None                                           # 감는 구 (design_space 의 wrap), 없으면 None
@@ -159,10 +161,10 @@ def cost(x, fr, chain, v, cap, detail=False):
     dir_err = float(0.5 * e2.mean() + 0.5 * e2.max())          # 평균 + 최악 자세 (깊은 스쿼트에서 방향이 틀어지는 것을 막는다, 9/15)
     arm_eff = (r @ v)                                          # 설계 방향으로의 유효 모멘트암 (m)
     arm_min = float(arm_eff.min()); arm_mean = float(arm_eff.mean())
-    stroke = float((L.max() - L.min()) / L.mean())
+    stroke = float((L.max() - L.min()) / L.mean()); sma = float((L.max() - L.min()) / L.min())
     force = MARGIN * cap / max(arm_min, 0.005)                 # 설계 용량을 가장 불리한 자세에서 내는 데 필요한 힘 (모멘트암 하한 5 mm — 0 에 가까우면 힘 벌점이 폭발해 DE 가 퇴화 해로 도망간다, 2026-11-03)
-    pen = 20 * max(0.0, stroke - STROKE) ** 2 + 5 * max(0.0, force / F_MODULE - 1) ** 2 + 1e4 * max(0.0, 0.015 - arm_min) ** 2
-    if detail: return dict(dir_err=dir_err, arm_min=arm_min, arm_mean=arm_mean, stroke=stroke, force=force, L_mean=float(L.mean()), pen=pen)
+    pen = 20 * max(0.0, stroke - STROKE) ** 2 + 5 * max(0.0, force / F_MODULE - 1) ** 2 + 1e4 * max(0.0, 0.015 - arm_min) ** 2 + (50 * max(0.0, sma - SMA_EPS) ** 2 if SMA_EPS else 0.0) + (50 * max(0.0, (L.max() - L.min()) / STROKE_MAX - 1) ** 2 if STROKE_MAX else 0.0)
+    if detail: return dict(dir_err=dir_err, arm_min=arm_min, arm_mean=arm_mean, stroke=stroke, sma=sma, force=force, L_mean=float(L.mean()), pen=pen)
     return dir_err + pen
 
 
@@ -179,8 +181,12 @@ def main():
     ap.add_argument("--wrap-radius", type=float, default=None, help="감는 구 반지름 m (기본 = 공간 값 × box-scale). 로봇 어깨 외피 크기")
     ap.add_argument("--f-module", type=float, default=None, help="케이블 힘 상한 N (기본 = 공간의 f_module). 낮추면 모멘트암 큰 경로를 찾는다")
     ap.add_argument("--maxfev", type=int, default=20000)
+    ap.add_argument("--stroke-max", type=float, default=None, help="모듈 스트로크 상한 m: 케이블 길이 변화 (L_max−L_min) ≤ 이 값 (계획서 모듈표 M1 0.12, M2·M6 0.08, M3 0.06)")
+    ap.add_argument("--sma-eps", type=float, default=None, help="SMA 묶음 제약: 케이블 (L_max−L_min)/L_min 상한 (park2019 수축률 0.5 ÷ 여유 1.2 = 0.417). 기본 없음")
     a = ap.parse_args(); configure(a.space)
     if a.f_module: global F_MODULE; F_MODULE = a.f_module
+    if a.sma_eps: global SMA_EPS; SMA_EPS = a.sma_eps; print(f"SMA 제약 ΔL/L_min ≤ {SMA_EPS:.3f}")
+    if a.stroke_max: global STROKE_MAX; STROKE_MAX = a.stroke_max; print(f"모듈 스트로크 제약 ΔL ≤ {STROKE_MAX*1000:.0f} mm")
     if a.box_scale != 1.0:                                      # 로봇 크기에 맞춰 상자·감는 구를 줄인다
         global BOX, WRAP; BOX = {b: tuple(tuple(v * a.box_scale for v in ax) for ax in box) for b, box in BOX.items()}
         if WRAP: WRAP = dict(WRAP, center=tuple(v * a.box_scale for v in WRAP["center"]), radius=WRAP["radius"] * a.box_scale)
@@ -257,10 +263,10 @@ def refine(out, fr, T, maxfev=20000, w_dir=3.0):
         arm_eff = np.einsum("tji,ij->ti", R, V); arm_min = np.maximum(arm_eff.min(axis=0), 0.005)
         F = f * MARGIN * cap / arm_min; A = R * F[None, None, :]
         u = batch_boxlsq(A, Tm); res = (np.einsum("tij,tj->ti", A, u) - Tm) / pk
-        stroke = (Ls.max(axis=0) - Ls.min(axis=0)) / Ls.mean(axis=0)
+        stroke = (Ls.max(axis=0) - Ls.min(axis=0)) / Ls.mean(axis=0); sma = (Ls.max(axis=0) - Ls.min(axis=0)) / Ls.min(axis=0)
         worst = np.abs(res).max(); mean = np.abs(res).mean()
-        pen = 20 * (np.maximum(0.0, stroke - STROKE) ** 2).sum() + 5 * (np.maximum(0.0, F / F_MODULE - 1) ** 2).sum() + 1e4 * (np.maximum(0.0, 0.015 - arm_min) ** 2).sum() + 0.02 * (f - 1).mean()
-        if detail: return dict(worst_pct=worst * 100, worst_coord=np.abs(res).max(axis=0) * 100, mean_pct=mean * 100, stroke=stroke, F=F, u_max=u.max(axis=0), R=R, Ls=Ls, arm_min=arm_min, arm_mean=arm_eff.mean(axis=0), dir_err=dir_err, f=f)
+        pen = 20 * (np.maximum(0.0, stroke - STROKE) ** 2).sum() + 5 * (np.maximum(0.0, F / F_MODULE - 1) ** 2).sum() + 1e4 * (np.maximum(0.0, 0.015 - arm_min) ** 2).sum() + 0.02 * (f - 1).mean() + (50 * (np.maximum(0.0, sma - SMA_EPS) ** 2).sum() if SMA_EPS else 0.0) + (50 * (np.maximum(0.0, (Ls.max(axis=0) - Ls.min(axis=0)) / STROKE_MAX - 1) ** 2).sum() if STROKE_MAX else 0.0)
+        if detail: return dict(worst_pct=worst * 100, worst_coord=np.abs(res).max(axis=0) * 100, mean_pct=mean * 100, stroke=stroke, sma=sma, dL=(Ls.max(axis=0) - Ls.min(axis=0)), F=F, u_max=u.max(axis=0), R=R, Ls=Ls, arm_min=arm_min, arm_mean=arm_eff.mean(axis=0), dir_err=dir_err, f=f)
         return worst + 0.3 * mean + w_dir * dir_err.sum() + pen
     d0 = cost_joint(x0, detail=True); print(f"2단계 시작: 최악 잔차 {d0['worst_pct']:.1f} % (좌표별 {np.round(d0['worst_coord'],1)})  평균 {d0['mean_pct']:.2f} %  방향오차합 {d0['dir_err'].sum():.3f}", flush=True)
     tic = time.time(); n = [0]
@@ -272,9 +278,9 @@ def refine(out, fr, T, maxfev=20000, w_dir=3.0):
     off = 0
     for i, (m, c, sz) in enumerate(zip(out["muscles"], chains, sizes)):
         P = x[off:off + sz].reshape(-1, 3); off += sz; r = d["R"][:, :, i]; v = V[i]; rm = r.mean(axis=0)
-        m.update(points=P.tolist(), force_N=float(d["F"][i]), force_mult=float(d["f"][i]), arm_min=float(d["arm_min"][i]), arm_mean=float(d["arm_mean"][i]), stroke=float(d["stroke"][i]),
+        m.update(points=P.tolist(), force_N=float(d["F"][i]), force_mult=float(d["f"][i]), arm_min=float(d["arm_min"][i]), arm_mean=float(d["arm_mean"][i]), stroke=float(d["stroke"][i]), sma_ratio=float(d["sma"][i]), dL_m=float(d["dL"][i]), L_min_m=float(d["Ls"][:, i].min()), L_max_m=float(d["Ls"][:, i].max()),
                  dir_err=float(d["dir_err"][i]), angle_deg=float(np.degrees(np.arccos(np.clip(rm @ v / np.linalg.norm(rm), -1, 1)))), r_mean=rm.tolist(), u_max_design=float(d["u_max"][i]))
-        print(f"  M{i}: 힘 {m['force_N']:.0f} N (배율 {m['force_mult']:.2f})  유효 모멘트암 {m['arm_min']*100:.1f}~{m['arm_mean']*100:.1f} cm  스트로크 {m['stroke']:.2f}  각도차 {m['angle_deg']:.1f}°  u최대 {m['u_max_design']:.2f}", flush=True)
+        print(f"  M{i}: 힘 {m['force_N']:.0f} N (배율 {m['force_mult']:.2f})  유효 모멘트암 {m['arm_min']*100:.1f}~{m['arm_mean']*100:.1f} cm  스트로크 {m['stroke']:.2f}  ΔL {m['dL_m']*1000:.0f} mm (ΔL/L_min {m['sma_ratio']:.2f})  각도차 {m['angle_deg']:.1f}°  u최대 {m['u_max_design']:.2f}", flush=True)
     out["refine"] = dict(worst_pct=float(d["worst_pct"]), worst_coord=d["worst_coord"].tolist(), mean_pct=float(d["mean_pct"]), n_frames=int(len(T)), margin=MARGIN, w_dir=w_dir)
 
 
