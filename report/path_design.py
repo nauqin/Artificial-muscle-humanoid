@@ -211,6 +211,7 @@ def main():
     ap.add_argument("--sma-eps", type=float, default=None, help="SMA 묶음 제약: 케이블 (L_max−L_min)/L_min 상한 (park2019 수축률 0.5 ÷ 여유 1.2 = 0.417). 기본 없음")
     ap.add_argument("--modules", default=None, help="모듈 먼저 (2026-11-05): report/module_first.py 가 만든 케이블별 등급 json. 주면 --f-module/--stroke-max 대신 "
                     "케이블마다 그 등급의 힘(묶음 수 × 힘 상한 ÷ 힘 배율)·스트로크 상한을 1 % 안쪽에 세게 건다. ΔL 은 stroke_check 자세까지 합쳐 잰다")
+    ap.add_argument("--seed", type=int, default=0, help="1단계 차분진화 시드 묶음 (시드 = 근육 번호 + 10×시도 + 1000×이 값). 0 이면 기존과 같다 — 반복 실행으로 결과 흔들림을 잴 때 (2026-11-05)")
     ap.add_argument("--refine-trust", type=float, default=None, help="2단계 Powell 을 현재 점 ± 이 값(부착점 m, 힘 배율은 ×10) 안에서 돌리고 옮겨 가며 반복. "
                     "기본(없음)은 상자 전체 범위 — 1단계 해가 상한 경계에 붙어 있으면 상자 전체 선탐색이 시작점보다 나쁜 점을 돌려줘 2단계가 아무것도 못 한다 (모듈 먼저, 2026-11-05)")
     a = ap.parse_args(); configure(a.space)
@@ -254,7 +255,7 @@ def main():
         bounds = [b for n in chain for b in BOX[BODIES[n]]]
         tic = time.time()
         for attempt in range(4):                                   # 퇴화(모멘트암 0 / 구 안) 해가 나오면 시드를 바꿔 다시
-            res = differential_evolution(cost, bounds, args=(fr, chain, v, c[i], False, i), seed=i + 10 * attempt, maxiter=400, popsize=25, tol=1e-7, polish=False)
+            res = differential_evolution(cost, bounds, args=(fr, chain, v, c[i], False, i), seed=i + 10 * attempt + 1000 * a.seed, maxiter=400, popsize=25, tol=1e-7, polish=False)
             res2 = minimize(cost, res.x, args=(fr, chain, v, c[i], False, i), method="Powell", bounds=bounds)
             x = res2.x if (res2.fun < res.fun and cost(res2.x, fr, chain, v, c[i], detail=True, i=i) is not None) else res.x
             det = cost(x, fr, chain, v, c[i], detail=True, i=i)
@@ -276,6 +277,7 @@ def main():
             m["module"] = dict(name=mm["module"], bundles=mm["bundles"], force_cap_N=mm["force_cap_N"], stroke_cap_m=mm["stroke_cap_m"], design_force_cap_N=float(MODCAPS["fcap"][i]), design_stroke_cap_m=float(MODCAPS["smax"][i]))
     refine(out, fr, T, maxfev=a.maxfev, trust=a.refine_trust)
     if a.refine_trust: out["refine"]["trust"] = a.refine_trust
+    if a.seed: out["refine"]["seed"] = a.seed
     json.dump(out, open(out_json, "w"), indent=1, ensure_ascii=False); print("저장", out_json)
     model_out = os.path.join(ROOT, "report/moco/newmus_paths_subject3_model.osim") if legacy else os.path.join(ROOT, f"report/moco/newmus_paths{tag}_model.osim")
     build_model(out, model_path, model_out); plot(out, fr, V, os.path.join(ROOT, f"report/fig_path_design{'' if legacy else tag}.png"))

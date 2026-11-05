@@ -1,0 +1,18 @@
+[설계] 3건
+[설계 끝] 시드5 rc=0
+[설계 끝] 시드4 rc=0
+[설계 끝] 시드3 rc=0
+[Moco] 12건
+[Moco 끝] [mf_shoulder_curtr_sd3_lift2] 보조 최악 0.0 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 178.5 % / 95퍼센타일 114.1 %  → 재현
+[Moco 끝] [mf_shoulder_curtr_sd4_lift2] 보조 최악 0.1 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 204.2 % / 95퍼센타일 137.1 %  → 재현
+[Moco 끝] [mf_shoulder_curtr_sd4_walk] 보조 최악 209.6 % (95퍼센타일 0.6 %)   새 근육 토크 vs ID 최대 4795.8 % / 95퍼센타일 3930.4 %  → 재현
+[Moco 끝] [mf_shoulder_curtr_sd4_walk2] 보조 최악 329.2 % (95퍼센타일 0.1 %)   새 근육 토크 vs ID 최대 2908.1 % / 95퍼센타일 2241.8 %  → 재현
+[Moco 끝] [mf_shoulder_curtr_sd3_walk2] 보조 최악 248.1 % (95퍼센타일 0.1 %)   새 근육 토크 vs ID 최대 2272.6 % / 95퍼센타일 1767.0 %  → 재현
+[Moco 끝] [mf_shoulder_curtr_sd3_walk] 보조 최악 127.2 % (95퍼센타일 0.1 %)   새 근육 토크 vs ID 최대 4062.9 % / 95퍼센타일 3180.4 %  → 재현
+[Moco 끝] [mf_shoulder_curtr_sd3_lift] 보조 최악 12.8 % (95퍼센타일 1.7 %)   새 근육 토크 vs ID 최대 86.7 % / 95퍼센타일 64.6 %  → 재현
+[Moco 끝] [mf_shoulder_curtr_sd4_lift] 보조 최악 0.1 % (95퍼센타일 0.1 %)   새 근육 토크 vs ID 최대 107.7 % / 95퍼센타일 79.4 %  → 재현
+[Moco 끝] [mf_shoulder_curtr_sd5_walk] 보조 최악 337.0 % (95퍼센타일 33.1 %)   새 근육 토크 vs ID 최대 4055.5 % / 95퍼센타일 3432.9 %  → 미달
+[Moco 끝] [mf_shoulder_curtr_sd5_lift2] 보조 최악 0.0 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 190.0 % / 95퍼센타일 115.6 %  → 재현
+[Moco 끝] [mf_shoulder_curtr_sd5_walk2] 보조 최악 371.3 % (95퍼센타일 17.8 %)   새 근육 토크 vs ID 최대 2318.8 % / 95퍼센타일 1864.4 %  → 미달
+[Moco 끝] [mf_shoulder_curtr_sd5_lift] 보조 최악 17.9 % (95퍼센타일 7.8 %)   새 근육 토크 vs ID 최대 86.5 % / 95퍼센타일 63.5 %  → 재현
+[모두 끝]

@@ -1,0 +1,464 @@
+{
+ "space": "shoulder_r",
+ "design": "report\\newmus_V_design_shoulder_r_k6_40kg_h160_v635.npz",
+ "tasks": "report/upper/tasks_40kg_h160.csv",
+ "force_scale": 1.5,
+ "margin": 1.1,
+ "n_poses": 600,
+ "n_design_poses": 200,
+ "n_check_poses": 400,
+ "r_min_m": 0.015,
+ "muscles": [
+  {
+   "name": "M0",
+   "v": [
+    -0.5180352591835382,
+    -0.8046582061987385,
+    0.29011142935029804
+   ],
+   "capacity_Nm": 13.426616283075475,
+   "dtheta_rad": 1.8619112085762666,
+   "work_J": 41.24862612867289,
+   "calibration_ratio": 2.1215773570422125,
+   "work_cal_J": 87.51215120369218,
+   "module": "M2",
+   "bundles": 1,
+   "force_cap_N": 1200.0,
+   "stroke_cap_m": 0.08,
+   "r_lo_m": 0.039167706995817404,
+   "r_hi_m": 0.04296660315030435,
+   "grades": [
+    {
+     "module": "M1",
+     "bundles": 1,
+     "force_cap_N": 5000.0,
+     "stroke_cap_m": 0.12,
+     "r_lo_m": 0.009400249678996176,
+     "r_hi_m": 0.06444990472545653,
+     "ok": true
+    },
+    {
+     "module": "M2",
+     "bundles": 1,
+     "force_cap_N": 1200.0,
+     "stroke_cap_m": 0.08,
+     "r_lo_m": 0.039167706995817404,
+     "r_hi_m": 0.04296660315030435,
+     "ok": true
+    },
+    {
+     "module": "M3",
+     "bundles": 4,
+     "force_cap_N": 1800.0,
+     "stroke_cap_m": 0.06,
+     "r_lo_m": 0.026111804663878267,
+     "r_hi_m": 0.032224952362728265,
+     "ok": true
+    },
+    {
+     "module": "M4",
+     "bundles": 5,
+     "force_cap_N": 1000.0,
+     "stroke_cap_m": 0.09,
+     "r_lo_m": 0.047001248394980884,
+     "r_hi_m": 0.0483374285440924,
+     "ok": true
+    },
+    {
+     "module": "M5",
+     "bundles": 88,
+     "force_cap_N": 4400.0,
+     "stroke_cap_m": 0.02,
+     "r_lo_m": 0.0106821019079502,
+     "r_hi_m": 0.010741650787576088,
+     "ok": false
+    },
+    {
+     "module": "M6",
+     "bundles": 1,
+     "force_cap_N": 1500.0,
+     "stroke_cap_m": 0.08,
+     "r_lo_m": 0.031334165596653925,
+     "r_hi_m": 0.04296660315030435,
+     "ok": true
+    }
+   ]
+  },
+  {
+   "name": "M1",
+   "v": [
+    0.9849495762703696,
+    -0.11676825164651915,
+    -0.12743432666371593
+   ],
+   "capacity_Nm": 9.60980616368206,
+   "dtheta_rad": 3.2701297959870352,
+   "work_J": 51.85176722470234,
+   "calibration_ratio": 2.351096949448519,
+   "work_cal_J": 121.90853174551238,
+   "module": "M1",
+   "bundles": 1,
+   "force_cap_N": 5000.0,
+   "stroke_cap_m": 0.12,
+   "r_lo_m": 0.007455883365554075,
+   "r_hi_m": 0.036695791141764134,
+   "grades": [
+    {
+     "module": "M1",
+     "bundles": 1,
+     "force_cap_N": 5000.0,
+     "stroke_cap_m": 0.12,
+     "r_lo_m": 0.007455883365554075,
+     "r_hi_m": 0.036695791141764134,
+     "ok": true
+    },
+    {
+     "module": "M2",
+     "bundles": 2,
+     "force_cap_N": 2400.0,
+     "stroke_cap_m": 0.08,
+     "r_lo_m": 0.015533090344904323,
+     "r_hi_m": 0.024463860761176088,
+     "ok": true
+    },
+    {
+     "module": "M3",
+     "bundles": 5,
+     "force_cap_N": 2250.0,
+     "stroke_cap_m": 0.06,
+     "r_lo_m": 0.01656862970123128,
+     "r_hi_m": 0.018347895570882067,
+     "ok": true
+    },
+    {
+     "module": "M4",
+     "bundles": 7,
+     "force_cap_N": 1400.0,
+     "stroke_cap_m": 0.09,
+     "r_lo_m": 0.02662815487697884,
+     "r_hi_m": 0.0275218433563231,
+     "ok": true
+    },
+    {
+     "module": "M5",
+     "bundles": 122,
+     "force_cap_N": 6100.0,
+     "stroke_cap_m": 0.02,
+     "r_lo_m": 0.006111379807831209,
+     "r_hi_m": 0.006115965190294022,
+     "ok": false
+    },
+    {
+     "module": "M6",
+     "bundles": 2,
+     "force_cap_N": 3000.0,
+     "stroke_cap_m": 0.08,
+     "r_lo_m": 0.012426472275923459,
+     "r_hi_m": 0.024463860761176088,
+     "ok": true
+    }
+   ]
+  },
+  {
+   "name": "M2",
+   "v": [
+    0.46167580363002125,
+    -0.7741695733308548,
+    -0.4330322436854979
+   ],
+   "capacity_Nm": 14.395920445118671,
+   "dtheta_rad": 1.7539621363632218,
+   "work_J": 41.66233397507829,
+   "calibration_ratio": 2.3941707311269242,
+   "work_cal_J": 99.74674059356728,
+   "module": "M6",
+   "bundles": 1,
+   "force_cap_N": 1500.0,
+   "stroke_cap_m": 0.08,
+   "r_lo_m": 0.03791292051506829,
+   "r_hi_m": 0.04561101881359717,
+   "grades": [
+    {
+     "module": "M1",
+     "bundles": 1,
+     "force_cap_N": 5000.0,
+     "stroke_cap_m": 0.12,
+     "r_lo_m": 0.011373876154520486,
+     "r_hi_m": 0.06841652822039576,
+     "ok": true
+    },
+    {
+     "module": "M2",
+     "bundles": 2,
+     "force_cap_N": 2400.0,
+     "stroke_cap_m": 0.08,
+     "r_lo_m": 0.02369557532191768,
+     "r_hi_m": 0.04561101881359717,
+     "ok": true
+    },
+    {
+     "module": "M3",
+     "bundles": 4,
+     "force_cap_N": 1800.0,
+     "stroke_cap_m": 0.06,
+     "r_lo_m": 0.03159410042922357,
+     "r_hi_m": 0.03420826411019788,
+     "ok": true
+    },
+    {
+     "module": "M4",
+     "bundles": 6,
+     "force_cap_N": 1200.0,
+     "stroke_cap_m": 0.09,
+     "r_lo_m": 0.04739115064383536,
+     "r_hi_m": 0.051312396165296814,
+     "ok": true
+    },
+    {
+     "module": "M5",
+     "bundles": 100,
+     "force_cap_N": 5000.0,
+     "stroke_cap_m": 0.02,
+     "r_lo_m": 0.011373876154520486,
+     "r_hi_m": 0.011402754703399293,
+     "ok": false
+    },
+    {
+     "module": "M6",
+     "bundles": 1,
+     "force_cap_N": 1500.0,
+     "stroke_cap_m": 0.08,
+     "r_lo_m": 0.03791292051506829,
+     "r_hi_m": 0.04561101881359717,
+     "ok": true
+    }
+   ]
+  },
+  {
+   "name": "M3",
+   "v": [
+    -0.19192747837981167,
+    -0.9244079744503743,
+    -0.3295963285828944
+   ],
+   "capacity_Nm": 13.675988229239206,
+   "dtheta_rad": 2.270904673314792,
+   "work_J": 51.24382821026272,
+   "calibration_ratio": 2.406186727442724,
+   "work_cal_J": 123.3022193028892,
+   "module": "M1",
+   "bundles": 1,
+   "force_cap_N": 5000.0,
+   "stroke_cap_m": 0.12,
+   "r_lo_m": 0.010859303849413242,
+   "r_hi_m": 0.05284237661321049,
+   "grades": [
+    {
+     "module": "M1",
+     "bundles": 1,
+     "force_cap_N": 5000.0,
+     "stroke_cap_m": 0.12,
+     "r_lo_m": 0.010859303849413242,
+     "r_hi_m": 0.05284237661321049,
+     "ok": true
+    },
+    {
+     "module": "M2",
+     "bundles": 2,
+     "force_cap_N": 2400.0,
+     "stroke_cap_m": 0.08,
+     "r_lo_m": 0.022623549686277587,
+     "r_hi_m": 0.035228251075473664,
+     "ok": true
+    },
+    {
+     "module": "M3",
+     "bundles": 5,
+     "force_cap_N": 2250.0,
+     "stroke_cap_m": 0.06,
+     "r_lo_m": 0.024131786332029427,
+     "r_hi_m": 0.026421188306605246,
+     "ok": true
+    },
+    {
+     "module": "M4",
+     "bundles": 7,
+     "force_cap_N": 1400.0,
+     "stroke_cap_m": 0.09,
+     "r_lo_m": 0.03878322803361872,
+     "r_hi_m": 0.03963178245990787,
+     "ok": true
+    },
+    {
+     "module": "M5",
+     "bundles": 124,
+     "force_cap_N": 6200.0,
+     "stroke_cap_m": 0.02,
+     "r_lo_m": 0.008757503104365518,
+     "r_hi_m": 0.008807062768868416,
+     "ok": false
+    },
+    {
+     "module": "M6",
+     "bundles": 2,
+     "force_cap_N": 3000.0,
+     "stroke_cap_m": 0.08,
+     "r_lo_m": 0.01809883974902207,
+     "r_hi_m": 0.035228251075473664,
+     "ok": true
+    }
+   ]
+  },
+  {
+   "name": "M4",
+   "v": [
+    0.7786966153230666,
+    0.5433429840226782,
+    0.31370365474079503
+   ],
+   "capacity_Nm": 15.332136408630584,
+   "dtheta_rad": 3.6516394233106833,
+   "work_J": 92.37926569299866,
+   "calibration_ratio": 1.6613245835371448,
+   "work_cal_J": 153.47194510488825,
+   "module": "M1",
+   "bundles": 1,
+   "force_cap_N": 5000.0,
+   "stroke_cap_m": 0.12,
+   "r_lo_m": 0.008405646194154957,
+   "r_hi_m": 0.03286195215057802,
+   "grades": [
+    {
+     "module": "M1",
+     "bundles": 1,
+     "force_cap_N": 5000.0,
+     "stroke_cap_m": 0.12,
+     "r_lo_m": 0.008405646194154957,
+     "r_hi_m": 0.03286195215057802,
+     "ok": true
+    },
+    {
+     "module": "M2",
+     "bundles": 2,
+     "force_cap_N": 2400.0,
+     "stroke_cap_m": 0.08,
+     "r_lo_m": 0.017511762904489494,
+     "r_hi_m": 0.02190796810038535,
+     "ok": true
+    },
+    {
+     "module": "M3",
+     "bundles": 6,
+     "force_cap_N": 2700.0,
+     "stroke_cap_m": 0.06,
+     "r_lo_m": 0.015566011470657328,
+     "r_hi_m": 0.01643097607528901,
+     "ok": true
+    },
+    {
+     "module": "M4",
+     "bundles": 9,
+     "force_cap_N": 1800.0,
+     "stroke_cap_m": 0.09,
+     "r_lo_m": 0.023349017205985992,
+     "r_hi_m": 0.024646464112933517,
+     "ok": true
+    },
+    {
+     "module": "M5",
+     "bundles": 154,
+     "force_cap_N": 7700.0,
+     "stroke_cap_m": 0.02,
+     "r_lo_m": 0.005458211814386335,
+     "r_hi_m": 0.005476992025096337,
+     "ok": false
+    },
+    {
+     "module": "M6",
+     "bundles": 2,
+     "force_cap_N": 3000.0,
+     "stroke_cap_m": 0.08,
+     "r_lo_m": 0.014009410323591594,
+     "r_hi_m": 0.02190796810038535,
+     "ok": true
+    }
+   ]
+  },
+  {
+   "name": "M5",
+   "v": [
+    -0.5719760307459706,
+    0.7977746531414284,
+    -0.19078527998029177
+   ],
+   "capacity_Nm": 14.37207700297914,
+   "dtheta_rad": 2.6464181597843304,
+   "work_J": 62.75696719792954,
+   "calibration_ratio": 1.7424640809483862,
+   "work_cal_J": 109.35176117164832,
+   "module": "M6",
+   "bundles": 1,
+   "force_cap_N": 1500.0,
+   "stroke_cap_m": 0.08,
+   "r_lo_m": 0.027547110740947033,
+   "r_hi_m": 0.030229538632896773,
+   "grades": [
+    {
+     "module": "M1",
+     "bundles": 1,
+     "force_cap_N": 5000.0,
+     "stroke_cap_m": 0.12,
+     "r_lo_m": 0.00826413322228411,
+     "r_hi_m": 0.04534430794934516,
+     "ok": true
+    },
+    {
+     "module": "M2",
+     "bundles": 2,
+     "force_cap_N": 2400.0,
+     "stroke_cap_m": 0.08,
+     "r_lo_m": 0.017216944213091896,
+     "r_hi_m": 0.030229538632896773,
+     "ok": true
+    },
+    {
+     "module": "M3",
+     "bundles": 5,
+     "force_cap_N": 2250.0,
+     "stroke_cap_m": 0.06,
+     "r_lo_m": 0.01836474049396469,
+     "r_hi_m": 0.02267215397467258,
+     "ok": true
+    },
+    {
+     "module": "M4",
+     "bundles": 7,
+     "force_cap_N": 1400.0,
+     "stroke_cap_m": 0.09,
+     "r_lo_m": 0.029514761508157537,
+     "r_hi_m": 0.03400823096200887,
+     "ok": true
+    },
+    {
+     "module": "M5",
+     "bundles": 110,
+     "force_cap_N": 5500.0,
+     "stroke_cap_m": 0.02,
+     "r_lo_m": 0.007512848383894645,
+     "r_hi_m": 0.007557384658224193,
+     "ok": false
+    },
+    {
+     "module": "M6",
+     "bundles": 1,
+     "force_cap_N": 1500.0,
+     "stroke_cap_m": 0.08,
+     "r_lo_m": 0.027547110740947033,
+     "r_hi_m": 0.030229538632896773,
+     "ok": true
+    }
+   ]
+  }
+ ],
+ "calibrated_from": "report/modulefirst/check_shoulder_r_k6_40kg_h160_v635_s80_win_tr_f15.csv"
+}

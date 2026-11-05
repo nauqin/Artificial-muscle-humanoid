@@ -387,6 +387,9 @@ python report/path_design.py --space lower --design report/newmus_V_design_lower
 ```
 - `--modules` 를 주면 케이블 i 에 등급 상한(힘 = 묶음 수 × 힘 상한 ÷ 힘 배율, ΔL = 스트로크 상한)을 1 % 안쪽에 건다. 벌점 가중치는 9-6 과 같다(힘 5, 스트로크 50).
   ΔL 은 설계 자세에 `stroke_check` 자세까지 합쳐 잰다. 2단계 뒤 상한을 15 % 이하로 넘은 케이블은 그 케이블만 국소 탐색으로 상한 안에 넣는다(수선, json 의 `repair`).
+- 2차(README 11절): `--seed N` 은 1단계 시드 묶음(0 = 기존), `module_first.py --calibrate <check csv>` 는 W 에 실제/예측 비를 곱해 등급을 고른다(보정한 모듈 먼저).
+  방식 4개 × 시드 3개 + 추가 검증 동작 한 번에: `python report/modulefirst/batch2.py --extra-all` → `python report/modulefirst/compare_seeds.py`.
+  **어깨는 `--refine-trust 0.01` 로 시드를 여러 개 돌려 2단계 잔차 최악이 가장 작은 것을 고른다**(시드 6개 중 잔차 ≤ 13.4 % 인 4개가 걷기·들기 모두 통과).
 - `--refine-trust` 는 2단계 Powell 을 현재 점 ±1 cm 안에서 돌리고 옮겨 가며 반복한다. 케이블별 상한이 걸리면 기본 Powell(상자 전체 선탐색)이 시작점보다
   나쁜 점을 돌려줘 2단계가 아무것도 못 했다. 옵션을 안 주면 9-6 과 결과가 같다(같은 컴퓨터에서 부착점·힘 차이 0 으로 확인).
 

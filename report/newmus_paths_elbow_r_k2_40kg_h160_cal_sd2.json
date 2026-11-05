@@ -1,0 +1,134 @@
+{
+ "space": "elbow_r",
+ "coords": [
+  "elbow_flex_r"
+ ],
+ "bodies": [
+  "humerus_r",
+  "ulna_r"
+ ],
+ "model": "data\\robot40_h160\\robot40_h160.osim",
+ "muscles": [
+  {
+   "name": "M0",
+   "v": [
+    1.0
+   ],
+   "capacity_Nm": 19.33249769,
+   "chain": [
+    "humerus_r",
+    "ulna_r"
+   ],
+   "points": [
+    [
+     -0.06722067246845188,
+     -0.02048735052178023,
+     0.04897915220950645
+    ],
+    [
+     0.033164413460540845,
+     -0.0492619171781034,
+     -0.03908092791157795
+    ]
+   ],
+   "force_N": 1631.4433399103314,
+   "arm_min": 0.013034928605101803,
+   "arm_mean": 0.04089703997424626,
+   "stroke": 0.3980783040861021,
+   "dir_err": 3.491586529728537e-15,
+   "angle_deg": 0.0,
+   "r_mean": [
+    0.04089703997424627
+   ],
+   "module": {
+    "name": "M1",
+    "bundles": 1,
+    "force_cap_N": 5000.0,
+    "stroke_cap_m": 0.12,
+    "design_force_cap_N": 4950.0,
+    "design_stroke_cap_m": 0.11879999999999999
+   },
+   "force_mult": 1.0,
+   "sma_ratio": 0.5421931643574656,
+   "dL_m": 0.11940578277293415,
+   "L_min_m": 0.22022738503986458,
+   "L_max_m": 0.33963316781279873,
+   "u_max_design": 0.22610773755787825,
+   "dL_all_m": 0.11940578277293415
+  },
+  {
+   "name": "M1",
+   "v": [
+    -1.0
+   ],
+   "capacity_Nm": 14.75224139,
+   "chain": [
+    "humerus_r",
+    "ulna_r"
+   ],
+   "points": [
+    [
+     -0.06913889329316389,
+     -0.04956685679370054,
+     0.04938470539352303
+    ],
+    [
+     -0.03095541269011107,
+     0.03950794070597147,
+     0.0030477763296118277
+    ]
+   ],
+   "force_N": 1545.525247817353,
+   "arm_min": 0.010499644410155717,
+   "arm_mean": 0.03507480989986662,
+   "stroke": 0.41108975374707,
+   "dir_err": 5.275925824809299e-15,
+   "angle_deg": 0.0,
+   "r_mean": [
+    -0.035074809899866624
+   ],
+   "module": {
+    "name": "M1",
+    "bundles": 1,
+    "force_cap_N": 5000.0,
+    "stroke_cap_m": 0.12,
+    "design_force_cap_N": 4950.0,
+    "design_stroke_cap_m": 0.11879999999999999
+   },
+   "force_mult": 1.0,
+   "sma_ratio": 0.48323568074281265,
+   "dL_m": 0.09618141951579384,
+   "L_min_m": 0.19903625363083122,
+   "L_max_m": 0.29521767314662506,
+   "u_max_design": 0.10224896212740046,
+   "dL_all_m": 0.09618141951579384
+  }
+ ],
+ "module_first": {
+  "modules": "report\\modulefirst\\modules_elbow_r_k2_40kg_h160_cal.json",
+  "force_scale": 1.0,
+  "w_cap_force": 5.0,
+  "w_cap_stroke": 50.0,
+  "n_check_poses": 352,
+  "refine_only": false
+ },
+ "repair": {
+  "before_worst_pct": 1.2815779769976142e-14,
+  "before_mean_pct": 1.1053083086975722e-15,
+  "cables": [],
+  "after_worst_pct": 1.2815779769976142e-14,
+  "after_mean_pct": 1.1053083086975722e-15
+ },
+ "refine": {
+  "worst_pct": 1.2815779769976142e-14,
+  "worst_coord": [
+   1.2815779769976142e-14
+  ],
+  "mean_pct": 1.1053083086975722e-15,
+  "n_frames": 152,
+  "margin": 1.1,
+  "w_dir": 3.0,
+  "trust": 0.01,
+  "seed": 2
+ }
+}

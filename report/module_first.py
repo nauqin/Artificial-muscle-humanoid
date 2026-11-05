@@ -63,19 +63,24 @@ def predict(a):
     d = np.load(a.design if os.path.isabs(a.design) else os.path.join(ROOT, a.design)); V, c = d["V"], d["c"]
     th = Q[:, :len(pd.COORDS)] @ V.T                                                         # (자세, k) v·q
     dth = th.max(axis=0) - th.min(axis=0)
+    cal = {}
+    if a.calibrate:                                                                          # 보정: 케이블마다 W × (어떤 경로에서 잰 실제 F·ΔL / W) 로 등급을 고른다 (2026-11-05 2차)
+        cal = {r["name"]: float(r["ratio"]) for r in csv.DictReader(open(a.calibrate if os.path.isabs(a.calibrate) else os.path.join(ROOT, a.calibrate), encoding="utf-8"))}
     out = dict(space=a.space, design=os.path.relpath(a.design if os.path.isabs(a.design) else os.path.join(ROOT, a.design), ROOT), tasks=a.tasks,
                force_scale=a.force_scale, margin=pd.MARGIN, n_poses=int(len(Q)), n_design_poses=nd, n_check_poses=ns, r_min_m=R_MIN, muscles=[])
-    print(f"[{a.space}] 자세 {len(Q)}개 (설계 {nd} + 검사 {ns}), 힘 배율 {a.force_scale:g}, 여유 {pd.MARGIN}")
+    if a.calibrate: out["calibrated_from"] = a.calibrate
+    print(f"[{a.space}] 자세 {len(Q)}개 (설계 {nd} + 검사 {ns}), 힘 배율 {a.force_scale:g}, 여유 {pd.MARGIN}" + (f", 보정 {a.calibrate}" if a.calibrate else ""))
     print(f"{'근육':4s} {'용량':>6s} {'Δθ':>5s} {'일 W':>6s}  {'등급':8s} {'힘 상한':>7s} {'ΔL 상한':>7s}  모멘트암 범위 (cm)   | 등급별 묶음 수")
     for i in range(len(V)):
-        cs = a.force_scale * pd.MARGIN * c[i]; W = cs * dth[i]; rows = grade_table(W, cs, dth[i]); best = assign(rows)
-        mm = dict(name=f"M{i}", v=V[i].tolist(), capacity_Nm=float(c[i]), dtheta_rad=float(dth[i]), work_J=float(W),
+        cs = a.force_scale * pd.MARGIN * c[i]; W = cs * dth[i]; k_cal = cal.get(f"M{i}", 1.0)
+        rows = grade_table(W * k_cal, cs * k_cal, dth[i]); best = assign(rows)              # 보정하면 힘 쪽(ρ 하한)도 같은 비로 키운다: 실제 경로는 최소 모멘트암이 힘을 정하므로
+        mm = dict(name=f"M{i}", v=V[i].tolist(), capacity_Nm=float(c[i]), dtheta_rad=float(dth[i]), work_J=float(W), calibration_ratio=k_cal, work_cal_J=float(W * k_cal),
                   module=best["module"] if best else None, bundles=best["bundles"] if best else None,
                   force_cap_N=best["force_cap_N"] if best else None, stroke_cap_m=best["stroke_cap_m"] if best else None,
                   r_lo_m=best["r_lo_m"] if best else None, r_hi_m=best["r_hi_m"] if best else None, grades=rows)
         out["muscles"].append(mm)
         per = "  ".join(f"{r['module']}×{r['bundles']}" + ("" if r["ok"] else "(불가)") for r in rows)
-        if best: print(f"M{i:<3d} {c[i]:6.1f} {dth[i]:5.2f} {W:6.1f}  {best['module']} ×{best['bundles']:<3d} {best['force_cap_N']:7.0f} {best['stroke_cap_m']*1000:5.0f} mm  {best['r_lo_m']*100:5.2f} ~ {best['r_hi_m']*100:5.2f}      | {per}")
+        if best: print(f"M{i:<3d} {c[i]:6.1f} {dth[i]:5.2f} {W:6.1f}" + (f" ×{k_cal:.2f}={W*k_cal:6.1f}" if a.calibrate else "") + f"  {best['module']} ×{best['bundles']:<3d} {best['force_cap_N']:7.0f} {best['stroke_cap_m']*1000:5.0f} mm  {best['r_lo_m']*100:5.2f} ~ {best['r_hi_m']*100:5.2f}      | {per}")
         else: print(f"M{i:<3d} {c[i]:6.1f} {dth[i]:5.2f} {W:6.1f}  배정 불가 | {per}")
     if a.out:
         op = a.out if os.path.isabs(a.out) else os.path.join(ROOT, a.out); os.makedirs(os.path.dirname(op), exist_ok=True)
@@ -110,6 +115,7 @@ def main():
     ap.add_argument("--space", default="lower"); ap.add_argument("--design", required=True, help="1단계 npz (V, c)")
     ap.add_argument("--tasks", default=None, help="자세 표본 trial 목록 (없으면 하체 기본 = path_design.poses)")
     ap.add_argument("--force-scale", type=float, default=1.0, help="경로 설계 뒤에 힘에 곱하는 배율 (어깨 1.5)")
+    ap.add_argument("--calibrate", default=None, help="보정: --check 가 낸 csv(열 name, ratio). 케이블마다 W × ratio 로 등급을 고른다 (2026-11-05 2차)")
     ap.add_argument("--out", default=None, help="등급 json (path_design --modules 입력)")
     ap.add_argument("--check", nargs=2, default=None, metavar=("PATHS_JSON", "STROKE_CSV"), help="실제 경로와 예측 비교 (--out 의 등급 json 을 읽는다)")
     ap.add_argument("--check-out", default=None)
