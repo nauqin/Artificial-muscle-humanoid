@@ -1,0 +1,425 @@
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+[error] Model unable to assemble: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0..Model relaxing constraints and trying again.
+[error] Model unable to assemble with relaxed constraints: SimTK Exception thrown at Optimizer.h:133:
+  Value out of range in  OptimizerSystem  Constructor: expected 1 <= number of parameters <= 2.14748e+09 but number of parameters=0.
+
+List of user-set options:
+
+                                    Name   Value                used
+                acceptable_compl_inf_tol = 0.001                 yes
+              acceptable_constr_viol_tol = 0.001                 yes
+                 acceptable_dual_inf_tol = 0.001                 yes
+                          acceptable_tol = 0.001                 yes
+                           compl_inf_tol = 0.001                 yes
+                         constr_viol_tol = 0.001                 yes
+                            dual_inf_tol = 0.001                 yes
+                   hessian_approximation = limited-memory        yes
+                           linear_solver = mumps                 yes
+                                max_iter = 2000                  yes
+                      print_user_options = yes                   yes
+                                     tol = 0.001                 yes
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit https://github.com/coin-or/Ipopt
+******************************************************************************
+
+This is Ipopt version 3.14.16, running with linear solver MUMPS 5.6.2.
+
+Number of nonzeros in equality constraint Jacobian...:    22575
+Number of nonzeros in inequality constraint Jacobian.:        0
+Number of nonzeros in Lagrangian Hessian.............:        0
+
+Total number of variables............................:    10535
+                     variables with only lower bounds:        0
+                variables with lower and upper bounds:     1806
+                     variables with only upper bounds:        0
+Total number of equality constraints.................:     9331
+Total number of inequality constraints...............:        0
+        inequality constraints with only lower bounds:        0
+   inequality constraints with lower and upper bounds:        0
+        inequality constraints with only upper bounds:        0
+
+Warning: intermediate_callback is disfunctional in your installation. You will only be able to use stats(). See https://github.com/casadi/casadi/wiki/enableIpoptCallback to enable it.
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+   0  3.0000000e+00 5.54e+02 1.48e-02   0.0 0.00e+00    -  0.00e+00 0.00e+00   0
+   1  5.0219117e+03 2.07e-06 5.54e+02   0.4 5.54e+02    -  9.93e-01 1.00e+00h  1
+   2  5.0219084e+03 2.07e-06 5.53e+02  -0.5 5.22e+00    -  1.00e+00 9.77e-04f 11
+   3  5.0218784e+03 1.74e-07 1.52e-02  -2.0 1.99e-02    -  1.00e+00 1.00e+00f  1
+   4  5.0216354e+03 1.39e-06 8.72e-02  -3.2 7.70e-02    -  9.92e-01 1.00e+00f  1
+   5  5.0213259e+03 3.85e-06 2.95e-01  -3.1 8.75e-01    -  9.76e-01 1.39e-01f  3
+   6  5.0208374e+03 5.76e-06 7.52e-01  -3.3 5.92e-01    -  9.97e-01 5.00e-01f  2
+   7  5.0194409e+03 6.86e-06 1.16e-01  -3.8 4.01e-01    -  1.00e+00 7.15e-01f  1
+   8  5.0193828e+03 5.14e-06 1.02e-01  -5.0 1.93e-01    -  9.99e-01 2.50e-01f  3
+   9  5.0192808e+03 3.56e-06 8.17e-02  -5.9 7.39e-02    -  1.00e+00 3.08e-01f  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  10  5.0192453e+03 3.07e-06 1.34e-01  -6.6 3.24e-01    -  1.00e+00 1.39e-01f  3
+  11  5.0191360e+03 1.57e-06 4.86e-02  -6.0 5.29e-02    -  1.00e+00 6.09e-01f  1
+  12  5.0191195e+03 1.66e-06 1.21e-01  -6.8 1.18e-01    -  1.00e+00 6.35e-01f  1
+  13  5.0190510e+03 1.68e-06 1.12e-01  -4.4 2.27e-01    -  3.90e-01 3.67e-01f  1
+  14  5.0190398e+03 1.65e-06 7.88e-02  -4.4 6.80e-01    -  8.39e-01 2.11e-02f  1
+  15  5.0190281e+03 1.13e-06 6.38e-02  -4.7 1.55e-01    -  7.23e-01 3.83e-01f  1
+  16  5.0189892e+03 1.01e-06 5.56e-02  -5.6 2.06e-01    -  1.00e+00 3.63e-01f  1
+  17  5.0189882e+03 6.70e-07 2.76e-01  -5.7 3.50e-01    -  1.00e+00 3.39e-01f  1
+  18  5.0189720e+03 3.48e-07 6.26e-02  -5.8 1.89e-01    -  1.00e+00 5.20e-01f  1
+  19  5.0189663e+03 9.29e-08 5.65e-02  -5.1 4.30e-02    -  1.00e+00 1.00e+00f  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  20  5.0189580e+03 2.61e-08 2.38e-02  -6.8 2.08e-02    -  1.00e+00 5.89e-01f  1
+  21  5.0189563e+03 4.42e-08 1.41e-02  -8.4 9.32e-03    -  1.00e+00 3.90e-01f  1
+  22  5.0189546e+03 8.84e-08 1.15e-02  -8.8 2.60e-02    -  1.00e+00 2.57e-01f  1
+  23  5.0189533e+03 1.46e-07 1.11e-02  -8.2 1.90e-01    -  9.94e-01 4.25e-02f  1
+  24  5.0189525e+03 1.00e-07 5.22e-03  -8.8 7.53e-02    -  9.33e-01 1.46e-01f  1
+  25  5.0189525e+03 1.32e-07 1.44e-02  -6.3 4.37e-02    -  4.23e-01 3.35e-01h  1
+  26  5.0189516e+03 1.05e-07 1.08e-02  -6.2 1.74e-02    -  1.00e+00 4.58e-01h  1
+  27  5.0189512e+03 7.51e-08 2.00e-02  -6.3 4.68e-02    -  6.96e-01 2.82e-01h  2
+  28  5.0189509e+03 5.29e-08 8.65e-03  -7.0 1.44e-02    -  1.00e+00 2.96e-01h  1
+  29  5.0189507e+03 1.10e-07 3.80e-03  -7.5 1.99e-02    -  1.00e+00 3.36e-01h  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  30  5.0189505e+03 1.09e-07 9.18e-03  -7.8 9.57e-02    -  8.35e-01 1.50e-01h  1
+  31  5.0189505e+03 6.65e-08 1.13e-02  -7.5 9.10e-02    -  9.37e-01 4.49e-02h  1
+  32  5.0189504e+03 8.88e-08 1.34e-02  -8.1 5.68e-02    -  1.00e+00 2.26e-01h  1
+  33  5.0189502e+03 8.67e-08 6.18e-03  -9.1 7.80e-02    -  1.00e+00 2.19e-01h  1
+  34  5.0189501e+03 8.02e-08 4.89e-03 -11.0 3.87e-02    -  8.77e-01 7.48e-02h  1
+  35  5.0189500e+03 5.81e-08 5.37e-03  -8.3 4.06e-02    -  9.82e-01 2.75e-01h  1
+  36  5.0189500e+03 4.85e-08 4.67e-03  -8.2 1.44e-02    -  1.00e+00 1.66e-01h  1
+  37  5.0189499e+03 4.73e-08 1.47e-03  -7.9 1.41e-02    -  1.00e+00 3.41e-01h  1
+  38  5.0189499e+03 4.23e-08 1.76e-03  -9.6 1.78e-02    -  9.95e-01 1.06e-01h  1
+  39  5.0189499e+03 3.22e-08 1.37e-03 -11.0 2.18e-02    -  7.45e-01 8.94e-02h  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  40  5.0189499e+03 8.44e-08 1.87e-03  -8.4 3.75e-02    -  1.00e+00 2.24e-01h  1
+  41  5.0189499e+03 1.04e-07 4.22e-03  -8.3 5.00e-02    -  1.00e+00 2.56e-01h  1
+  42  5.0189498e+03 1.41e-07 3.85e-03  -9.0 1.80e-01    -  1.00e+00 7.65e-02h  1
+  43  5.0189498e+03 1.25e-07 5.99e-03  -9.6 3.14e-01    -  1.00e+00 1.17e-01h  1
+  44  5.0189498e+03 1.24e-07 5.86e-03 -10.3 1.52e-01    -  9.62e-01 1.47e-03h  1
+  45  5.0189498e+03 1.13e-07 1.01e-02 -11.0 4.16e-02    -  6.98e-01 8.96e-02h  1
+  46  5.0189498e+03 1.08e-08 3.37e-03  -8.0 9.57e-03    -  1.00e+00 9.05e-01f  1
+  47  5.0189497e+03 8.63e-09 3.11e-03  -8.6 1.32e-03    -  1.00e+00 1.99e-01h  1
+  48  5.0189497e+03 7.99e-09 2.87e-03 -11.0 1.21e-03    -  4.63e-01 7.34e-02h  1
+  49  5.0189497e+03 1.12e-09 3.85e-04 -10.6 1.08e-03    -  1.00e+00 8.59e-01h  1
+
+Number of Iterations....: 49
+
+                                   (scaled)                 (unscaled)
+Objective...............:   5.0189497176818759e+03    5.0189497176818759e+03
+Dual infeasibility......:   3.8465249429922230e-04    3.8465249429922230e-04
+Constraint violation....:   1.1244196684856433e-09    1.1244196684856433e-09
+Variable bound violation:   0.0000000000000000e+00    0.0000000000000000e+00
+Complementarity.........:   2.2475384796276423e-09    2.2475384796276423e-09
+Overall NLP error.......:   3.8465249429922230e-04    3.8465249429922230e-04
+
+
+Number of objective function evaluations             = 74
+Number of objective gradient evaluations             = 50
+Number of equality constraint evaluations            = 74
+Number of inequality constraint evaluations          = 0
+Number of equality constraint Jacobian evaluations   = 50
+Number of inequality constraint Jacobian evaluations = 0
+Number of Lagrangian Hessian evaluations             = 0
+Total seconds in IPOPT                               = 26.418
+
+EXIT: Optimal Solution Found.
+         nlp  :   t_proc      (avg)   t_wall      (avg)    n_eval
+callback_fun  |  11.00ms (220.00us)  12.44ms (248.72us)        50
+       nlp_f  | 771.00ms ( 10.42ms) 774.19ms ( 10.46ms)        74
+       nlp_g  |   1.72 s ( 23.31ms)   1.72 s ( 23.30ms)        74
+  nlp_grad_f  |   1.59 s ( 30.52ms)   1.59 s ( 30.54ms)        52
+   nlp_jac_g  |   5.65 s (110.76ms)   5.65 s (110.79ms)        51
+       total  |  26.44 s ( 26.44 s)  26.44 s ( 26.44 s)         1
+
+Breakdown of objective (including weights):
+  excitation_effort: 5018.95
+[mf_elbow_new_walk] 성공=True  0.5 분  목적함수=5018.9  반복 49
+[mf_elbow_new_walk] 좌표            보조 피크(Nm)  ID 피크  보조/ID    | 설계 쪽: 새 근육 토크 vs ID 최악
+  elbow_flex_r           0.00      1.7      0.0 %   | 최대 505.0 %  95퍼센타일  77.7 %
+  elbow_flex_l           0.00      1.5      0.0 %  (95퍼센타일   0.0 %)
+  설계 쪽 신호 피크 (u_max 1.0): M0=0.34  M1=0.17
+[mf_elbow_new_walk] 보조 최악 0.0 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 505.0 % / 95퍼센타일 77.7 %  → 재현

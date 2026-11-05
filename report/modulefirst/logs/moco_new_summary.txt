@@ -1,0 +1,98 @@
+  설계 좌표의 토크 모터 제거: ['lumbar_rot', 'lumbar_bend', 'lumbar_ext']
+모델 저장 C:\Users\USER\Desktop\Pan\report/moco/newmus_paths_trunk_k4_40kg_h160_mf_load3.79_model.osim
+  설계 좌표의 토크 모터 제거: ['elbow_flex_l', 'elbow_flex_r']
+모델 저장 C:\Users\USER\Desktop\Pan\report/moco/newmus_paths_elbow_r_k2_40kg_h160_mf_load3.79_model.osim
+  설계 좌표의 토크 모터 제거: ['lumbar_rot', 'lumbar_bend', 'lumbar_ext']
+모델 저장 C:\Users\USER\Desktop\Pan\report/moco/newmus_paths_trunk_k4_40kg_h160_s80_win_tr_load3.79_model.osim
+  설계 좌표의 토크 모터 제거: ['elbow_flex_l', 'elbow_flex_r']
+모델 저장 C:\Users\USER\Desktop\Pan\report/moco/newmus_paths_elbow_r_k2_40kg_h160_s80_win_tr_load3.79_model.osim
+저장 report\newmus_paths_shoulder_r_k6_40kg_h160_v635_mf_f15.json
+  설계 좌표의 토크 모터 제거: ['shoulder_rot_l', 'shoulder_add_l', 'shoulder_flex_l', 'shoulder_rot_r', 'shoulder_add_r', 'shoulder_flex_r']
+모델 저장 C:\Users\USER\Desktop\Pan\report/moco/newmus_paths_shoulder_r_k6_40kg_h160_v635_mf_f15_model.osim
+  설계 좌표의 토크 모터 제거: ['shoulder_rot_l', 'shoulder_add_l', 'shoulder_flex_l', 'shoulder_rot_r', 'shoulder_add_r', 'shoulder_flex_r']
+모델 저장 C:\Users\USER\Desktop\Pan\report/moco/newmus_paths_shoulder_r_k6_40kg_h160_v635_mf_f15_load3.79_model.osim
+저장 report\newmus_paths_shoulder_r_k6_40kg_h160_v635_s80_win_tr_f15.json
+  설계 좌표의 토크 모터 제거: ['shoulder_rot_l', 'shoulder_add_l', 'shoulder_flex_l', 'shoulder_rot_r', 'shoulder_add_r', 'shoulder_flex_r']
+모델 저장 C:\Users\USER\Desktop\Pan\report/moco/newmus_paths_shoulder_r_k6_40kg_h160_v635_s80_win_tr_f15_model.osim
+  설계 좌표의 토크 모터 제거: ['shoulder_rot_l', 'shoulder_add_l', 'shoulder_flex_l', 'shoulder_rot_r', 'shoulder_add_r', 'shoulder_flex_r']
+모델 저장 C:\Users\USER\Desktop\Pan\report/moco/newmus_paths_shoulder_r_k6_40kg_h160_v635_s80_win_tr_f15_load3.79_model.osim
+[lower] newmus_paths_lower_k8_40kg_h160_mf.json  자세 181개  모델 data\robot40_h160\robot40_h160.osim  SMA 수축률 0.50 × 여유 1.2
+근육    바디                            L_min  L_max    ΔL     힘 N  모듈       |   ΔL/L평균    능동    수동 SMA   (cm)
+M0    pelvis→femur→tibia→calcn       75.0   85.9  11.0    2779  M1 ×1    |     0.13  26.3  48.6 가능
+M1    pelvis→femur→tibia→calcn       81.3   85.3   4.0     898  M2 ×1    |     0.05   9.6  71.7 가능
+M2    pelvis→femur→tibia→calcn       73.6   81.6   7.9    1175  M2 ×1    |     0.10  19.0  54.6 가능
+M3    pelvis→femur→tibia→calcn       78.1   81.6   3.5    1169  M2 ×1    |     0.04   8.5  69.6 가능
+M4    pelvis→femur→tibia→calcn       73.3   81.3   8.0    1499  M6 ×1    |     0.10  19.2  54.2 가능
+M5    pelvis→femur→tibia→calcn       79.0   85.3   6.3     198  M4 ×1    |     0.08  15.1  63.8 가능
+M6    femur→tibia                    18.6   25.5   7.0    1188  M2 ×1    |     0.33  16.7   1.9 가능
+M7    pelvis→femur→tibia→calcn       86.0   93.7   7.7    1190  M2 ×1    |     0.09  18.5  67.5 가능
+→ report/modulefirst/stroke_check_lower_k8_40kg_h160_mf.csv   모듈 배정 불가 0개 / 8개 (ΔL 최대 110 mm)   SMA 참고: 불가 0개
+[lower] newmus_paths_lower_k8_40kg_h160_s120_ref_tr.json  자세 181개  모델 data\robot40_h160\robot40_h160.osim  SMA 수축률 0.50 × 여유 1.2
+근육    바디                            L_min  L_max    ΔL     힘 N  모듈       |   ΔL/L평균    능동    수동 SMA   (cm)
+M0    pelvis→femur→tibia→calcn       76.1   88.2  12.1    3178  없음(ΔL 초과) |     0.15  29.1  47.0 가능
+M1    pelvis→femur→tibia→calcn       84.2   87.0   2.8    1304  M6 ×1    |     0.03   6.7  77.6 가능
+M2    pelvis→femur→tibia→calcn       80.0   87.8   7.7    1050  M2 ×1    |     0.09  18.5  61.5 가능
+M3    pelvis→femur→tibia→calcn       77.5   80.3   2.8    1482  M6 ×1    |     0.04   6.8  70.8 가능
+M4    pelvis→femur→tibia→calcn       82.4   94.4  12.0    2921  없음(ΔL 초과) |     0.14  28.9  53.5 가능
+M5    pelvis→femur→tibia→calcn       79.5   81.8   2.4     552  M2 ×1    |     0.03   5.7  73.8 가능
+M6    femur→tibia                    22.2   31.6   9.3    1093  M1 ×1    |     0.36  22.4  -0.1 불가
+M7    pelvis→femur→tibia→calcn       86.6   95.2   8.6     907  M1 ×1    |     0.09  20.7  65.8 가능
+→ report/modulefirst/stroke_check_lower_k8_40kg_h160_s120_ref_tr.csv   모듈 배정 불가 2개 / 8개 (ΔL 최대 121 mm)   SMA 참고: 불가 1개
+[trunk] newmus_paths_trunk_k4_40kg_h160_mf.json  자세 416개  모델 data\robot40_h160\robot40_h160.osim  SMA 수축률 0.50 × 여유 1.2
+근육    바디                            L_min  L_max    ΔL     힘 N  모듈       |   ΔL/L평균    능동    수동 SMA   (cm)
+M0    pelvis→torso                   11.3   17.3   6.0     450  M3 ×1    |     0.42  14.4  -3.0 불가
+M1    pelvis→torso                   15.3   21.2   5.9     447  M3 ×1    |     0.32  14.3   1.0 가능
+M2    pelvis→torso                   29.7   35.1   5.4    1173  M2 ×1    |     0.17  13.0  16.7 가능
+M3    pelvis→torso                   24.7   31.3   6.6     694  M2 ×1    |     0.23  15.8   9.0 가능
+→ report/modulefirst/stroke_check_trunk_k4_40kg_h160_mf.csv   모듈 배정 불가 0개 / 4개 (ΔL 최대 66 mm)   SMA 참고: 불가 1개
+[elbow_r] newmus_paths_elbow_r_k2_40kg_h160_mf.json  자세 352개  모델 data\robot40_h160\robot40_h160.osim  SMA 수축률 0.50 × 여유 1.2
+근육    바디                            L_min  L_max    ΔL     힘 N  모듈       |   ΔL/L평균    능동    수동 SMA   (cm)
+M0    humerus→ulna                   18.4   27.4   9.0    2159  M1 ×1    |     0.36  21.7  -3.3 불가
+M1    humerus→ulna                   18.2   26.7   8.5    1747  M1 ×1    |     0.41  20.4  -2.2 불가
+→ report/modulefirst/stroke_check_elbow_r_k2_40kg_h160_mf.csv   모듈 배정 불가 0개 / 2개 (ΔL 최대 90 mm)   SMA 참고: 불가 2개
+[shoulder_r] newmus_paths_shoulder_r_k6_40kg_h160_v635_mf_f15.json  자세 400개  모델 data\robot40_h160\robot40_h160.osim  SMA 수축률 0.50 × 여유 1.2
+근육    바디                            L_min  L_max    ΔL     힘 N  모듈       |   ΔL/L평균    능동    수동 SMA   (cm)
+M0    torso→humerus                  13.0   19.9   6.9     918  M2 ×1    |     0.42  16.5  -3.5 불가
+M1    torso→humerus                  12.8   20.9   8.1    1433  M1 ×1    |     0.46  19.4  -6.6 불가
+M2    torso→humerus                  13.6   21.5   7.9    1199  M2 ×1    |     0.42  18.9  -5.4 불가
+M3    torso→humerus                  14.7   22.7   7.9    1199  M2 ×1    |     0.40  19.0  -4.3 불가
+M4    torso→humerus                  26.3   34.2   8.0    1199  M2 ×1    |     0.27  19.1   7.1 가능
+M5    torso→humerus                  16.1   23.2   7.1    1199  M2 ×1    |     0.40  17.1  -1.0 불가
+→ report/modulefirst/stroke_check_shoulder_r_k6_40kg_h160_v635_mf_f15.csv   모듈 배정 불가 0개 / 6개 (ΔL 최대 81 mm)   SMA 참고: 불가 5개
+[trunk] newmus_paths_trunk_k4_40kg_h160_s80_win_tr.json  자세 416개  모델 data\robot40_h160\robot40_h160.osim  SMA 수축률 0.50 × 여유 1.2
+근육    바디                            L_min  L_max    ΔL     힘 N  모듈       |   ΔL/L평균    능동    수동 SMA   (cm)
+M0    pelvis→torso                   14.8   20.5   5.7     558  M2 ×1    |     0.32  13.7   1.1 가능
+M1    pelvis→torso                   18.4   24.3   5.9     471  M2 ×1    |     0.27  14.1   4.3 가능
+M2    pelvis→torso                   31.7   35.2   3.5    1804  M1 ×1    |     0.10   8.4  23.3 가능
+M3    pelvis→torso                   30.9   37.6   6.6     671  M2 ×1    |     0.19  15.9  15.0 가능
+→ report/modulefirst/stroke_check_trunk_k4_40kg_h160_s80_win_tr.csv   모듈 배정 불가 0개 / 4개 (ΔL 최대 66 mm)   SMA 참고: 불가 0개
+[elbow_r] newmus_paths_elbow_r_k2_40kg_h160_s80_win_tr.json  자세 352개  모델 data\robot40_h160\robot40_h160.osim  SMA 수축률 0.50 × 여유 1.2
+근육    바디                            L_min  L_max    ΔL     힘 N  모듈       |   ΔL/L평균    능동    수동 SMA   (cm)
+M0    humerus→ulna                   18.8   27.2   8.4    2327  M1 ×1    |     0.34  20.1  -1.3 불가
+M1    humerus→ulna                   21.2   29.3   8.1    1835  M1 ×1    |     0.34  19.4   1.7 가능
+→ report/modulefirst/stroke_check_elbow_r_k2_40kg_h160_s80_win_tr.csv   모듈 배정 불가 0개 / 2개 (ΔL 최대 84 mm)   SMA 참고: 불가 1개
+[shoulder_r] newmus_paths_shoulder_r_k6_40kg_h160_v635_s80_win_tr_f15.json  자세 400개  모델 data\robot40_h160\robot40_h160.osim  SMA 수축률 0.50 × 여유 1.2
+근육    바디                            L_min  L_max    ΔL     힘 N  모듈       |   ΔL/L평균    능동    수동 SMA   (cm)
+M0    torso→humerus                  13.1   19.7   6.6    1317  M6 ×1    |     0.41  16.0  -2.9 불가
+M1    torso→humerus                  13.0   21.3   8.3    1470  M1 ×1    |     0.46  19.9  -6.9 불가
+M2    torso→humerus                  14.1   22.0   7.8    1275  M6 ×1    |     0.40  18.8  -4.6 불가
+M3    torso→humerus                  15.1   23.1   8.0    1540  M1 ×1    |     0.40  19.2  -4.2 불가
+M4    torso→humerus                  22.5   30.2   7.6    2011  M1 ×1    |     0.29  18.3   4.2 가능
+M5    torso→humerus                  15.9   22.9   7.0    1573  M1 ×1    |     0.39  16.7  -0.8 불가
+→ report/modulefirst/stroke_check_shoulder_r_k6_40kg_h160_v635_s80_win_tr_f15.csv   모듈 배정 불가 0개 / 6개 (ΔL 최대 83 mm)   SMA 참고: 불가 5개
+[mf_trunk_new_lift] 보조 최악 0.0 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 1.1 % / 95퍼센타일 0.2 %  → 재현
+[mf_trunk_new_walk] 보조 최악 0.0 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 67.6 % / 95퍼센타일 13.6 %  → 재현
+[mf_elbow_new_walk] 보조 최악 0.0 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 505.0 % / 95퍼센타일 77.7 %  → 재현
+[mf_elbow_new_lift] 보조 최악 0.0 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 0.9 % / 95퍼센타일 0.2 %  → 재현
+[mf_lower_new_squat] 보조 최악 20.2 % (95퍼센타일 16.7 %)   새 근육 토크 vs ID 최대 17.0 % / 95퍼센타일 11.2 %  → 미달
+[mf_shoulder_new_walk] 보조 최악 212.3 % (95퍼센타일 0.3 %)   새 근육 토크 vs ID 최대 3497.5 % / 95퍼센타일 2667.7 %  → 재현
+[mf_lower_new_walk] 보조 최악 42.3 % (95퍼센타일 1.3 %)   새 근육 토크 vs ID 최대 29.5 % / 95퍼센타일 17.4 %  → 재현
+[mf_shoulder_new_lift] 보조 최악 99.9 % (95퍼센타일 68.6 %)   새 근육 토크 vs ID 최대 122.3 % / 95퍼센타일 57.8 %  → 미달
+[mf_trunk_curtr_lift] 보조 최악 0.0 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 1.1 % / 95퍼센타일 0.2 %  → 재현
+[mf_trunk_curtr_walk] 보조 최악 0.0 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 67.6 % / 95퍼센타일 13.6 %  → 재현
+[mf_elbow_curtr_lift] 보조 최악 0.1 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 0.9 % / 95퍼센타일 0.2 %  → 재현
+[mf_elbow_curtr_walk] 보조 최악 0.0 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 505.0 % / 95퍼센타일 77.7 %  → 재현
+[mf_lower_curtr_squat] 보조 최악 1.7 % (95퍼센타일 1.5 %)   새 근육 토크 vs ID 최대 3.8 % / 95퍼센타일 1.6 %  → 재현
+[mf_shoulder_curtr_walk] 보조 최악 331.4 % (95퍼센타일 22.8 %)   새 근육 토크 vs ID 최대 3600.6 % / 95퍼센타일 2894.1 %  → 미달
+[mf_shoulder_curtr_lift] 보조 최악 16.8 % (95퍼센타일 5.7 %)   새 근육 토크 vs ID 최대 60.2 % / 95퍼센타일 42.2 %  → 재현
+[mf_lower_curtr_walk] 보조 최악 33.4 % (95퍼센타일 1.4 %)   새 근육 토크 vs ID 최대 28.1 % / 95퍼센타일 17.3 %  → 재현

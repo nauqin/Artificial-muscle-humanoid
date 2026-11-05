@@ -1,0 +1,155 @@
+{
+ "space": "elbow_r",
+ "design": "report\\newmus_V_design_elbow_r_k2_40kg_h160.npz",
+ "tasks": "report/upper/tasks_40kg_h160.csv",
+ "force_scale": 1.0,
+ "margin": 1.1,
+ "n_poses": 504,
+ "n_design_poses": 152,
+ "n_check_poses": 352,
+ "r_min_m": 0.015,
+ "muscles": [
+  {
+   "name": "M0",
+   "v": [
+    1.0
+   ],
+   "capacity_Nm": 19.33249769,
+   "dtheta_rad": 2.7116711392450736,
+   "work_J": 57.66571363904457,
+   "module": "M2",
+   "bundles": 1,
+   "force_cap_N": 1200.0,
+   "stroke_cap_m": 0.08,
+   "r_lo_m": 0.017721456215833337,
+   "r_hi_m": 0.029502102538242123,
+   "grades": [
+    {
+     "module": "M1",
+     "bundles": 1,
+     "force_cap_N": 5000.0,
+     "stroke_cap_m": 0.12,
+     "r_lo_m": 0.0042531494918,
+     "r_hi_m": 0.04425315380736319,
+     "ok": true
+    },
+    {
+     "module": "M2",
+     "bundles": 1,
+     "force_cap_N": 1200.0,
+     "stroke_cap_m": 0.08,
+     "r_lo_m": 0.017721456215833337,
+     "r_hi_m": 0.029502102538242123,
+     "ok": true
+    },
+    {
+     "module": "M3",
+     "bundles": 3,
+     "force_cap_N": 1350.0,
+     "stroke_cap_m": 0.06,
+     "r_lo_m": 0.015752405525185188,
+     "r_hi_m": 0.022126576903681593,
+     "ok": true
+    },
+    {
+     "module": "M4",
+     "bundles": 4,
+     "force_cap_N": 800.0,
+     "stroke_cap_m": 0.09,
+     "r_lo_m": 0.026582184323750004,
+     "r_hi_m": 0.03318986535552239,
+     "ok": true
+    },
+    {
+     "module": "M5",
+     "bundles": 58,
+     "force_cap_N": 2900.0,
+     "stroke_cap_m": 0.02,
+     "r_lo_m": 0.007333016365172415,
+     "r_hi_m": 0.007375525634560531,
+     "ok": false
+    },
+    {
+     "module": "M6",
+     "bundles": 1,
+     "force_cap_N": 1500.0,
+     "stroke_cap_m": 0.08,
+     "r_lo_m": 0.014177164972666668,
+     "r_hi_m": 0.029502102538242123,
+     "ok": true
+    }
+   ]
+  },
+  {
+   "name": "M1",
+   "v": [
+    -1.0
+   ],
+   "capacity_Nm": 14.75224139,
+   "dtheta_rad": 2.7116711392450736,
+   "work_J": 44.003549938083594,
+   "module": "M2",
+   "bundles": 1,
+   "force_cap_N": 1200.0,
+   "stroke_cap_m": 0.08,
+   "r_lo_m": 0.013522887940833334,
+   "r_hi_m": 0.029502102538242123,
+   "grades": [
+    {
+     "module": "M1",
+     "bundles": 1,
+     "force_cap_N": 5000.0,
+     "stroke_cap_m": 0.12,
+     "r_lo_m": 0.0032454931058,
+     "r_hi_m": 0.04425315380736319,
+     "ok": true
+    },
+    {
+     "module": "M2",
+     "bundles": 1,
+     "force_cap_N": 1200.0,
+     "stroke_cap_m": 0.08,
+     "r_lo_m": 0.013522887940833334,
+     "r_hi_m": 0.029502102538242123,
+     "ok": true
+    },
+    {
+     "module": "M3",
+     "bundles": 2,
+     "force_cap_N": 900.0,
+     "stroke_cap_m": 0.06,
+     "r_lo_m": 0.018030517254444444,
+     "r_hi_m": 0.022126576903681593,
+     "ok": true
+    },
+    {
+     "module": "M4",
+     "bundles": 3,
+     "force_cap_N": 600.0,
+     "stroke_cap_m": 0.09,
+     "r_lo_m": 0.027045775881666668,
+     "r_hi_m": 0.03318986535552239,
+     "ok": true
+    },
+    {
+     "module": "M5",
+     "bundles": 45,
+     "force_cap_N": 2250.0,
+     "stroke_cap_m": 0.02,
+     "r_lo_m": 0.007212206901777778,
+     "r_hi_m": 0.007375525634560531,
+     "ok": false
+    },
+    {
+     "module": "M6",
+     "bundles": 1,
+     "force_cap_N": 1500.0,
+     "stroke_cap_m": 0.08,
+     "r_lo_m": 0.010818310352666666,
+     "r_hi_m": 0.029502102538242123,
+     "ok": true
+    }
+   ]
+  }
+ ]
+}

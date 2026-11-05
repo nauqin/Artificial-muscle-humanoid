@@ -27,6 +27,15 @@ SMA_EPS = None                                        # SMA 묶음 제약 (L_max
 MARGIN = 1.1                                          # 용량 여유 10 %
 SP = COORDS = EXTRA = BODIES = BOX = F_MODULE = None
 WRAP = None                                           # 감는 구 (design_space 의 wrap), 없으면 None
+# 모듈 먼저 (--modules, 2026-11-05): 케이블마다 미리 배정한 등급의 힘·스트로크 상한. None 이면 부위 전체 상한(F_MODULE, STROKE_MAX) — 기존 동작
+#   dict(fcap=(k,) 설계 힘 상한 N, smax=(k,) 길이 변화 상한 m, fr2=Frames(길이 검사 자세) 또는 None)
+MODCAPS = None
+W_CAP_F, W_CAP_S = 5.0, 50.0                          # 케이블별 상한 벌점 가중치 = 부위 전체 상한(F_MODULE 5, STROKE_MAX 50)과 같게. 두 방식의 차이가 "상한이 케이블마다 다르다"뿐이도록
+#   (가중치 1e4 벽으로 해 봤더니 2단계 Powell 의 상자 전체 선탐색이 시작점보다 나쁜 점을 돌려줘 2단계가 아무것도 못 했다 — 2026-11-05 v2)
+#   벌점이 부드러워 생기는 작은 초과는 2단계 뒤 repair_caps 가 그 케이블만 국소 탐색해 없앤다
+#   (설계 상한을 조여 2단계를 다시 돌리는 것은 안 됐다: 몸통 M0 힘 +2 % 가 세 번 조여도 그대로 — 가중치 5 에서 2 % 초과 벌점이 0.01 이라 Powell 이 안 움직인다, v3)
+CAP_MARGIN = 0.01                                     # 첫 회 설계 상한 = 등급 상한 × (1 − 1 %). 모듈 json 의 design_scale_force/_stroke 가 있으면 그 값
+DEGEN_MF = 1e7                                        # 모듈 먼저에서 퇴화 해(구 안·모멘트암 0) 비용. 기본 1e3 이면 상한을 못 지키는 케이블의 벌점이 1e3 을 넘어 DE 가 퇴화 해로 도망간다 (어깨 M1)
 
 
 def configure(space="lower"):
@@ -38,14 +47,19 @@ def configure(space="lower"):
 
 
 configure("lower")
-for f in font_manager.findSystemFonts():
-    if "AppleSDGothicNeo" in f: plt.rcParams["font.family"] = font_manager.FontProperties(fname=f).get_name(); break
+_FONTS = font_manager.findSystemFonts()
+for _key in ("applesdgothicneo", "malgun.ttf"):                # 맥 → 윈도(맑은 고딕) 순서 (2026-11-05)
+    _f = next((f for f in _FONTS if _key in os.path.basename(f).lower()), None)
+    if _f: plt.rcParams["font.family"] = font_manager.FontProperties(fname=_f).get_name(); break
 plt.rcParams["axes.unicode_minus"] = False
+SUBJECT3_BODY = (63.5, 1.69)                          # LabValidation 피험자3 질량 kg·키 m (design_directions 기본 REF 와 같음). poses() 의 --ref 환산에 쓴다
 
 
-def poses(n_walk=10, n_sq=60, seed=0):
+def poses(n_walk=10, n_sq=60, seed=0, ref=None):
     """자세 표본 Q (N × 5: 4 설계 좌표 + hip_rotation, rad) 와 같은 프레임의 ID 토크 T (N × 4, Nm).
-    걷기 6 시행 + 스쿼트 (모두 AddB 변환 짝이라 IK·ID 가 일관). 스쿼트는 무릎이 가장 굽은 프레임을 반드시 넣는다."""
+    걷기 6 시행 + 스쿼트 (모두 AddB 변환 짝이라 IK·ID 가 일관). 스쿼트는 무릎이 가장 굽은 프레임을 반드시 넣는다.
+    ref=(mass, height) 를 주면 토크를 그 몸 크기로 맞춘다 (design_directions 와 같은 질량×키 비율). 2026-11-05 전에는 ref 를 안 받아
+    `--ref 40 1.60` 을 줘도 하체 2단계가 피험자3 크기(63.5 kg·1.69 m) 토크를 맞췄다."""
     rng = np.random.default_rng(seed); Q, T = [], []
     cols = list(COORDS) + list(EXTRA)
     trials = [os.path.basename(f).replace("_ik.mot", "") for f in sorted(glob.glob(os.path.join(ROOT, "data/subject3/walking*_ik.mot")))] + ["squats1_segment_0"]
@@ -56,6 +70,7 @@ def poses(n_walk=10, n_sq=60, seed=0):
         if not tr.startswith("walking"): t = np.append(t, tsel[np.argmax(m.column("knee_angle_r")[ok])])
         Q.append(np.column_stack([np.interp(t, m.time, m.column(c)) for c in cols]))
         T.append(np.column_stack([np.interp(t, idm.time, idm.column(c + "_moment")) for c in COORDS]))
+    if ref: return np.vstack(Q), np.vstack(T) * (ref[0] * ref[1]) / (SUBJECT3_BODY[0] * SUBJECT3_BODY[1])
     return np.vstack(Q), np.vstack(T)
 
 
@@ -85,13 +100,13 @@ def poses_from_tasks(path, n_per=None, seed=0, ref=None):
 
 
 class Frames:
-    """자세 × (기준, 좌표 j ±δ) × 바디 의 지면 변환을 미리 계산해 둔다."""
-    def __init__(self, model_path, Q):
+    """자세 × (기준, 좌표 j ±δ) × 바디 의 지면 변환을 미리 계산해 둔다. perturb=False 면 기준 자세만 (길이만 잴 때)."""
+    def __init__(self, model_path, Q, perturb=True):
         import opensim as osim
         osim.Logger.setLevelString("Error")
         proc = osim.ModelProcessor(model_path); proc.append(osim.ModOpRemoveMuscles()); model = proc.process(); state = model.initSystem()
         cs = model.getCoordinateSet(); names = list(COORDS) + list(EXTRA)
-        nP = 1 + 2 * len(COORDS)
+        nP = 1 + 2 * len(COORDS) if perturb else 1
         self.R = np.zeros((len(Q), nP, len(BODIES), 3, 3)); self.p = np.zeros((len(Q), nP, len(BODIES), 3))
         e = [osim.Vec3(1, 0, 0), osim.Vec3(0, 1, 0), osim.Vec3(0, 0, 1)]; o = osim.Vec3(0, 0, 0)
         for t, q in enumerate(Q):
@@ -150,13 +165,21 @@ def chain_for(v, thr=0.12):
     return ds.chain_for(SP, v, thr)
 
 
-def cost(x, fr, chain, v, cap, detail=False):
+def cap_penalty(i, force, L, chain, P):
+    """모듈 먼저: 케이블 i 에 배정한 등급의 힘·길이 변화 상한 벌점과 길이 변화 ΔL (m). ΔL 은 설계 자세 + stroke_check 자세(fr2)에서 잰다."""
+    if MODCAPS.get("fr2") is not None:
+        L2 = path_lengths(MODCAPS["fr2"], chain, P)[:, 0]; dL = float(max(L.max(), L2.max()) - min(L.min(), L2.min()))
+    else: dL = float(L.max() - L.min())
+    return W_CAP_F * max(0.0, force / MODCAPS["fcap"][i] - 1) ** 2 + W_CAP_S * max(0.0, dL / MODCAPS["smax"][i] - 1) ** 2, dL
+
+
+def cost(x, fr, chain, v, cap, detail=False, i=None):
     P = x.reshape(len(chain), 3); r, L = moment_arms(fr, chain, P)
     if WRAP is not None and wrap_segment(chain) is not None:                       # 부착점이 감는 구 안에 들어가면 안 된다
         _, inside = path_lengths(fr, chain, P, with_inside=True)
-        if inside.any(): return 1e3 + float(inside.mean()) if not detail else None
+        if inside.any(): return (1e3 if MODCAPS is None else DEGEN_MF) + float(inside.mean()) if not detail else None
     nr = np.linalg.norm(r, axis=1); ok = nr > 1e-4
-    if ok.sum() < len(r) * 0.5: return 1e3 if not detail else None
+    if ok.sum() < len(r) * 0.5: return (1e3 if MODCAPS is None else DEGEN_MF) if not detail else None
     e2 = np.linalg.norm(r[ok] / nr[ok, None] - v, axis=1) ** 2
     dir_err = float(0.5 * e2.mean() + 0.5 * e2.max())          # 평균 + 최악 자세 (깊은 스쿼트에서 방향이 틀어지는 것을 막는다, 9/15)
     arm_eff = (r @ v)                                          # 설계 방향으로의 유효 모멘트암 (m)
@@ -164,6 +187,9 @@ def cost(x, fr, chain, v, cap, detail=False):
     stroke = float((L.max() - L.min()) / L.mean()); sma = float((L.max() - L.min()) / L.min())
     force = MARGIN * cap / max(arm_min, 0.005)                 # 설계 용량을 가장 불리한 자세에서 내는 데 필요한 힘 (모멘트암 하한 5 mm — 0 에 가까우면 힘 벌점이 폭발해 DE 가 퇴화 해로 도망간다, 2026-11-03)
     pen = 20 * max(0.0, stroke - STROKE) ** 2 + 5 * max(0.0, force / F_MODULE - 1) ** 2 + 1e4 * max(0.0, 0.015 - arm_min) ** 2 + (50 * max(0.0, sma - SMA_EPS) ** 2 if SMA_EPS else 0.0) + (50 * max(0.0, (L.max() - L.min()) / STROKE_MAX - 1) ** 2 if STROKE_MAX else 0.0)
+    if MODCAPS is not None and i is not None:                  # 모듈 먼저 (--modules): 부위 전체 상한 대신 케이블별 상한
+        pc, dLc = cap_penalty(i, force, L, chain, P); pen += pc
+        if detail: return dict(dir_err=dir_err, arm_min=arm_min, arm_mean=arm_mean, stroke=stroke, sma=sma, force=force, L_mean=float(L.mean()), pen=pen, dL_all=dLc)
     if detail: return dict(dir_err=dir_err, arm_min=arm_min, arm_mean=arm_mean, stroke=stroke, sma=sma, force=force, L_mean=float(L.mean()), pen=pen)
     return dir_err + pen
 
@@ -183,7 +209,12 @@ def main():
     ap.add_argument("--maxfev", type=int, default=20000)
     ap.add_argument("--stroke-max", type=float, default=None, help="모듈 스트로크 상한 m: 케이블 길이 변화 (L_max−L_min) ≤ 이 값 (계획서 모듈표 M1 0.12, M2·M6 0.08, M3 0.06)")
     ap.add_argument("--sma-eps", type=float, default=None, help="SMA 묶음 제약: 케이블 (L_max−L_min)/L_min 상한 (park2019 수축률 0.5 ÷ 여유 1.2 = 0.417). 기본 없음")
+    ap.add_argument("--modules", default=None, help="모듈 먼저 (2026-11-05): report/module_first.py 가 만든 케이블별 등급 json. 주면 --f-module/--stroke-max 대신 "
+                    "케이블마다 그 등급의 힘(묶음 수 × 힘 상한 ÷ 힘 배율)·스트로크 상한을 1 % 안쪽에 세게 건다. ΔL 은 stroke_check 자세까지 합쳐 잰다")
+    ap.add_argument("--refine-trust", type=float, default=None, help="2단계 Powell 을 현재 점 ± 이 값(부착점 m, 힘 배율은 ×10) 안에서 돌리고 옮겨 가며 반복. "
+                    "기본(없음)은 상자 전체 범위 — 1단계 해가 상한 경계에 붙어 있으면 상자 전체 선탐색이 시작점보다 나쁜 점을 돌려줘 2단계가 아무것도 못 한다 (모듈 먼저, 2026-11-05)")
     a = ap.parse_args(); configure(a.space)
+    if a.modules and (a.f_module or a.stroke_max): print("  --modules 를 주면 --f-module/--stroke-max 는 쓰지 않는다 (케이블별 상한으로 바뀐다)"); a.f_module = a.stroke_max = None
     if a.f_module: global F_MODULE; F_MODULE = a.f_module
     if a.sma_eps: global SMA_EPS; SMA_EPS = a.sma_eps; print(f"SMA 제약 ΔL/L_min ≤ {SMA_EPS:.3f}")
     if a.stroke_max: global STROKE_MAX; STROKE_MAX = a.stroke_max; print(f"모듈 스트로크 제약 ΔL ≤ {STROKE_MAX*1000:.0f} mm")
@@ -197,10 +228,25 @@ def main():
     d = np.load(design); V, c = d["V"], d["c"]; k = len(V); tag = ("_k8" if legacy else f"_{a.space}_k{k}") + a.out_tag   # k 는 설계 파일이 정한다
     model_path = a.model or os.path.join(ROOT, "data/subject3/subject3_scaled.osim")
     out_json = a.out or os.path.join(ROOT, f"report/newmus_paths{tag}.json")
-    Q, T = poses_from_tasks(os.path.join(ROOT, a.tasks) if not os.path.isabs(a.tasks) else a.tasks, ref=a.ref) if a.tasks else poses()
-    print(f"[{a.space}] 근육 {k}개, 자세 표본 {len(Q)}개, 모델 {model_path}", flush=True)
+    tasks_path = (os.path.join(ROOT, a.tasks) if not os.path.isabs(a.tasks) else a.tasks) if a.tasks else None
+    Q, T = poses_from_tasks(tasks_path, ref=a.ref) if a.tasks else poses(ref=a.ref)
+    print(f"[{a.space}] 근육 {k}개, 자세 표본 {len(Q)}개, 모델 {model_path}  (2단계 토크 좌표별 최대 {np.round(np.abs(T).max(axis=0), 1)} N·m)", flush=True)
     tic = time.time(); fr = Frames(model_path, Q); print(f"뼈 변환 저장 {time.time()-tic:.0f}s", flush=True)
     out = {"space": a.space, "coords": COORDS, "bodies": BODIES, "model": os.path.relpath(model_path, ROOT), "muscles": []}
+    mods = None
+    if a.modules:                                               # 모듈 먼저: 케이블별 상한 (부위 전체 상한은 끈다)
+        global MODCAPS                                          # F_MODULE·STROKE_MAX 는 위에서 이미 global
+        mods = json.load(open(a.modules if os.path.isabs(a.modules) else os.path.join(ROOT, a.modules), encoding="utf-8"))
+        assert [m["name"] for m in mods["muscles"]] == [f"M{i}" for i in range(k)], "모듈 json 의 케이블 수·이름이 설계와 다르다"
+        assert np.allclose([m["capacity_Nm"] for m in mods["muscles"]], c), "모듈 json 이 다른 설계(용량 c)에서 나왔다"
+        s = float(mods.get("force_scale", 1.0)); F_MODULE = np.inf; STROKE_MAX = None
+        fcap = np.array([m["force_cap_N"] / s * m.get("design_scale_force", 1 - CAP_MARGIN) for m in mods["muscles"]])
+        smax = np.array([m["stroke_cap_m"] * m.get("design_scale_stroke", 1 - CAP_MARGIN) for m in mods["muscles"]])
+        Q2 = poses_from_tasks(tasks_path, n_per=20)[0] if a.tasks else poses(n_walk=20, n_sq=60)[0]      # stroke_check 와 같은 검사 자세
+        MODCAPS = dict(fcap=fcap, smax=smax, fr2=Frames(model_path, Q2, perturb=False),
+                       fcap_true=np.array([m["force_cap_N"] / s for m in mods["muscles"]]), smax_true=np.array([m["stroke_cap_m"] for m in mods["muscles"]]))
+        print(f"모듈 먼저: {os.path.basename(a.modules)} (힘 배율 {s:g}), 검사 자세 {len(Q2)}개 추가")
+        for i, m in enumerate(mods["muscles"]): print(f"  M{i}: {m['module']} ×{m['bundles']}  설계 힘 상한 {fcap[i]:.0f} N  ΔL 상한 {smax[i]*1000:.1f} mm")
     if a.refine_from_json:                                      # 1단계 결과를 다시 쓰고 2단계만 돌린다
         out = json.load(open(out_json))
     for i in range(k if not a.refine_from_json else 0):
@@ -208,10 +254,10 @@ def main():
         bounds = [b for n in chain for b in BOX[BODIES[n]]]
         tic = time.time()
         for attempt in range(4):                                   # 퇴화(모멘트암 0 / 구 안) 해가 나오면 시드를 바꿔 다시
-            res = differential_evolution(cost, bounds, args=(fr, chain, v, c[i]), seed=i + 10 * attempt, maxiter=400, popsize=25, tol=1e-7, polish=False)
-            res2 = minimize(cost, res.x, args=(fr, chain, v, c[i]), method="Powell", bounds=bounds)
-            x = res2.x if (res2.fun < res.fun and cost(res2.x, fr, chain, v, c[i], detail=True) is not None) else res.x
-            det = cost(x, fr, chain, v, c[i], detail=True)
+            res = differential_evolution(cost, bounds, args=(fr, chain, v, c[i], False, i), seed=i + 10 * attempt, maxiter=400, popsize=25, tol=1e-7, polish=False)
+            res2 = minimize(cost, res.x, args=(fr, chain, v, c[i], False, i), method="Powell", bounds=bounds)
+            x = res2.x if (res2.fun < res.fun and cost(res2.x, fr, chain, v, c[i], detail=True, i=i) is not None) else res.x
+            det = cost(x, fr, chain, v, c[i], detail=True, i=i)
             if det is not None: break
             print(f"  M{i}: 시도 {attempt} 퇴화 해 (cost {res.fun:.1f}) — 시드 바꿔 다시", flush=True)
         if det is None: raise SystemExit(f"M{i}: 경로를 못 찾았다 — 상자/감는 구를 확인")
@@ -219,10 +265,17 @@ def main():
         ang = np.degrees(np.arccos(np.clip(rm @ v / np.linalg.norm(rm), -1, 1)))
         print(f"M{i}: 바디 {[BODIES[n] for n in chain]}  방향오차 {det['dir_err']:.3f} (평균 모멘트암과 설계 방향 각도 {ang:.1f}°)  유효 모멘트암 {det['arm_min']*100:.1f}~{det['arm_mean']*100:.1f} cm  스트로크 {det['stroke']:.2f}  필요 힘 {det['force']:.0f} N  길이 {det['L_mean']*100:.0f} cm  벌점 {det['pen']:.3f}  {time.time()-tic:.0f}s", flush=True)
         print(f"     설계 v = {np.round(v, 2)}   평균 r/|r| = {np.round(rm / np.linalg.norm(rm), 2)}   r 범위(cm) = {np.round(r.min(axis=0)*100, 1)} ~ {np.round(r.max(axis=0)*100, 1)}", flush=True)
+        if mods: print(f"     모듈 먼저: ΔL(검사 자세 포함) {det['dL_all']*1000:.1f} / 상한 {MODCAPS['smax'][i]*1000:.1f} mm   힘 {det['force']:.0f} / 상한 {MODCAPS['fcap'][i]:.0f} N", flush=True)
         out["muscles"].append(dict(name=f"M{i}", v=v.tolist(), capacity_Nm=float(c[i]), chain=[BODIES[n] for n in chain],
                                    points=x.reshape(len(chain), 3).tolist(), force_N=float(det["force"]), arm_min=det["arm_min"], arm_mean=det["arm_mean"],
                                    stroke=det["stroke"], dir_err=det["dir_err"], angle_deg=float(ang), r_mean=rm.tolist()))
-    refine(out, fr, T, maxfev=a.maxfev)
+    if mods:                                                    # 1단계를 새로 돌렸든 json 에서 읽었든, 이번 회의 상한을 기록한다
+        out["module_first"] = dict(modules=os.path.relpath(a.modules if os.path.isabs(a.modules) else os.path.join(ROOT, a.modules), ROOT), force_scale=float(mods.get("force_scale", 1.0)),
+                                   w_cap_force=W_CAP_F, w_cap_stroke=W_CAP_S, n_check_poses=int(len(MODCAPS["fr2"].p)), refine_only=bool(a.refine_from_json))
+        for i, (m, mm) in enumerate(zip(out["muscles"], mods["muscles"])):
+            m["module"] = dict(name=mm["module"], bundles=mm["bundles"], force_cap_N=mm["force_cap_N"], stroke_cap_m=mm["stroke_cap_m"], design_force_cap_N=float(MODCAPS["fcap"][i]), design_stroke_cap_m=float(MODCAPS["smax"][i]))
+    refine(out, fr, T, maxfev=a.maxfev, trust=a.refine_trust)
+    if a.refine_trust: out["refine"]["trust"] = a.refine_trust
     json.dump(out, open(out_json, "w"), indent=1, ensure_ascii=False); print("저장", out_json)
     model_out = os.path.join(ROOT, "report/moco/newmus_paths_subject3_model.osim") if legacy else os.path.join(ROOT, f"report/moco/newmus_paths{tag}_model.osim")
     build_model(out, model_path, model_out); plot(out, fr, V, os.path.join(ROOT, f"report/fig_path_design{'' if legacy else tag}.png"))
@@ -240,7 +293,10 @@ def batch_boxlsq(A, b, iters=400):
     return u
 
 
-def refine(out, fr, T, maxfev=20000, w_dir=3.0):
+TRUST_ROUNDS = 8                                     # --refine-trust 반복 상한
+
+
+def refine(out, fr, T, maxfev=20000, w_dir=3.0, trust=None):
     """2단계: 8개 경로를 한꺼번에 조정해, 표본 프레임 전부에서 ID 토크×여유를 u∈[0,1] 로 재현하도록 한다.
     1단계는 근육 하나씩 '방향'만 맞추므로 깊은 스쿼트처럼 모멘트암이 크게 변하는 자세에서 부족분이 생겼다 (9/15).
     변수 = 부착점 + 힘 배율 f_i ≥ 1 (힘 = f_i × 여유 × 용량 / 최소 유효 모멘트암, 즉 설계 용량은 항상 보장).
@@ -250,6 +306,7 @@ def refine(out, fr, T, maxfev=20000, w_dir=3.0):
     x0 = np.concatenate([np.array(m["points"]).ravel() for m in out["muscles"]] + [np.ones(k)])
     bounds = [b for m, c in zip(out["muscles"], chains) for n in c for b in BOX[BODIES[n]]] + [(1.0, 3.0)] * k
     pk = np.abs(T).max(axis=0); Tm = MARGIN * T
+    offs = np.concatenate([[0], np.cumsum(sizes)[:-1]]).astype(int)    # 케이블별 부착점 변수 시작 위치 (모듈 먼저에서만 쓴다)
     def arms(x):
         R, Ls = [], []; off = 0
         for c, sz in zip(chains, sizes):
@@ -266,23 +323,80 @@ def refine(out, fr, T, maxfev=20000, w_dir=3.0):
         stroke = (Ls.max(axis=0) - Ls.min(axis=0)) / Ls.mean(axis=0); sma = (Ls.max(axis=0) - Ls.min(axis=0)) / Ls.min(axis=0)
         worst = np.abs(res).max(); mean = np.abs(res).mean()
         pen = 20 * (np.maximum(0.0, stroke - STROKE) ** 2).sum() + 5 * (np.maximum(0.0, F / F_MODULE - 1) ** 2).sum() + 1e4 * (np.maximum(0.0, 0.015 - arm_min) ** 2).sum() + 0.02 * (f - 1).mean() + (50 * (np.maximum(0.0, sma - SMA_EPS) ** 2).sum() if SMA_EPS else 0.0) + (50 * (np.maximum(0.0, (Ls.max(axis=0) - Ls.min(axis=0)) / STROKE_MAX - 1) ** 2).sum() if STROKE_MAX else 0.0)
-        if detail: return dict(worst_pct=worst * 100, worst_coord=np.abs(res).max(axis=0) * 100, mean_pct=mean * 100, stroke=stroke, sma=sma, dL=(Ls.max(axis=0) - Ls.min(axis=0)), F=F, u_max=u.max(axis=0), R=R, Ls=Ls, arm_min=arm_min, arm_mean=arm_eff.mean(axis=0), dir_err=dir_err, f=f)
+        dL_all = None
+        if MODCAPS is not None:                                          # 모듈 먼저: 케이블별 힘·ΔL 상한 (ΔL 은 stroke_check 자세까지)
+            pcs = [cap_penalty(i, F[i], Ls[:, i], c, x[o:o + sz].reshape(-1, 3)) for i, (c, sz, o) in enumerate(zip(chains, sizes, offs))]
+            pen = pen + sum(p for p, _ in pcs); dL_all = np.array([dl for _, dl in pcs])
+        if detail: return dict(worst_pct=worst * 100, worst_coord=np.abs(res).max(axis=0) * 100, mean_pct=mean * 100, stroke=stroke, sma=sma, dL=(Ls.max(axis=0) - Ls.min(axis=0)), F=F, u_max=u.max(axis=0), R=R, Ls=Ls, arm_min=arm_min, arm_mean=arm_eff.mean(axis=0), dir_err=dir_err, f=f, dL_all=dL_all,
+                               total=float(worst + 0.3 * mean + w_dir * dir_err.sum() + pen))
         return worst + 0.3 * mean + w_dir * dir_err.sum() + pen
     d0 = cost_joint(x0, detail=True); print(f"2단계 시작: 최악 잔차 {d0['worst_pct']:.1f} % (좌표별 {np.round(d0['worst_coord'],1)})  평균 {d0['mean_pct']:.2f} %  방향오차합 {d0['dir_err'].sum():.3f}", flush=True)
     tic = time.time(); n = [0]
     def cb(xk): n[0] += 1; d = cost_joint(xk, detail=True); print(f"  반복 {n[0]}: 최악 {d['worst_pct']:.1f} %  평균 {d['mean_pct']:.2f} %  방향오차합 {d['dir_err'].sum():.3f}  힘배율 {np.round(d['f'],2)}  {time.time()-tic:.0f}s", flush=True)
-    res = minimize(cost_joint, x0, method="Powell", bounds=bounds, callback=cb, options=dict(maxfev=maxfev, xtol=1e-4, ftol=1e-6))
-    print(f"  Powell: fun={res.fun:.4f} (시작 {cost_joint(x0):.4f})  nfev={res.nfev}  {res.message}", flush=True)
-    x = res.x if res.fun < cost_joint(x0) else x0
+    if trust is None:                                            # 기존: 상자 전체 범위 Powell
+        res = minimize(cost_joint, x0, method="Powell", bounds=bounds, callback=cb, options=dict(maxfev=maxfev, xtol=1e-4, ftol=1e-6))
+        print(f"  Powell: fun={res.fun:.4f} (시작 {cost_joint(x0):.4f})  nfev={res.nfev}  {res.message}", flush=True)
+        x = res.x if res.fun < cost_joint(x0) else x0
+    else:                                                        # --refine-trust: 현재 점 ±trust(부착점 m, 힘 배율 ×10) 안에서 Powell, 나아지면 옮겨 반복 (2026-11-05)
+        x = x0.copy(); fx = cost_joint(x); nP = len(x) - k
+        for rr in range(TRUST_ROUNDS):
+            dl = np.r_[np.full(nP, trust), np.full(k, 10 * trust)]
+            tb = [(max(b[0], xi - di), min(b[1], xi + di)) for b, xi, di in zip(bounds, x, dl)]
+            res = minimize(cost_joint, x, method="Powell", bounds=tb, callback=cb, options=dict(maxfev=maxfev // 4, xtol=1e-4, ftol=1e-6))
+            print(f"  Powell 신뢰 구간 {rr + 1}회: fun={res.fun:.4f} (시작 {fx:.4f})  nfev={res.nfev}", flush=True)
+            if res.fun < fx - 1e-6: x, fx = res.x, float(res.fun)
+            else: break
+    repair_log = None
+    if MODCAPS is not None:                                  # 모듈 먼저: 벌점이 남긴 작은 초과분을 그 케이블만 국소 탐색으로 상한 안에 넣는다 (수선)
+        x, repair_log = repair_caps(x, cost_joint, bounds, offs, sizes, k)
     d = cost_joint(x, detail=True); print(f"2단계 끝: 최악 잔차 {d['worst_pct']:.1f} % (좌표별 {np.round(d['worst_coord'],1)})  평균 {d['mean_pct']:.2f} %  {time.time()-tic:.0f}s", flush=True)
+    if repair_log is not None: out["repair"] = repair_log
     off = 0
     for i, (m, c, sz) in enumerate(zip(out["muscles"], chains, sizes)):
         P = x[off:off + sz].reshape(-1, 3); off += sz; r = d["R"][:, :, i]; v = V[i]; rm = r.mean(axis=0)
         m.update(points=P.tolist(), force_N=float(d["F"][i]), force_mult=float(d["f"][i]), arm_min=float(d["arm_min"][i]), arm_mean=float(d["arm_mean"][i]), stroke=float(d["stroke"][i]), sma_ratio=float(d["sma"][i]), dL_m=float(d["dL"][i]), L_min_m=float(d["Ls"][:, i].min()), L_max_m=float(d["Ls"][:, i].max()),
                  dir_err=float(d["dir_err"][i]), angle_deg=float(np.degrees(np.arccos(np.clip(rm @ v / np.linalg.norm(rm), -1, 1)))), r_mean=rm.tolist(), u_max_design=float(d["u_max"][i]))
         print(f"  M{i}: 힘 {m['force_N']:.0f} N (배율 {m['force_mult']:.2f})  유효 모멘트암 {m['arm_min']*100:.1f}~{m['arm_mean']*100:.1f} cm  스트로크 {m['stroke']:.2f}  ΔL {m['dL_m']*1000:.0f} mm (ΔL/L_min {m['sma_ratio']:.2f})  각도차 {m['angle_deg']:.1f}°  u최대 {m['u_max_design']:.2f}", flush=True)
+        if d["dL_all"] is not None:
+            m["dL_all_m"] = float(d["dL_all"][i])
+            print(f"      모듈 먼저: ΔL(검사 자세 포함) {m['dL_all_m']*1000:.1f} / 상한 {MODCAPS['smax'][i]*1000:.1f} mm   힘 {m['force_N']:.0f} / 상한 {MODCAPS['fcap'][i]:.0f} N", flush=True)
     out["refine"] = dict(worst_pct=float(d["worst_pct"]), worst_coord=d["worst_coord"].tolist(), mean_pct=float(d["mean_pct"]), n_frames=int(len(T)), margin=MARGIN, w_dir=w_dir)
 
+
+
+REPAIR_TOL = 0.15        # 모듈 먼저 수선: 이보다 많이 넘는 케이블은 그 등급으로는 기하학적으로 안 되는 것 → 손대지 않고 그대로 보고
+REPAIR_STEP = (0.002, 0.02)   # 수선 국소 탐색(Nelder–Mead) 시작 크기: 부착점 m, 힘 배율
+REPAIR_W = 1e4           # 수선 목적함수의 상한 벽 (국소 탐색이라 벽이 가팔라도 된다 — Powell 상자 전체 선탐색과 다름)
+
+
+def repair_caps(x, cost_joint, bounds, offs, sizes, k):
+    """2단계 해 x 에서 배정 등급 상한(힘: 등급 상한 ÷ 힘 배율, ΔL: 설계+검사 자세)을 조금(≤ REPAIR_TOL) 넘은 케이블마다
+    그 케이블의 부착점과 힘 배율만 국소 탐색해 상한 안(× 0.999)으로 넣는다. 목적 = 2단계 비용 + 벽. 반환 (x, 기록)."""
+    lo = np.array([b[0] for b in bounds]); hi = np.array([b[1] for b in bounds])
+    fT, sT = MODCAPS["fcap_true"] * 0.999, MODCAPS["smax_true"] * 0.999
+    def viol(xx):
+        d = cost_joint(xx, detail=True); return d, d["F"] / fT - 1, d["dL_all"] / sT - 1
+    d0, vf, vs = viol(x); log = dict(before_worst_pct=float(d0["worst_pct"]), before_mean_pct=float(d0["mean_pct"]), cables=[])
+    for i in range(k):
+        if max(vf[i], vs[i]) <= 0: continue
+        e = dict(name=f"M{i}", force_before_N=float(d0["F"][i]), dL_before_mm=float(d0["dL_all"][i] * 1000), force_over_pct=float(vf[i] * 100), dL_over_pct=float(vs[i] * 100))
+        if max(vf[i], vs[i]) > REPAIR_TOL:
+            e["result"] = "수선 안 함 (15 % 넘게 초과)"; log["cables"].append(e); print(f"  수선 M{i}: 힘 {vf[i]*100:+.1f} %, ΔL {vs[i]*100:+.1f} % — 15 % 넘게 넘어 손대지 않음", flush=True); continue
+        idx = np.r_[offs[i]:offs[i] + sizes[i], len(x) - k + i]
+        def obj(p, i=i, idx=idx):
+            xx = x.copy(); xx[idx] = np.clip(p, lo[idx], hi[idx]); d, a_, b_ = viol(xx)
+            return d["total"] + REPAIR_W * (max(0.0, a_[i]) ** 2 + max(0.0, b_[i]) ** 2)
+        p0 = x[idx].copy(); step = np.array([REPAIR_STEP[0]] * sizes[i] + [REPAIR_STEP[1]]); sim = [p0]
+        for j in range(len(p0)):
+            q = p0.copy(); q[j] = q[j] + step[j] if q[j] + step[j] <= hi[idx][j] else q[j] - step[j]; sim.append(q)
+        r = minimize(obj, p0, method="Nelder-Mead", bounds=list(zip(lo[idx], hi[idx])), options=dict(initial_simplex=np.array(sim), maxfev=3000, xatol=1e-6, fatol=1e-7))
+        x = x.copy(); x[idx] = np.clip(r.x, lo[idx], hi[idx]); d1, vf, vs = viol(x)
+        ok = bool(d1["F"][i] <= MODCAPS["fcap_true"][i] and d1["dL_all"][i] <= MODCAPS["smax_true"][i])     # 판정은 실제 등급 상한 (목표 × 0.999 가 아니라)
+        e.update(force_after_N=float(d1["F"][i]), dL_after_mm=float(d1["dL_all"][i] * 1000), ok=ok, nfev=int(r.nfev), worst_after_pct=float(d1["worst_pct"]), mean_after_pct=float(d1["mean_pct"]))
+        e["result"] = "상한 안으로 넣음" if e["ok"] else "다 못 넣음"; log["cables"].append(e)
+        print(f"  수선 M{i}: 힘 {e['force_before_N']:.0f}→{e['force_after_N']:.0f} N, ΔL {e['dL_before_mm']:.1f}→{e['dL_after_mm']:.1f} mm  {e['result']}  (잔차 최악 {d1['worst_pct']:.1f} %, 평균 {d1['mean_pct']:.2f} %, {r.nfev}회)", flush=True)
+    d2 = cost_joint(x, detail=True); log.update(after_worst_pct=float(d2["worst_pct"]), after_mean_pct=float(d2["mean_pct"]))
+    return x, log
 
 
 def remove_design_actuators(model):

@@ -1,0 +1,451 @@
+{
+ "space": "shoulder_r",
+ "design": "report\\newmus_V_design_shoulder_r_k6_40kg_h160_v635.npz",
+ "tasks": "report/upper/tasks_40kg_h160.csv",
+ "force_scale": 1.5,
+ "margin": 1.1,
+ "n_poses": 600,
+ "n_design_poses": 200,
+ "n_check_poses": 400,
+ "r_min_m": 0.015,
+ "muscles": [
+  {
+   "name": "M0",
+   "v": [
+    -0.5180352591835382,
+    -0.8046582061987385,
+    0.29011142935029804
+   ],
+   "capacity_Nm": 13.426616283075475,
+   "dtheta_rad": 1.8619112085762666,
+   "work_J": 41.24862612867289,
+   "module": "M2",
+   "bundles": 1,
+   "force_cap_N": 1200.0,
+   "stroke_cap_m": 0.08,
+   "r_lo_m": 0.01846159738922878,
+   "r_hi_m": 0.04296660315030435,
+   "grades": [
+    {
+     "module": "M1",
+     "bundles": 1,
+     "force_cap_N": 5000.0,
+     "stroke_cap_m": 0.12,
+     "r_lo_m": 0.004430783373414907,
+     "r_hi_m": 0.06444990472545653,
+     "ok": true
+    },
+    {
+     "module": "M2",
+     "bundles": 1,
+     "force_cap_N": 1200.0,
+     "stroke_cap_m": 0.08,
+     "r_lo_m": 0.01846159738922878,
+     "r_hi_m": 0.04296660315030435,
+     "ok": true
+    },
+    {
+     "module": "M3",
+     "bundles": 2,
+     "force_cap_N": 900.0,
+     "stroke_cap_m": 0.06,
+     "r_lo_m": 0.024615463185638373,
+     "r_hi_m": 0.032224952362728265,
+     "ok": true
+    },
+    {
+     "module": "M4",
+     "bundles": 3,
+     "force_cap_N": 600.0,
+     "stroke_cap_m": 0.09,
+     "r_lo_m": 0.03692319477845756,
+     "r_hi_m": 0.0483374285440924,
+     "ok": true
+    },
+    {
+     "module": "M5",
+     "bundles": 42,
+     "force_cap_N": 2100.0,
+     "stroke_cap_m": 0.02,
+     "r_lo_m": 0.010549484222416446,
+     "r_hi_m": 0.010741650787576088,
+     "ok": false
+    },
+    {
+     "module": "M6",
+     "bundles": 1,
+     "force_cap_N": 1500.0,
+     "stroke_cap_m": 0.08,
+     "r_lo_m": 0.014769277911383024,
+     "r_hi_m": 0.04296660315030435,
+     "ok": true
+    }
+   ]
+  },
+  {
+   "name": "M1",
+   "v": [
+    0.9849495762703696,
+    -0.11676825164651915,
+    -0.12743432666371593
+   ],
+   "capacity_Nm": 9.60980616368206,
+   "dtheta_rad": 3.2701297959870352,
+   "work_J": 51.85176722470234,
+   "module": "M2",
+   "bundles": 1,
+   "force_cap_N": 1200.0,
+   "stroke_cap_m": 0.08,
+   "r_lo_m": 0.013213483475062834,
+   "r_hi_m": 0.024463860761176088,
+   "grades": [
+    {
+     "module": "M1",
+     "bundles": 1,
+     "force_cap_N": 5000.0,
+     "stroke_cap_m": 0.12,
+     "r_lo_m": 0.0031712360340150803,
+     "r_hi_m": 0.036695791141764134,
+     "ok": true
+    },
+    {
+     "module": "M2",
+     "bundles": 1,
+     "force_cap_N": 1200.0,
+     "stroke_cap_m": 0.08,
+     "r_lo_m": 0.013213483475062834,
+     "r_hi_m": 0.024463860761176088,
+     "ok": true
+    },
+    {
+     "module": "M3",
+     "bundles": 2,
+     "force_cap_N": 900.0,
+     "stroke_cap_m": 0.06,
+     "r_lo_m": 0.017617977966750447,
+     "r_hi_m": 0.018347895570882067,
+     "ok": true
+    },
+    {
+     "module": "M4",
+     "bundles": 3,
+     "force_cap_N": 600.0,
+     "stroke_cap_m": 0.09,
+     "r_lo_m": 0.02642696695012567,
+     "r_hi_m": 0.0275218433563231,
+     "ok": true
+    },
+    {
+     "module": "M5",
+     "bundles": 52,
+     "force_cap_N": 2600.0,
+     "stroke_cap_m": 0.02,
+     "r_lo_m": 0.006098530834644385,
+     "r_hi_m": 0.006115965190294022,
+     "ok": false
+    },
+    {
+     "module": "M6",
+     "bundles": 1,
+     "force_cap_N": 1500.0,
+     "stroke_cap_m": 0.08,
+     "r_lo_m": 0.010570786780050268,
+     "r_hi_m": 0.024463860761176088,
+     "ok": true
+    }
+   ]
+  },
+  {
+   "name": "M2",
+   "v": [
+    0.46167580363002125,
+    -0.7741695733308548,
+    -0.4330322436854979
+   ],
+   "capacity_Nm": 14.395920445118671,
+   "dtheta_rad": 1.7539621363632218,
+   "work_J": 41.66233397507829,
+   "module": "M2",
+   "bundles": 1,
+   "force_cap_N": 1200.0,
+   "stroke_cap_m": 0.08,
+   "r_lo_m": 0.019794390612038172,
+   "r_hi_m": 0.04561101881359717,
+   "grades": [
+    {
+     "module": "M1",
+     "bundles": 1,
+     "force_cap_N": 5000.0,
+     "stroke_cap_m": 0.12,
+     "r_lo_m": 0.004750653746889161,
+     "r_hi_m": 0.06841652822039576,
+     "ok": true
+    },
+    {
+     "module": "M2",
+     "bundles": 1,
+     "force_cap_N": 1200.0,
+     "stroke_cap_m": 0.08,
+     "r_lo_m": 0.019794390612038172,
+     "r_hi_m": 0.04561101881359717,
+     "ok": true
+    },
+    {
+     "module": "M3",
+     "bundles": 2,
+     "force_cap_N": 900.0,
+     "stroke_cap_m": 0.06,
+     "r_lo_m": 0.026392520816050896,
+     "r_hi_m": 0.03420826411019788,
+     "ok": true
+    },
+    {
+     "module": "M4",
+     "bundles": 3,
+     "force_cap_N": 600.0,
+     "stroke_cap_m": 0.09,
+     "r_lo_m": 0.039588781224076344,
+     "r_hi_m": 0.051312396165296814,
+     "ok": true
+    },
+    {
+     "module": "M5",
+     "bundles": 42,
+     "force_cap_N": 2100.0,
+     "stroke_cap_m": 0.02,
+     "r_lo_m": 0.011311080349736099,
+     "r_hi_m": 0.011402754703399293,
+     "ok": false
+    },
+    {
+     "module": "M6",
+     "bundles": 1,
+     "force_cap_N": 1500.0,
+     "stroke_cap_m": 0.08,
+     "r_lo_m": 0.015835512489630537,
+     "r_hi_m": 0.04561101881359717,
+     "ok": true
+    }
+   ]
+  },
+  {
+   "name": "M3",
+   "v": [
+    -0.19192747837981167,
+    -0.9244079744503743,
+    -0.3295963285828944
+   ],
+   "capacity_Nm": 13.675988229239206,
+   "dtheta_rad": 2.270904673314792,
+   "work_J": 51.24382821026272,
+   "module": "M2",
+   "bundles": 1,
+   "force_cap_N": 1200.0,
+   "stroke_cap_m": 0.08,
+   "r_lo_m": 0.01880448381520391,
+   "r_hi_m": 0.035228251075473664,
+   "grades": [
+    {
+     "module": "M1",
+     "bundles": 1,
+     "force_cap_N": 5000.0,
+     "stroke_cap_m": 0.12,
+     "r_lo_m": 0.004513076115648939,
+     "r_hi_m": 0.05284237661321049,
+     "ok": true
+    },
+    {
+     "module": "M2",
+     "bundles": 1,
+     "force_cap_N": 1200.0,
+     "stroke_cap_m": 0.08,
+     "r_lo_m": 0.01880448381520391,
+     "r_hi_m": 0.035228251075473664,
+     "ok": true
+    },
+    {
+     "module": "M3",
+     "bundles": 2,
+     "force_cap_N": 900.0,
+     "stroke_cap_m": 0.06,
+     "r_lo_m": 0.025072645086938548,
+     "r_hi_m": 0.026421188306605246,
+     "ok": true
+    },
+    {
+     "module": "M4",
+     "bundles": 3,
+     "force_cap_N": 600.0,
+     "stroke_cap_m": 0.09,
+     "r_lo_m": 0.03760896763040782,
+     "r_hi_m": 0.03963178245990787,
+     "ok": true
+    },
+    {
+     "module": "M5",
+     "bundles": 52,
+     "force_cap_N": 2600.0,
+     "stroke_cap_m": 0.02,
+     "r_lo_m": 0.008678992530094113,
+     "r_hi_m": 0.008807062768868416,
+     "ok": false
+    },
+    {
+     "module": "M6",
+     "bundles": 1,
+     "force_cap_N": 1500.0,
+     "stroke_cap_m": 0.08,
+     "r_lo_m": 0.015043587052163129,
+     "r_hi_m": 0.035228251075473664,
+     "ok": true
+    }
+   ]
+  },
+  {
+   "name": "M4",
+   "v": [
+    0.7786966153230666,
+    0.5433429840226782,
+    0.31370365474079503
+   ],
+   "capacity_Nm": 15.332136408630584,
+   "dtheta_rad": 3.6516394233106833,
+   "work_J": 92.37926569299866,
+   "module": "M2",
+   "bundles": 1,
+   "force_cap_N": 1200.0,
+   "stroke_cap_m": 0.08,
+   "r_lo_m": 0.021081687561867055,
+   "r_hi_m": 0.02190796810038535,
+   "grades": [
+    {
+     "module": "M1",
+     "bundles": 1,
+     "force_cap_N": 5000.0,
+     "stroke_cap_m": 0.12,
+     "r_lo_m": 0.005059605014848092,
+     "r_hi_m": 0.03286195215057802,
+     "ok": true
+    },
+    {
+     "module": "M2",
+     "bundles": 1,
+     "force_cap_N": 1200.0,
+     "stroke_cap_m": 0.08,
+     "r_lo_m": 0.021081687561867055,
+     "r_hi_m": 0.02190796810038535,
+     "ok": true
+    },
+    {
+     "module": "M3",
+     "bundles": 4,
+     "force_cap_N": 1800.0,
+     "stroke_cap_m": 0.06,
+     "r_lo_m": 0.014054458374578036,
+     "r_hi_m": 0.01643097607528901,
+     "ok": true
+    },
+    {
+     "module": "M4",
+     "bundles": 6,
+     "force_cap_N": 1200.0,
+     "stroke_cap_m": 0.09,
+     "r_lo_m": 0.021081687561867055,
+     "r_hi_m": 0.024646464112933517,
+     "ok": true
+    },
+    {
+     "module": "M5",
+     "bundles": 93,
+     "force_cap_N": 4650.0,
+     "stroke_cap_m": 0.02,
+     "r_lo_m": 0.005440435499836659,
+     "r_hi_m": 0.005476992025096337,
+     "ok": false
+    },
+    {
+     "module": "M6",
+     "bundles": 1,
+     "force_cap_N": 1500.0,
+     "stroke_cap_m": 0.08,
+     "r_lo_m": 0.016865350049493643,
+     "r_hi_m": 0.02190796810038535,
+     "ok": true
+    }
+   ]
+  },
+  {
+   "name": "M5",
+   "v": [
+    -0.5719760307459706,
+    0.7977746531414284,
+    -0.19078527998029177
+   ],
+   "capacity_Nm": 14.37207700297914,
+   "dtheta_rad": 2.6464181597843304,
+   "work_J": 62.75696719792954,
+   "module": "M2",
+   "bundles": 1,
+   "force_cap_N": 1200.0,
+   "stroke_cap_m": 0.08,
+   "r_lo_m": 0.019761605879096318,
+   "r_hi_m": 0.030229538632896773,
+   "grades": [
+    {
+     "module": "M1",
+     "bundles": 1,
+     "force_cap_N": 5000.0,
+     "stroke_cap_m": 0.12,
+     "r_lo_m": 0.004742785410983117,
+     "r_hi_m": 0.04534430794934516,
+     "ok": true
+    },
+    {
+     "module": "M2",
+     "bundles": 1,
+     "force_cap_N": 1200.0,
+     "stroke_cap_m": 0.08,
+     "r_lo_m": 0.019761605879096318,
+     "r_hi_m": 0.030229538632896773,
+     "ok": true
+    },
+    {
+     "module": "M3",
+     "bundles": 3,
+     "force_cap_N": 1350.0,
+     "stroke_cap_m": 0.06,
+     "r_lo_m": 0.01756587189253006,
+     "r_hi_m": 0.02267215397467258,
+     "ok": true
+    },
+    {
+     "module": "M4",
+     "bundles": 4,
+     "force_cap_N": 800.0,
+     "stroke_cap_m": 0.09,
+     "r_lo_m": 0.02964240881864448,
+     "r_hi_m": 0.03400823096200887,
+     "ok": true
+    },
+    {
+     "module": "M5",
+     "bundles": 63,
+     "force_cap_N": 3150.0,
+     "stroke_cap_m": 0.02,
+     "r_lo_m": 0.007528230811084312,
+     "r_hi_m": 0.007557384658224193,
+     "ok": false
+    },
+    {
+     "module": "M6",
+     "bundles": 1,
+     "force_cap_N": 1500.0,
+     "stroke_cap_m": 0.08,
+     "r_lo_m": 0.015809284703277054,
+     "r_hi_m": 0.030229538632896773,
+     "ok": true
+    }
+   ]
+  }
+ ]
+}
