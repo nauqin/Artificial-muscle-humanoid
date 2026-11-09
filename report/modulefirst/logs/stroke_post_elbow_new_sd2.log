@@ -1,0 +1,5 @@
+[elbow_r] newmus_paths_elbow_r_k2_40kg_h160_mf_sd2.json  자세 352개  모델 data\robot40_h160\robot40_h160.osim  SMA 수축률 0.50 × 여유 1.2
+근육    바디                            L_min  L_max    ΔL     힘 N  모듈       |   ΔL/L평균    능동    수동 SMA   (cm)
+M0    humerus→ulna                   16.7   25.8   9.0    2159  M1 ×1    |     0.39  21.7  -4.9 불가
+M1    humerus→ulna                   20.7   29.2   8.5    1747  M1 ×1    |     0.37  20.4   0.3 가능
+→ report/modulefirst/stroke_check_elbow_r_k2_40kg_h160_mf_sd2.csv   모듈 배정 불가 0개 / 2개 (ΔL 최대 90 mm)   SMA 참고: 불가 1개

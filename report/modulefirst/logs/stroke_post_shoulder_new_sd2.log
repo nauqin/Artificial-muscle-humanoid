@@ -1,0 +1,10 @@
+  자세 제외 16개: arm_add_r 가 [-1.31, 1.31] rad 밖
+[shoulder_r] newmus_paths_shoulder_r_k6_40kg_h160_v635_mf_sd2_f15.json  자세 400개  모델 data\robot40_h160\robot40_h160.osim  SMA 수축률 0.50 × 여유 1.2
+근육    바디                            L_min  L_max    ΔL     힘 N  모듈       |   ΔL/L평균    능동    수동 SMA   (cm)
+M0    torso→humerus                  13.2   19.8   6.6     948  M2 ×1    |     0.41  15.8  -2.6 불가
+M1    torso→humerus                  12.1   20.5   8.4    1227  M1 ×1    |     0.49  20.3  -8.2 불가
+M2    torso→humerus                  13.8   21.7   7.9    1199  M2 ×1    |     0.41  18.9  -5.1 불가
+M3    torso→humerus                  14.8   22.7   7.9    1199  M2 ×1    |     0.40  19.0  -4.3 불가
+M4    torso→humerus                  24.1   31.9   7.8    1199  M2 ×1    |     0.28  18.7   5.4 가능
+M5    torso→humerus                  16.7   23.8   7.0    1199  M2 ×1    |     0.38  16.9  -0.1 불가
+→ report/modulefirst/stroke_check_shoulder_r_k6_40kg_h160_v635_mf_sd2_f15.csv   모듈 배정 불가 0개 / 6개 (ΔL 최대 84 mm)   SMA 참고: 불가 5개

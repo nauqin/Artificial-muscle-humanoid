@@ -1,0 +1,7 @@
+[trunk] newmus_paths_trunk_k4_40kg_h160_cal_sd1.json  자세 416개  모델 data\robot40_h160\robot40_h160.osim  SMA 수축률 0.50 × 여유 1.2
+근육    바디                            L_min  L_max    ΔL     힘 N  모듈       |   ΔL/L평균    능동    수동 SMA   (cm)
+M0    pelvis→torso                   13.7   18.8   5.1     623  M2 ×1    |     0.31  12.1   1.6 가능
+M1    pelvis→torso                   14.9   19.7   4.8     559  M2 ×1    |     0.27  11.5   3.4 가능
+M2    pelvis→torso                   30.8   36.1   5.3    1188  M2 ×1    |     0.16  12.8  18.0 가능
+M3    pelvis→torso                   29.6   36.3   6.7     664  M2 ×1    |     0.20  16.1  13.5 가능
+→ report/modulefirst/stroke_check_trunk_k4_40kg_h160_cal_sd1.csv   모듈 배정 불가 0개 / 4개 (ΔL 최대 67 mm)   SMA 참고: 불가 0개

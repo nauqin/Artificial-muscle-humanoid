@@ -1,0 +1,7 @@
+usage: moco_path_muscles.py [-h] [--subject SUBJECT] [--trial TRIAL]
+                            [--model MODEL] [--umax UMAX] [--mesh MESH]
+                            [--tag TAG] [--ik IK] [--ext EXT] [--id ID]
+                            [--t0 T0] [--t1 T1] [--name NAME] [--space SPACE]
+                            [--paths PATHS] [--box-scale BOX_SCALE]
+                            [--prefilter]
+moco_path_muscles.py: error: argument --name: expected one argument

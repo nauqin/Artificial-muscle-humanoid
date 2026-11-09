@@ -352,6 +352,8 @@ python report/design_directions.py --space shoulder_r --tasks $T --k 6 --ref-mas
 python report/design_directions.py --space elbow_r --tasks $T --k 2 --ref-mass 40 --ref-height 1.60 --out-tag _40kg_h160
 # 경로: 모듈 스트로크 상한 (계획서 모듈표: M1 120 mm, M2·M6 80 mm)
 python report/path_design.py --space lower --design report/newmus_V_design_lower_k8_40kg_h160.npz --model $M --box-scale $B --ref 40 1.60 --out-tag _40kg_h160_s120 --stroke-max 0.12
+#   ↑ 2026-11-05 수정: 전에는 --tasks 가 없으면 --ref 가 무시돼 2단계가 피험자3(63.5 kg) 토크를 맞췄다. 이제 40 kg·1.60 m 로 맞춘다 → 결과가 _s120 과 다르다
+#     (수정 뒤 결과는 _40kg_h160_s120_ref, report/upper/README.md 10절)
 python report/path_design.py --space trunk --tasks $T --design report/newmus_V_design_trunk_k4_40kg_h160.npz --model $M --box-scale $B --out-tag _40kg_h160_s80 --f-module 1800 --stroke-max 0.08
 python report/path_design.py --space shoulder_r --tasks $T --design report/newmus_V_design_shoulder_r_k6_40kg_h160_v635.npz --model $M --box-scale $B --out-tag _40kg_h160_v635_s80 --stroke-max 0.08   # --wrap-radius 0.032 로 구 크기 실험
 python report/path_design.py --space elbow_r --tasks $T --design report/newmus_V_design_elbow_r_k2_40kg_h160.npz --model $M --box-scale $B --out-tag _40kg_h160_s80 --stroke-max 0.08
@@ -375,3 +377,37 @@ python report/path_design.py --space shoulder_r --tasks $T --design report/newmu
 ```
 
 시너지 설계의 경로는 `--design report/newmus_V_design_<space>_k<k>_40kg_h160_musyn.npz --out-tag _40kg_h160_musyn_s80`. 결과는 `report/upper/README.md` 10절.
+걷기 검증은 `--prefilter` 를 붙이고 1~4 s 창이다(하체 Moore 걷기도 같음 — 2026-11-05 윈도우에서 맥 결과 줄과 모든 값이 같게 나오는 조건으로 확인).
+명령을 그대로 묶은 것이 `report/modulefirst/run_moco.sh <space> <json> <model> <walk|squat|lift> <이름>` 이다.
+
+### 9-8. 모듈 먼저 정하기 (2026-11-05 실험) — 경로를 찾기 전에 케이블별 등급을 정한다
+
+9-6 은 부위 전체에 힘·스트로크 상한 하나를 걸고 경로를 찾은 뒤 `stroke_check.py` 로 등급을 붙인다(사후 배정). 이 절은 반대로
+1단계 결과(V, c)와 자세 범위만으로 케이블별 등급·묶음 수를 먼저 정하고, 그 등급의 상한을 케이블마다 걸어 2단계를 돌린다. 결과와 결론은 `report/upper/README.md` 10절.
+
+```bash
+# (1) 사전 배정: 일 W = 1.1 × c × (자세 표본에서 v·q 범위) → 등급·묶음 수·필요 모멘트암 범위 (어깨는 경로 뒤 힘 ×1.5 라 --force-scale 1.5)
+python report/module_first.py --space lower --design report/newmus_V_design_lower_k8_40kg_h160.npz --out report/modulefirst/modules_lower_k8_40kg_h160.json
+python report/module_first.py --space trunk --tasks $T --design report/newmus_V_design_trunk_k4_40kg_h160.npz --out report/modulefirst/modules_trunk_k4_40kg_h160.json
+python report/module_first.py --space elbow_r --tasks $T --design report/newmus_V_design_elbow_r_k2_40kg_h160.npz --out report/modulefirst/modules_elbow_r_k2_40kg_h160.json
+python report/module_first.py --space shoulder_r --tasks $T --design report/newmus_V_design_shoulder_r_k6_40kg_h160_v635.npz --force-scale 1.5 --out report/modulefirst/modules_shoulder_r_k6_40kg_h160_v635_f15.json
+# (2) 경로: 9-6 과 같은 인자에서 --f-module/--stroke-max 대신 --modules, 그리고 --refine-trust 0.01
+python report/path_design.py --space lower --design report/newmus_V_design_lower_k8_40kg_h160.npz --model $M --box-scale $B --ref 40 1.60 \
+  --out-tag _40kg_h160_mf --modules report/modulefirst/modules_lower_k8_40kg_h160.json --refine-trust 0.01
+#   (몸통·팔꿈치·어깨도 같은 식. 네 부위 한 번에: bash report/modulefirst/run_paths_final.sh)
+# (3) 어깨 힘 ×1.5·들기 모델·stroke_check·Moco 16건: bash report/modulefirst/run_moco_new.sh  → (4) 비교표: python report/modulefirst/compare.py
+# 예측(W)과 실제(F·ΔL) 비교: python report/module_first.py --space lower --design x --out <등급 json> --check <경로 json> <stroke_check csv>
+```
+- `--modules` 를 주면 케이블 i 에 등급 상한(힘 = 묶음 수 × 힘 상한 ÷ 힘 배율, ΔL = 스트로크 상한)을 1 % 안쪽에 건다. 벌점 가중치는 9-6 과 같다(힘 5, 스트로크 50).
+  ΔL 은 설계 자세에 `stroke_check` 자세까지 합쳐 잰다. 2단계 뒤 상한을 15 % 이하로 넘은 케이블은 그 케이블만 국소 탐색으로 상한 안에 넣는다(수선, json 의 `repair`).
+- 2차(README 11절): `--seed N` 은 1단계 시드 묶음(0 = 기존), `module_first.py --calibrate <check csv>` 는 W 에 실제/예측 비를 곱해 등급을 고른다(보정한 모듈 먼저).
+  방식 4개 × 시드 3개 + 추가 검증 동작 한 번에: `python report/modulefirst/batch2.py --extra-all` → `python report/modulefirst/compare_seeds.py`.
+  **어깨는 `--refine-trust 0.01` 로 시드를 여러 개 돌려 2단계 잔차 최악이 가장 작은 것을 고른다**(시드 6개 중 잔차 ≤ 13.4 % 인 4개가 걷기·들기 모두 통과).
+- `--refine-trust` 는 2단계 Powell 을 현재 점 ±1 cm 안에서 돌리고 옮겨 가며 반복한다. 케이블별 상한이 걸리면 기본 Powell(상자 전체 선탐색)이 시작점보다
+  나쁜 점을 돌려줘 2단계가 아무것도 못 했다. 옵션을 안 주면 9-6 과 결과가 같다(같은 컴퓨터에서 부착점·힘 차이 0 으로 확인).
+
+### 9-9. 윈도우에서 돌릴 때 (2026-11-05)
+- `PYTHONUTF8=1`(한글 CSV·JSON), `MKL_THREADING_LAYER=SEQUENTIAL`(conda-forge numpy 의 MKL 다중 스레드가 행렬곱에서 `0xc06d007f` 로 죽는다)을 붙인다.
+- pip 로 깐 opensim 4.6 은 OpenSim 4.6 GUI 의 DLL 을 쓴다. Moco 의 ipopt 플러그인이 의존 DLL 을 찾게 `C:\OpenSim 4.6\bin` 을 PATH 앞에 둔다(`run_moco.sh` 가 한다).
+- 외력 xml(`*_external_loads.xml`)의 `<datafile>` 이 맥 절대경로다 → 같은 폴더에 경로만 바꾼 `*_external_loads_win.xml` 을 만들어 쓴다.
+- 같은 코드·같은 입력이어도 맥과 윈도우의 경로 설계 결과가 다르다(몸통 부착점 최대 2.8 mm, 하체는 최대 7.3 cm). 비교는 한 컴퓨터 안에서 한다.

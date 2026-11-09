@@ -1,0 +1,11 @@
+[lower] newmus_paths_lower_k8_40kg_h160_cal_sd1.json  자세 181개  모델 data\robot40_h160\robot40_h160.osim  SMA 수축률 0.50 × 여유 1.2
+근육    바디                            L_min  L_max    ΔL     힘 N  모듈       |   ΔL/L평균    능동    수동 SMA   (cm)
+M0    pelvis→femur→tibia→calcn       73.7   85.1  11.4    2843  M1 ×1    |     0.14  27.3  46.5 가능
+M1    pelvis→femur→tibia→calcn       81.0   84.2   3.2    1112  M2 ×1    |     0.04   7.8  73.2 가능
+M2    pelvis→femur→tibia→calcn       80.1   87.8   7.7    1056  M2 ×1    |     0.09  18.4  61.7 가능
+M3    pelvis→femur→tibia→calcn       82.5   86.2   3.7    1188  M2 ×1    |     0.04   8.8  73.6 가능
+M4    pelvis→femur→tibia→calcn       80.7   91.9  11.2    2929  M1 ×1    |     0.13  26.8  53.9 가능
+M5    pelvis→femur→tibia→calcn       78.4   84.7   6.3     198  M4 ×1    |     0.08  15.1  63.3 가능
+M6    femur→tibia                    12.6   18.1   5.5    1394  M6 ×1    |     0.37  13.2  -0.5 불가
+M7    pelvis→femur→tibia→calcn       78.8   86.7   7.9    1010  M2 ×1    |     0.09  18.9  60.0 가능
+→ report/modulefirst/stroke_check_lower_k8_40kg_h160_cal_sd1.csv   모듈 배정 불가 0개 / 8개 (ΔL 최대 114 mm)   SMA 참고: 불가 1개
