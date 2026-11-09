@@ -181,6 +181,7 @@ def main():
     ap.add_argument("--wrap-radius", type=float, default=None, help="감는 구 반지름 m (기본 = 공간 값 × box-scale). 로봇 어깨 외피 크기")
     ap.add_argument("--f-module", type=float, default=None, help="케이블 힘 상한 N (기본 = 공간의 f_module). 낮추면 모멘트암 큰 경로를 찾는다")
     ap.add_argument("--maxfev", type=int, default=20000)
+    ap.add_argument("--n-per", type=int, default=None, help="trial 당 자세 수 (기본: 걷기 5, 그 외 10). 들기 자세가 모자라면 늘린다 (2026-11-09)")
     ap.add_argument("--stroke-max", type=float, default=None, help="모듈 스트로크 상한 m: 케이블 길이 변화 (L_max−L_min) ≤ 이 값 (계획서 모듈표 M1 0.12, M2·M6 0.08, M3 0.06)")
     ap.add_argument("--sma-eps", type=float, default=None, help="SMA 묶음 제약: 케이블 (L_max−L_min)/L_min 상한 (park2019 수축률 0.5 ÷ 여유 1.2 = 0.417). 기본 없음")
     a = ap.parse_args(); configure(a.space)
@@ -197,7 +198,7 @@ def main():
     d = np.load(design); V, c = d["V"], d["c"]; k = len(V); tag = ("_k8" if legacy else f"_{a.space}_k{k}") + a.out_tag   # k 는 설계 파일이 정한다
     model_path = a.model or os.path.join(ROOT, "data/subject3/subject3_scaled.osim")
     out_json = a.out or os.path.join(ROOT, f"report/newmus_paths{tag}.json")
-    Q, T = poses_from_tasks(os.path.join(ROOT, a.tasks) if not os.path.isabs(a.tasks) else a.tasks, ref=a.ref) if a.tasks else poses()
+    Q, T = poses_from_tasks(os.path.join(ROOT, a.tasks) if not os.path.isabs(a.tasks) else a.tasks, n_per=a.n_per, ref=a.ref) if a.tasks else poses()
     print(f"[{a.space}] 근육 {k}개, 자세 표본 {len(Q)}개, 모델 {model_path}", flush=True)
     tic = time.time(); fr = Frames(model_path, Q); print(f"뼈 변환 저장 {time.time()-tic:.0f}s", flush=True)
     out = {"space": a.space, "coords": COORDS, "bodies": BODIES, "model": os.path.relpath(model_path, ROOT), "muscles": []}

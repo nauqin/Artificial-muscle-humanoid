@@ -142,13 +142,13 @@ python report/emg_check.py
 - `../LabValidation_withoutVideos/<피험자>/sessionMetadata.yaml`: 피험자 체중(정규화에 씀). 공유 드라이브의 OpenCap 원자료를 `addb_opensim` 옆에 둔다.
 - 다른 피험자 데이터(`data/subject4` 등)는 공유 드라이브 `Uhlrich2023_Formatted_With_Arm_test`에서 받는다. 연습만 하려면 subject3 하나로도 돌아가지만 숫자는 문서와 달라진다.
 
-### 6-1. 근육 8개의 토크 벡터와 용량 정하기 (10~20분)
+### 6-1. 근육 8개의 관절 배분비와 토크 용량 정하기 (10~20분)
 ```bash
 python -u report/design_directions.py --frames 800 --maxfev 1200 --starts 3
 ```
-- 하는 일: 모든 프레임의 관절 토크를 신호 0~1로 낼 수 있는 근육 8개의 토크 방향을, 총 용량이 최소가 되게 찾는다(안쪽 선형계획, 바깥 Powell). `--frames`는 탐색에 쓸 프레임 표본 수, `--maxfev`는 Powell 평가 횟수 상한, `--starts`는 무작위 시작점 수(축 정렬·시너지 시작점은 항상 포함).
-- 결과: `report/newmus_V_design_k8.npz`(키 `V` 단위 방향, `c` 용량, `V_nm` = 방향 × 용량), `report/design_directions.csv`, `report/fig_design_directions.png`.
-- 확인: 로그 끝의 총용량. 현재 설계는 **394 Nm**이고 축 정렬 522, 시너지 방향 521이 같이 찍힌다. 그림에서 8개 막대가 네 관절에 어떤 비율인지 본다.
+- 하는 일: 모든 프레임의 관절 토크를 신호 0~1로 낼 수 있는 근육 8개의 관절 배분비(케이블 하나가 각 관절에 토크를 나눠 거는 비율)를, 총 토크 용량이 최소가 되게 찾는다(안쪽 선형계획, 바깥 Powell). `--frames`는 탐색에 쓸 프레임 표본 수, `--maxfev`는 Powell 평가 횟수 상한, `--starts`는 무작위 시작점 수(축 정렬·시너지 시작점은 항상 포함).
+- 결과: `report/newmus_V_design_k8.npz`(키 `V` 관절 배분비(단위벡터), `c` 토크 용량, `V_nm` = 배분비 × 토크 용량), `report/design_directions.csv`, `report/fig_design_directions.png`.
+- 확인: 로그 끝의 총용량. 현재 설계는 **394 Nm**이고 축 정렬 522, 시너지 배분비 521이 같이 찍힌다. 그림에서 8개 막대가 네 관절에 어떤 비율인지 본다.
 - 100평가마다 진행 줄이 찍힌다. 안 찍히면 `-u`를 빼먹은 것.
 
 ### 6-2. 토크형 근육으로 걷기 재현 (검증 1, 1분/시행)
@@ -165,7 +165,7 @@ python report/moco_new_muscles.py --subject subject3 --trial walking1_segment_0 
 ```bash
 python -u report/path_design.py
 ```
-- 하는 일: 1단계는 근육 하나씩, 자세 121개에서 케이블 모멘트암 방향이 6-1의 토크 벡터와 나란하도록 부착점을 차분진화 + Powell로 찾는다(근육당 20초). 2단계는 8개 부착점과 힘 배율을 함께 조정해 모든 자세에서 측정 토크 × 1.1을 재현하는 잔차를 줄인다(90초).
+- 하는 일: 1단계는 근육 하나씩, 자세 121개에서 케이블 모멘트암 벡터가 6-1의 관절 배분비와 나란하도록 부착점을 차분진화 + Powell로 찾는다(근육당 20초). 2단계는 8개 부착점과 힘 배율을 함께 조정해 모든 자세에서 측정 토크 × 1.1을 재현하는 잔차를 줄인다(90초).
 - 결과: `report/newmus_paths_k8.json`(근육별 부착점·힘·모멘트암·스트로크), 검증용 모델 `report/moco/newmus_paths_subject3_model.osim`, 그림 `report/fig_path_design.png`.
 - 확인: 로그에서 "2단계 끝: 최악 잔차 N %"가 5 % 아래, 각 근육의 필요 힘이 5,000 N 아래, 스트로크가 0.40 아래. 현재 설계는 잔차 4.1 %, 힘 590~3,460 N, 스트로크 0.02~0.19.
 - 1단계 결과는 두고 2단계만 다시 돌리려면 `python -u report/path_design.py --refine-from-json`.
@@ -287,7 +287,7 @@ python run_trial.py --model data/moore2015/subject3/subject3_scaled.osim \
 python tools/carrt_prepare.py --subject subject1
 ```
 
-### 9-1. 토크 범위 → 9-2. 방향·용량 → 9-3. 경로
+### 9-1. 토크 범위 → 9-2. 관절 배분비·토크 용량 → 9-3. 경로
 
 ```bash
 python report/upper/torque_summary.py                       # 과제별·좌표별 피크, fig_torque_summary.png
@@ -345,7 +345,7 @@ M=data/robot40_h160/robot40_h160.osim; T=report/upper/tasks_40kg_h160.csv; B=0.9
 # 하체 검증용 ID (지면반력을 질량·키 비율로 줄인 것). Moore 걷기는 15 Hz 로!
 python run_trial.py --model $M --ik data/robot40_h160/lower/walking1_segment_0_ik.mot --grf data/robot40_h160/lower/walking1_segment_0_grf.mot --out out/lower40_h160/subject3 --name walking1_segment_0
 python run_trial.py --model $M --ik data/robot40_h160/moore/T047_segment_12_ik.mot --grf data/robot40_h160/moore/T047_segment_12_grf.mot --out out/lower40_h160/moore --name T047_segment_12 --lowpass 15 --grf-lowpass 15
-# 방향·용량 (어깨는 63.5 kg 방향을 고정하고 용량만: --fix-v)
+# 관절 배분비·토크 용량 (어깨는 63.5 kg 배분비를 고정하고 토크 용량만: --fix-v)
 python report/design_directions.py --space lower --ref-mass 40 --ref-height 1.60 --out-tag _40kg_h160
 python report/design_directions.py --space trunk --tasks $T --k 4 --ref-mass 40 --ref-height 1.60 --out-tag _40kg_h160
 python report/design_directions.py --space shoulder_r --tasks $T --k 6 --ref-mass 40 --ref-height 1.60 --out-tag _40kg_h160_v635 --fix-v report/newmus_V_design_shoulder_r_k6.npz
@@ -362,3 +362,16 @@ python report/stroke_check.py --space shoulder_r --paths report/newmus_paths_sho
 
 검증은 9-4 와 같되 `--model`/`--paths` 를 `*_40kg_h160_*` 로, ID 를 `out/upper40_h160/...`·`out/lower40_h160/...` 로, `--box-scale $B` 를 붙인다.
 결과와 어깨 미달 분석은 `report/upper/README.md` 9절.
+
+### 9-7. 상체 시너지 비교 (2026-11-06)
+
+근육 모델 두 개를 `data/synergy_models/` 에 둔다(git 제외, Inria `opensim_models` 저장소의 `upper_body/unimanual/MoBL-ARMS Upper Extremity Model/MOBL_ARMS_fixed_41.osim`, `full_body/gait2392_simbody.osim`).
+
+```bash
+python -I report/synergy_muscle.py --space trunk --check-npz report/newmus_V_design_trunk_k4_40kg_h160.npz
+python -I report/synergy_muscle.py --space arm_mobl --also shoulder_r --kmax 12 --restarts 5 --check-also report/newmus_V_design_shoulder_r_k6_40kg_h160_v635.npz
+python report/design_directions.py --space shoulder_r --tasks $T --k 7,8 --ref-mass 40 --ref-height 1.60 --out-tag _40kg_h160
+python report/path_design.py --space shoulder_r --tasks $T --design report/newmus_V_design_shoulder_r_k8_40kg_h160.npz --model $M --box-scale $B --out-tag _40kg_h160_s80 --stroke-max 0.08
+```
+
+시너지 설계의 경로는 `--design report/newmus_V_design_<space>_k<k>_40kg_h160_musyn.npz --out-tag _40kg_h160_musyn_s80`. 결과는 `report/upper/README.md` 10절.
