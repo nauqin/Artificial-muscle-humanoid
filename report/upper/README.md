@@ -435,7 +435,7 @@ MoBL 은 어깨 좌표가 달라 위팔 회전행렬로 바꿔 넣고(`to_mobl`,
 | Moore 걷기 (부위별 보조 95퍼센타일) | 하체 1.4 · 몸통 0 · 어깨 0.0 % | 하체 1.4 · 몸통 0 · 어깨 0.5 % (피크 209.6 %, 순간 튐) |
 
 전신 GUI `gui_upper_robot40h160_wincombo_walk_s3_T047_12`, 영상 `report/video_upper_robot40h160_wincombo_walk_s3_T047_12.mp4`,
-나란히 비교 `report/video_compare_mac_vs_win_walk_s3_T047_12.mp4` (왼쪽 맥, 오른쪽 윈도우). 어느 쪽을 최종으로 할지는 미정.
+나란히 비교 `report/video_compare_mac_vs_win_walk_s3_T047_12.mp4` (왼쪽 맥, 오른쪽 윈도우). **2026-11-09 사용자 결정: 최종은 윈도우 조합**(하체도 모듈을 먼저 배정한 것). 10-3 의 맥 설계는 이전 설계로 남긴다.
 
 ## 11. 모듈을 먼저 정하고 경로를 짰다 — 사후 배정과 비교 (2026-11-05, 윈도우)
 
