@@ -251,13 +251,12 @@ with PdfPages(OUT) as pdf:
         "강병현 교수님 뼈대 모델은 언제 받을 수 있는지",
         ("  (상체 크기는 들기가 정함: 어깨 81·몸통 155·팔꿈치 34 N·m)", GREY),
     ], fs=13, dy=0.06)
-    fig.text(0.64, 0.50, "다음 단계", fontsize=18, weight="bold", color=NAVY)
-    bullets(fig, 0.64, 0.44, [
+    fig.text(0.64, 0.43, "다음 단계", fontsize=18, weight="bold", color=NAVY)
+    bullets(fig, 0.64, 0.37, [
         "손목 최적화 (위 제안)",
         "MuJoCo 에 160 cm 파일 연결 → RL 걷기",
         "경로 개선: 신뢰 구간 2단계, 시드 여러 개",
         "하체 무릎·발목 감는 면, 왼쪽 검증",
-        "강병현 교수님 뼈대 모델을 언제 받을 수 있는지 확인",
     ], fs=12.5, dy=0.06)
     pdf.savefig(fig); plt.close(fig)
 print("saved", OUT, page_no[0], "pages")
