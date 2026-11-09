@@ -199,6 +199,9 @@ def main():
     model_path = a.model or os.path.join(ROOT, "data/subject3/subject3_scaled.osim")
     out_json = a.out or os.path.join(ROOT, f"report/newmus_paths{tag}.json")
     Q, T = poses_from_tasks(os.path.join(ROOT, a.tasks) if not os.path.isabs(a.tasks) else a.tasks, n_per=a.n_per, ref=a.ref) if a.tasks else poses()
+    if a.ref and not a.tasks:                                   # poses() 는 피험자3 토크 그대로라 --ref 가 안 먹었다 (2026-11-09 발견·수정)
+        import design_directions as dd
+        T = T * (a.ref[0] * a.ref[1]) / dd.body("subject3"); print(f"토크를 {a.ref[0]:g} kg × {a.ref[1]:g} m 크기로 (× {(a.ref[0]*a.ref[1])/dd.body('subject3'):.3f})", flush=True)
     print(f"[{a.space}] 근육 {k}개, 자세 표본 {len(Q)}개, 모델 {model_path}", flush=True)
     tic = time.time(); fr = Frames(model_path, Q); print(f"뼈 변환 저장 {time.time()-tic:.0f}s", flush=True)
     out = {"space": a.space, "coords": COORDS, "bodies": BODIES, "model": os.path.relpath(model_path, ROOT), "muscles": []}
