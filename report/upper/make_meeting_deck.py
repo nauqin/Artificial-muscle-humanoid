@@ -10,6 +10,11 @@ for f in font_manager.findSystemFonts():
     if "AppleSDGothicNeo" in f:
         plt.rcParams["font.family"] = font_manager.FontProperties(fname=f).get_name(); break
 plt.rcParams["axes.unicode_minus"] = False
+DATASETS = [
+    ["UE_ADLdatabase (16명)", "무료(MIT), 팔꿈치·손목·손 마커 다 있음", "물체 무게 없음"],
+    ["Kinematic+EMG (2025)", "무료(CC BY), 파이프 돌리기로 회내·회외", "마커 적음"],
+    ["Yale ADL (12명)", "Herneth 2024 가 MoBL-ARMS 로 IK·ID 완료", "유료 (검산 기준으로만)"],
+]
 ROOT = "/Users/nyubin/Desktop/scHooL/의료로봇연구실/addb_opensim/"
 OUT = sys.argv[1]
 NAVY, ACC, GREY, LIGHT, GOOD, BAD = "#1f3a5f", "#d1622b", "#5b6573", "#eef2f7", "#2e7d4f", "#b3261e"
@@ -67,12 +72,12 @@ with PdfPages(OUT) as pdf:
     stat(fig, 0.17, 0.62, "40개", "케이블 근육 (양쪽)")
     stat(fig, 0.40, 0.62, "0개", "모듈 배정 불가")
     stat(fig, 0.63, 0.62, "≤ 6.6 %", "케이블이 못 낸 토크 (95퍼센타일)", GOOD)
-    stat(fig, 0.86, 0.62, "3.8~10.5 kg", "모듈 무게 추정 (냉각·구조 제외)", ACC)
+    stat(fig, 0.86, 0.62, "약 5.2 kg", "모듈 무게 (park2019 기준, 냉각·구조 제외)", ACC)
     bullets(fig, 0.06, 0.42, [
         "근육 길이 단축 = 과제 계획서 모듈표의 스트로크 상한으로 경로를 설계 (하체 115 mm, 상체 80 mm)",
         "어깨는 6개로 걷기·들기를 같이 못 냈다 → 8개 + 힘 재계산으로 4시행 모두 통과. 회전 지렛대(하드웨어)는 불필요",
         "시너지 배분비와 비교: 같은 개수에서 직접 최적화가 필요한 총 토크 용량이 작거나 같다",
-        ("결정 요청: 손목 포함 여부, 모듈 실제 사양(힘 상한), 들기 하중 기준", ACC),
+        ("제안: 팀원이 찾은 손목 데이터셋으로 손목 최적화 추가.  질문: 들기 하중 목표 (3.79 kg 이면 충분한지)", ACC),
     ], fs=15, dy=0.075)
     pdf.savefig(fig); plt.close(fig)
 
@@ -82,7 +87,7 @@ with PdfPages(OUT) as pdf:
         ["7", "모델 키 160 cm 복구, 40 kg 유지", "완료. 뼈대 길이비 0.988, 상체 ID 16건·하체 ID 3건 재계산"],
         ["8", "근육 길이 단축", "완료. 모듈표 스트로크 상한(하체 115·상체 80 mm)으로 경로 설계, 케이블별 모듈 배정"],
         ["②", "어깨 회전용 지렛대", "불필요. 어깨 8개 + 힘 재계산으로 다른 사람 들기까지 2.1 %"],
-        ["①", "손목 포함 여부", "결정 대기. 팀원이 데이터셋 조사 완료 (UE_ADLdatabase 1순위)"],
+        ["①", "손목 포함 여부", "팀원이 손목 데이터셋 조사 완료 → 손목만 최적화해 추가하는 것을 제안"],
         ["추가", "상체 근육 시너지 분석", "완료. 몸통(Gait2392 근육 6개)·팔(MoBL-ARMS 24개)로 직접 최적화와 비교"],
     ], col_w=[0.08, 0.30, 0.62], fs=13, hl_rows=(2,), hl_color="#e7f3ec")
     pdf.savefig(fig); plt.close(fig)
@@ -172,8 +177,9 @@ with PdfPages(OUT) as pdf:
     fig.text(0.63, 0.75, "모듈 무게 추정", fontsize=17, weight="bold", color=NAVY)
     bullets(fig, 0.63, 0.69, [
         "케이블 힘 합 약 56,500 N (양쪽)",
-        "목표 힘밀도 15 N/g → 3.8 kg",
-        "논문값 5.4 N/g → 10.5 kg",
+        "park2019 SMA 스프링 묶음 기준",
+        "  130 N / 12 g ≈ 10.8 N/g → 약 5.2 kg",
+        "(계획서 목표 15 N/g 이면 3.8 kg)",
         ("냉각·구조·케이블 무게는 제외", GREY),
     ], fs=14, dy=0.06)
     bullets(fig, 0.06, 0.28, [
@@ -228,21 +234,28 @@ with PdfPages(OUT) as pdf:
     fig.text(0.5, 0.055, "영상: report/video_upper_robot40h160_final_walk_s3_T047_12.mp4", fontsize=11, color=GREY, ha="center")
     pdf.savefig(fig); plt.close(fig)
 
-    # 10 결정·다음
-    fig = slide("결정 요청과 다음 단계")
-    fig.text(0.05, 0.80, "결정 요청", fontsize=19, weight="bold", color=ACC)
-    table(fig, [0.04, 0.42, 0.55, 0.36], ["항목", "필요한 이유"], [
-        ["손목·회내외 포함 여부", "넣으면 케이블 3~4개. 데이터셋 조사 완료"],
-        ["모듈 실제 힘·스트로크", "어깨 2,700 N·상체 1,800 N 은 가정값"],
-        ["들기 하중 기준", "지금 물병 3.79 kg. 어깨 설계를 가장 크게 좌우"],
-        ["T3.1~T3.3 문서", "SMA 응답 시간 기준이 0.2·0.31·0.5 s 로 다름"],
-    ], col_w=[0.42, 0.58], fs=12.5)
-    fig.text(0.63, 0.80, "다음 단계", fontsize=19, weight="bold", color=NAVY)
-    bullets(fig, 0.63, 0.74, [
+    # 10 제안·질문·다음
+    fig = slide("제안과 질문, 다음 단계")
+    fig.text(0.04, 0.80, "제안: 손목 최적화 추가", fontsize=18, weight="bold", color=ACC)
+    fig.text(0.04, 0.755, "팀원들이 손목(회내·회외, 굽힘) 데이터셋을 찾아 줘서, 같은 파이프라인으로 손목만 최적화해 더 해 보려 한다", fontsize=12.5, color="#333")
+    table(fig, [0.04, 0.47, 0.56, 0.25], ["데이터셋", "좋은 점", "한계"], DATASETS, col_w=[0.27, 0.43, 0.30], fs=11.5)
+    fig.text(0.04, 0.36, "모듈 사양·무게 (이렇게 진행)", fontsize=15, weight="bold", color=NAVY)
+    bullets(fig, 0.04, 0.31, [
+        "힘·스트로크는 계획서 모듈표 범위 안에서 설계 (M1 ≤ 5,000 N·120 mm 등)",
+        "무게는 park2019 SMA 묶음 기준 (10.8 N/g)",
+    ], fs=12.5, dy=0.055)
+    fig.text(0.64, 0.80, "질문", fontsize=18, weight="bold", color=ACC)
+    bullets(fig, 0.64, 0.74, [
+        "들기 하중 목표는 어느 정도인지",
+        "지금 기준 찬 물병 3.79 kg 이면 충분한지",
+        ("  (상체 크기는 들기가 정함: 어깨 81·몸통 155·팔꿈치 34 N·m)", GREY),
+    ], fs=13, dy=0.06)
+    fig.text(0.64, 0.50, "다음 단계", fontsize=18, weight="bold", color=NAVY)
+    bullets(fig, 0.64, 0.44, [
+        "손목 최적화 (위 제안)",
         "MuJoCo 에 160 cm 파일 연결 → RL 걷기",
-        "전신을 관절각 고정 없이 검증 (MuJoCo / MocoTrack)",
-        "경로 개선: 시드 여러 개, 상한을 확실한 제약으로, 뼈 간섭",
-        "손목 결정 시 같은 파이프라인으로 추가",
-    ], fs=13.5, dy=0.075)
+        "경로 개선: 신뢰 구간 2단계, 시드 여러 개",
+        "하체 무릎·발목 감는 면, 왼쪽 검증",
+    ], fs=12.5, dy=0.06)
     pdf.savefig(fig); plt.close(fig)
 print("saved", OUT, page_no[0], "pages")
