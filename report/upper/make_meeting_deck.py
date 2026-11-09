@@ -235,7 +235,7 @@ with PdfPages(OUT) as pdf:
     pdf.savefig(fig); plt.close(fig)
 
     # 10 제안·질문·다음
-    fig = slide("제안과 질문, 다음 단계")
+    fig = slide("다음 단계")
     fig.text(0.04, 0.80, "제안: 손목 최적화 추가", fontsize=18, weight="bold", color=ACC)
     fig.text(0.04, 0.755, "팀원들이 손목(회내·회외, 굽힘) 데이터셋을 찾아 줘서, 같은 파이프라인으로 손목만 최적화해 더 해 보려 한다", fontsize=12.5, color="#333")
     table(fig, [0.04, 0.47, 0.56, 0.25], ["데이터셋", "좋은 점", "한계"], DATASETS, col_w=[0.27, 0.43, 0.30], fs=11.5)
@@ -248,6 +248,7 @@ with PdfPages(OUT) as pdf:
     bullets(fig, 0.64, 0.74, [
         "들기 하중 목표는 어느 정도인지",
         "지금 기준 찬 물병 3.79 kg 이면 충분한지",
+        "강병현 교수님 뼈대 모델은 언제 받을 수 있는지",
         ("  (상체 크기는 들기가 정함: 어깨 81·몸통 155·팔꿈치 34 N·m)", GREY),
     ], fs=13, dy=0.06)
     fig.text(0.64, 0.50, "다음 단계", fontsize=18, weight="bold", color=NAVY)
@@ -256,6 +257,7 @@ with PdfPages(OUT) as pdf:
         "MuJoCo 에 160 cm 파일 연결 → RL 걷기",
         "경로 개선: 신뢰 구간 2단계, 시드 여러 개",
         "하체 무릎·발목 감는 면, 왼쪽 검증",
+        "강병현 교수님 뼈대 모델을 언제 받을 수 있는지 확인",
     ], fs=12.5, dy=0.06)
     pdf.savefig(fig); plt.close(fig)
 print("saved", OUT, page_no[0], "pages")
