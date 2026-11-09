@@ -436,6 +436,9 @@ MoBL 은 어깨 좌표가 달라 위팔 회전행렬로 바꿔 넣고(`to_mobl`,
 
 전신 GUI `gui_upper_robot40h160_wincombo_walk_s3_T047_12`, 영상 `report/video_upper_robot40h160_wincombo_walk_s3_T047_12.mp4`,
 나란히 비교 `report/video_compare_mac_vs_win_walk_s3_T047_12.mp4` (왼쪽 맥, 오른쪽 윈도우). **2026-11-09 사용자 결정: 최종은 윈도우 조합**(하체도 모듈을 먼저 배정한 것). 10-3 의 맥 설계는 이전 설계로 남긴다.
+**같은 날 다시 결정: 최종 = 하체 `_cal`(방식 3) + 몸통 `_mf`(방식 2) + 어깨 맥 8개 `_s80d_f15` + 팔꿈치 `_s80`** (양쪽 40개, M1 18 · M2 14 · M3 2 · M4 4 · M6 2, 힘 합 53,200 N → park2019 4.9 kg).
+윈도우 어깨 6개(신뢰 구간)는 보조값은 통과하지만 케이블 토크 vs 측정 오차가 95퍼센타일 2,900~3,900 %(시드 0~5 전부, 맥 8개는 63 %)로 순간 튐이 커서 원인 조사 전까지 쓰지 않는다.
+전신 GUI `gui_upper_robot40h160_finalA_walk_s3_T047_12`, 영상 `report/video_upper_robot40h160_finalA_{walk_s3_T047_12,lift_s6_PFWJ_2}.mp4`, 비교 `report/video_compare_{prev,win}_vs_finalA_walk_s3_T047_12.mp4`.
 
 ## 11. 모듈을 먼저 정하고 경로를 짰다 — 사후 배정과 비교 (2026-11-05, 윈도우)
 
