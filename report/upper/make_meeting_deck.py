@@ -2,6 +2,7 @@
 import sys
 import matplotlib; matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import matplotlib.patches
 from matplotlib.backends.backend_pdf import PdfPages
 from matplotlib import font_manager
 import matplotlib.image as mpimg
@@ -93,23 +94,33 @@ with PdfPages(OUT) as pdf:
     pdf.savefig(fig); plt.close(fig)
 
     # 4 방법
-    fig = slide("설계 방법", "사람 근육 모델 없이 관절 토크에서 출발한다 (하체 9월 방식과 같고 설계 공간만 바꿈)")
-    steps = [("① 관절 토크", "걷기·스쿼트·들기 데이터\n역동역학(ID)"),
-             ("② 관절 배분비·\n토크 용량", "모든 프레임 토크를 내는\n최소 총 토크 용량\n(선형계획법 + Powell)"),
-             ("③ 케이블 경로", "부착점 최적화\n힘 상한·스트로크 상한"),
-             ("④ 모듈 배정", "길이 변화·힘 →\n계획서 모듈 등급"),
-             ("⑤ 검증", "MocoInverse 로 동작 재현\n못 낸 토크 < 10 %")]
-    for i, (h, d) in enumerate(steps):
-        x = 0.05 + i * 0.185
-        fig.add_artist(plt.Rectangle((x, 0.45), 0.165, 0.30, transform=fig.transFigure, color=LIGHT, ec=NAVY, lw=1.5))
-        fig.text(x + 0.0825, 0.68, h, fontsize=16, weight="bold", color=NAVY, ha="center", va="center")
-        fig.text(x + 0.0825, 0.54, d, fontsize=12, color="#333", ha="center", va="center", linespacing=1.4)
-        if i < 4: fig.text(x + 0.174, 0.60, "▶", fontsize=16, color=ACC, ha="center", va="center")
-    bullets(fig, 0.06, 0.36, [
-        "관절 배분비 = 케이블 하나가 각 관절에 토크를 나눠 거는 비율.  토크 용량 = 그 비율로 낼 수 있는 최대 세기 (N·m)",
-        "데이터: 걷기 Moore 2015 (2명 × 2속도 × 2조각), 들기 CARRT (2명 × 상자·찬 물병 3.79 kg·빈 물병·찬장), 하체 LabValidation 7명",
-        "상체 토크는 지면반력 없이도 정확 (넣고 뺀 차이 0.00 N·m) → 힘판 없는 들기 데이터를 그대로 사용",
-    ], fs=13.5, dy=0.07)
+    fig = slide("설계 방법", "공통 과정은 같고, 모듈을 정하는 순서에 따라 방식 1·2·3 으로 갈린다")
+    def box(x, y, w, h, title, body, fc=LIGHT, tc=NAVY):
+        fig.add_artist(plt.Rectangle((x, y), w, h, transform=fig.transFigure, color=fc, ec=NAVY, lw=1.3))
+        fig.text(x + w / 2, y + h * 0.68, title, fontsize=12.5, weight="bold", color=tc, ha="center", va="center")
+        fig.text(x + w / 2, y + h * 0.30, body, fontsize=10, color="#333", ha="center", va="center", linespacing=1.3)
+    def arrow(x0, y0, x1, y1):
+        fig.add_artist(matplotlib.patches.FancyArrowPatch((x0, y0), (x1, y1), transform=fig.transFigure, arrowstyle="-|>", mutation_scale=14, color=ACC, lw=1.6))
+    # 공통 앞
+    box(0.03, 0.485, 0.13, 0.17, "관절 토크", "걷기·스쿼트·들기\n역동역학(ID)")
+    box(0.19, 0.485, 0.15, 0.17, "관절 배분비·\n토크 용량", "직접 최적화\n(선형계획법 + Powell)")
+    arrow(0.16, 0.57, 0.19, 0.57)
+    # 세 갈래
+    lanes = [("방식 1  사후 배정", "경로 설계", "부위 전체에 상한 하나", "모듈 배정", "결과 보고 등급"),
+             ("방식 2  모듈 먼저", "모듈 미리 정함", "W = 1.1·c·Δθ 로 등급", "경로 설계", "케이블별 등급 상한"),
+             ("방식 3  보정 모듈 먼저", "모듈 미리 정함", "W × 실측 비율로 등급", "경로 설계", "케이블별 등급 상한")]
+    ys = [0.66, 0.49, 0.32]
+    for (name, a1, b1, a2, b2), y in zip(lanes, ys):
+        fig.text(0.375, y + 0.135, name, fontsize=12, weight="bold", color=ACC)
+        box(0.375, y, 0.15, 0.12, a1, b1); box(0.56, y, 0.15, 0.12, a2, b2)
+        arrow(0.34, 0.57, 0.375, y + 0.06); arrow(0.525, y + 0.06, 0.56, y + 0.06); arrow(0.71, y + 0.06, 0.745, 0.57)
+    box(0.745, 0.485, 0.14, 0.17, "검증", "MocoInverse 로 재현\n못 낸 토크 < 10 %")
+    fig.text(0.815, 0.465, "경로 2단계: 기본 또는\n신뢰 구간(±1 cm 씩)", fontsize=10, color=GREY, ha="center", va="top")
+    # 어디에 쓰였나
+    table(fig, [0.04, 0.05, 0.92, 0.2], ["설계", "하체", "몸통", "어깨", "팔꿈치"], [
+        ["맥 최종 (한쪽 22개)", "방식 1 (상한 115 mm)", "방식 1", "방식 1, 8개 (2단계 기본)", "방식 1"],
+        ["윈도우 조합 (한쪽 20개)", "방식 3", "방식 2", "방식 1, 6개 (2단계 신뢰 구간)", "방식 1"],
+    ], col_w=[0.2, 0.2, 0.14, 0.3, 0.16], fs=12)
     pdf.savefig(fig); plt.close(fig)
 
     # 4-1 배분비와 모듈 연결
@@ -234,6 +245,29 @@ with PdfPages(OUT) as pdf:
     fig.text(0.5, 0.055, "영상: report/video_upper_robot40h160_final_walk_s3_T047_12.mp4", fontsize=11, color=GREY, ha="center")
     pdf.savefig(fig); plt.close(fig)
 
+    # 9-1 맥 vs 윈도우
+    fig = slide("두 설계 비교: 맥 최종 vs 윈도우 조합", "같은 걷기(Moore subject3 1.2 m/s)를 두 설계로 재현. 비교 영상: report/video_compare_mac_vs_win_walk_s3_T047_12.mp4")
+    for k, (fn, lab) in enumerate([("report/frame_upper_robot40h160_final_walk_s3_T047_12.png", "맥 최종 (한쪽 22개)"), ("report/frame_upper_robot40h160_wincombo_walk_s3_T047_12.png", "윈도우 조합 (한쪽 20개)")]):
+        try:
+            img = mpimg.imread(ROOT + fn); ax = fig.add_axes([0.02 + k * 0.32, 0.36, 0.31, 0.44]); ax.imshow(img); ax.axis("off")
+            fig.text(0.175 + k * 0.32, 0.81, lab, fontsize=13, weight="bold", color=NAVY, ha="center")
+        except Exception:
+            pass
+    table(fig, [0.66, 0.36, 0.32, 0.45], ["", "맥 최종", "윈도우 조합"], [
+        ["케이블 (양쪽)", "40", "36"],
+        ["M1 (양쪽)", "23", "16"],
+        ["모듈 무게 (park)", "5.2 kg", "5.0 kg"],
+        ["하체", "사후 배정", "보정 모듈 먼저"],
+        ["몸통", "사후 배정", "모듈 먼저 (M1 0)"],
+        ["어깨", "8개", "6개 (신뢰 구간)"],
+    ], col_w=[0.36, 0.30, 0.34], fs=11.5)
+    bullets(fig, 0.04, 0.29, [
+        "두 설계 모두 걷기 2시행·들기(스쿼트) 2시행을 10 % 미만으로 통과 (윈도우 어깨 6개: 다른 사람 들기 0.6 %, 빠른 걷기 0.0 %)",
+        "윈도우 조합이 케이블 4개·M1 7개 적다. 차이는 경로 2단계를 신뢰 구간으로 제대로 돌린 것과 몸통·하체 모듈을 먼저 정한 것",
+        ("맥 어깨 8개는 경로 2단계가 실제로 돌지 않은 설계였다 (힘 재계산으로 통과)", GREY),
+    ], fs=12.5, dy=0.065)
+    pdf.savefig(fig); plt.close(fig)
+
     # 10 제안·질문·다음
     fig = slide("다음 단계")
     fig.text(0.04, 0.80, "제안: 손목 최적화 추가", fontsize=18, weight="bold", color=ACC)
@@ -253,6 +287,7 @@ with PdfPages(OUT) as pdf:
     ], fs=13, dy=0.06)
     fig.text(0.64, 0.43, "다음 단계", fontsize=18, weight="bold", color=NAVY)
     bullets(fig, 0.64, 0.37, [
+        "최종 조합 결정 (맥 최종 vs 윈도우 조합)",
         "손목 최적화 (위 제안)",
         "MuJoCo 에 160 cm 파일 연결 → RL 걷기",
         "경로 개선: 신뢰 구간 2단계, 시드 여러 개",
