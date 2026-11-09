@@ -137,6 +137,7 @@ def main():
     ap.add_argument("--k", default=None, help="근육 수 (쉼표로 여러 개: 4,5,6). 기본 = 공간의 k")
     ap.add_argument("--ref-mass", type=float, default=63.5); ap.add_argument("--ref-height", type=float, default=1.69, help="토크를 맞출 몸 크기 (기본 피험자3)")
     ap.add_argument("--out-tag", default="", help="출력 파일 이름 뒤에 붙일 말 (예: _40kg)")
+    ap.add_argument("--start-v", default=None, help="이 npz 의 V(예: 근육 시너지 배분비 *_musyn.npz)를 출발점 1번으로 넣는다 (2026-11-09)")
     ap.add_argument("--fix-v", default=None, help="방향 V 를 이 npz 에서 고정하고 용량 c 만 다시 LP 로 (예: 63.5 kg 어깨 방향을 40 kg 토크에)")
     a = ap.parse_args()
     global REF; REF = a.ref_mass * a.ref_height
@@ -189,6 +190,9 @@ def design(a, data, k):
     ax = axis_aligned()                                      # 2n 행. k 가 다르면 앞 k 행을 쓰거나 난수로 채운다
     V0a = ax[:k] if k <= 2 * n else np.vstack([ax, unit(rng.normal(size=(k - 2 * n, n)))])
     starts = [V0a] + ([unit(Vn)] if os.path.exists(npz) else [])
+    if getattr(a, "start_v", None):                              # 출발점 1번 = 주어진 배분비 (상체 근육 시너지)
+        Vs = np.load(a.start_v if os.path.isabs(a.start_v) else os.path.join(ROOT, a.start_v))["V"]; assert Vs.shape == (k, n), Vs.shape
+        starts.insert(1, unit(Vs)); print(f"  출발점 1 = {a.start_v}", flush=True)
     while len(starts) < a.starts + 2: starts.append(unit(rng.normal(size=(k, n))))
     class Stop(Exception): pass
     best = (np.inf, None)
