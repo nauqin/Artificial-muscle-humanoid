@@ -35,3 +35,8 @@ __pycache__/
 !data/robot40/
 !out/upper40/
 !out/lower40/
+# 최종 A안(40 kg·160 cm) 입력·ID 결과와 GUI 뼈 메쉬 — 윈도우에서 바로 돌리려고 올린다
+!data/robot40_h160/
+!out/upper40_h160/
+!out/lower40_h160/
+!report/moco/Geometry/
