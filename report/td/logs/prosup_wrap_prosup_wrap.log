@@ -1,0 +1,30 @@
+자세 7454개 (시행 16), 회내외 토크 -0.92 ~ +0.85 N·m, 각 0.7 ~ 92.0°, 강건성 ±0.25 N·m (× 1.1) 자세 1491개
+뼈 변환 저장 2s
+회내외 축 (노뼈 좌표) [0.0564 0.9984 0.002 ], 원점 [0. 0. 0.];  팔꿈치 케이블 report/newmus_paths_elbow_r_k2_40kg_h175sk_td_br50_rb.json (['M3×3', 'M3×3'])
+
+── 설계 1회 (Moco 추가 프레임 0개) ──
+  R 10.8 mm, 드럼 중심 축 방향 -42.5 mm (노뼈머리 기준)   목적 4.345 (일 용량 4.345 J, 벌점 0.0000)
+  드럼 높이에서 회내외 축 ↔ 자뼈 관 축 거리 17.9 mm (자뼈 관 반지름 15 + 드럼 10.8 mm → 틈 -7.9 mm)
+  M2 회내: 회내외 모멘트암 +10.8~+10.8 mm (그 방향 유효 10.8~10.8), 팔꿈치 모멘트암 최대 |0.000| mm, 감김 각 74~165°, 가이드 높이 12.6 mm  | M5 ×2 (연속 1.73, 일 용량 2 J, park 9 g)  장력 최대 87 N, 수축 최대 17 mm  (데이터 프레임 장력 최대 87 N)
+  M3 회외: 회내외 모멘트암 -10.0~-9.1 mm (그 방향 유효 9.1~10.0), 팔꿈치 모멘트암 최대 |0.000| mm, 감김 각 24~115°, 가이드 높이 8.8 mm  | M5 ×3 (연속 2.22, 일 용량 3 J, park 14 g)  장력 최대 111 N, 수축 최대 15 mm  (데이터 프레임 장력 최대 111 N)
+  설계 좌표의 토크 모터 제거: ['pro_sup_l', 'elbow_flex_l', 'pro_sup_r', 'elbow_flex_r']
+모델 저장 c:\Users\USER\Desktop\Pan\report/moco/newmus_paths_forearm_r_k4_40kg_h175sk_prosup_wrap_model.osim
+  설계 좌표의 토크 모터 제거: ['pro_sup_l', 'elbow_flex_l', 'pro_sup_r', 'elbow_flex_r']
+모델 저장 c:\Users\USER\Desktop\Pan\report/moco/newmus_paths_forearm_r_k4_40kg_h175sk_prosup_wrap_load3.79_model.osim
+  OpenSim M2_r: 길이 차 최대 0.000 mm, 회내외 모멘트암 차 최대 0.000 mm (OpenSim +10.79~+10.79, 설계 +10.79~+10.79 mm), 팔꿈치 모멘트암 최대 |0.000| mm
+  OpenSim M2_l: 길이 차 최대 0.000 mm, 회내외 모멘트암 차 최대 0.000 mm (OpenSim +10.79~+10.79, 설계 +10.79~+10.79 mm), 팔꿈치 모멘트암 최대 |0.000| mm
+  OpenSim M3_r: 길이 차 최대 0.194 mm, 회내외 모멘트암 차 최대 0.166 mm (OpenSim -9.85~-8.99, 설계 -9.97~-9.07 mm), 팔꿈치 모멘트암 최대 |0.000| mm
+  OpenSim M3_l: 길이 차 최대 0.194 mm, 회내외 모멘트암 차 최대 0.166 mm (OpenSim -9.85~-8.99, 설계 -9.97~-9.07 mm), 팔꿈치 모멘트암 최대 |0.000| mm
+  Moco pw_prosup_wrap_it1_lift: 성공=True  회내외 보조 95퍼센타일 오른쪽 0.7 % / 왼쪽 0.6 % (피크 1.0 / 0.9 %), 팔꿈치 95퍼센타일 0.0 / 0.0 %, 케이블 토크 vs ID 95퍼센타일 팔꿈치 0.2 %·회내외 0.7 %  | 전체 최악 95퍼센타일 0.7 %
+  Moco pw_prosup_wrap_it1_walk: 성공=True  회내외 보조 95퍼센타일 오른쪽 0.7 % / 왼쪽 0.7 % (피크 1.8 / 1.5 %), 팔꿈치 95퍼센타일 0.0 / 0.0 %, 케이블 토크 vs ID 95퍼센타일 팔꿈치 67.2 %·회내외 27.3 %  | 전체 최악 95퍼센타일 0.7 %
+  Moco 2 건 23s
+  → 반복 1: 회내외 보조 95퍼센타일 최악 0.7 %, 판정 통과
+
+── 최종 Moco (walk·walks9·lift·lifts6, results_paths.csv) ──
+  Moco td175_forearm_prosup_wrap_walk: 성공=True  회내외 보조 95퍼센타일 오른쪽 0.7 % / 왼쪽 0.7 % (피크 1.8 / 1.5 %), 팔꿈치 95퍼센타일 0.0 / 0.0 %, 케이블 토크 vs ID 95퍼센타일 팔꿈치 67.2 %·회내외 27.3 %  | 전체 최악 95퍼센타일 0.7 %
+  Moco td175_forearm_prosup_wrap_walks9: 성공=True  회내외 보조 95퍼센타일 오른쪽 0.3 % / 왼쪽 0.3 % (피크 0.6 / 0.5 %), 팔꿈치 95퍼센타일 0.0 / 0.0 %, 케이블 토크 vs ID 95퍼센타일 팔꿈치 1.8 %·회내외 3.0 %  | 전체 최악 95퍼센타일 0.3 %
+  Moco td175_forearm_prosup_wrap_lift: 성공=True  회내외 보조 95퍼센타일 오른쪽 0.7 % / 왼쪽 0.6 % (피크 1.0 / 0.9 %), 팔꿈치 95퍼센타일 0.0 / 0.0 %, 케이블 토크 vs ID 95퍼센타일 팔꿈치 0.2 %·회내외 0.7 %  | 전체 최악 95퍼센타일 0.7 %
+  Moco td175_forearm_prosup_wrap_lifts6: 성공=True  회내외 보조 95퍼센타일 오른쪽 0.8 % / 왼쪽 1.0 % (피크 1.1 / 1.1 %), 팔꿈치 95퍼센타일 0.0 / 0.0 %, 케이블 토크 vs ID 95퍼센타일 팔꿈치 0.2 %·회내외 0.8 %  | 전체 최악 95퍼센타일 1.0 %
+  Moco 4 건 41s
+  → 최종: 회내외 보조 95퍼센타일 최악 0.8 %, 판정 통과
+저장 report/newmus_paths_forearm_r_k4_40kg_h175sk_prosup_wrap.json report/moco/newmus_paths_forearm_r_k4_40kg_h175sk_prosup_wrap_model.osim report/moco/newmus_paths_forearm_r_k4_40kg_h175sk_prosup_wrap_load3.79_model.osim report\td\prosup_wrap_prosup_wrap

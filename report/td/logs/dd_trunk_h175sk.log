@@ -1,0 +1,168 @@
+tasks.csv: trial 16개, 과제 ['walk1.2', 'walk1.6', 'lift_box', 'lift_jug_full', 'lift_jug_empty', 'reach_cabinet']
+
+=== trunk 근육 4개 ===  데이터: {'walk1.2': 3404, 'walk1.6': 6783, 'lift_box': 1248, 'lift_jug_full': 1425, 'lift_jug_empty': 1362, 'reach_cabinet': 1379} 합계 15601 프레임 (side 합침, 기준 40 kg × 1.75 m)
+좌표별 피크 (Nm): {'lumbar_extension': np.float64(73.4), 'lumbar_bending': np.float64(47.9), 'lumbar_rotation': np.float64(23.2)}
+최적화 프레임 606개, 평가 프레임 3006개 (전체 LP 는 조건 나쁜 V 에서 한없이 길어져 표본으로 잰다)
+축 정렬 6개: 총용량 222 Nm, slack 0.00
+    시작 0 평가 100회  현재 최선 178 Nm  LP 평균 24 ms
+    시작 0 평가 200회  현재 최선 175 Nm  LP 평균 24 ms
+    시작 0 평가 300회  현재 최선 175 Nm  LP 평균 24 ms
+  시작 0: 300회 7s  부분집합 175 → 전체 196 Nm (slack 0.00)
+    시작 1 평가 100회  현재 최선 155183 Nm  LP 평균 25 ms
+    시작 1 평가 200회  현재 최선 117724 Nm  LP 평균 26 ms
+    시작 1 평가 300회  현재 최선 1008 Nm  LP 평균 25 ms
+  시작 1: 300회 8s  부분집합 1008 → 전체 1008 Nm (slack 0.00)
+    시작 2 평가 100회  현재 최선 262 Nm  LP 평균 23 ms
+    시작 2 평가 200회  현재 최선 199 Nm  LP 평균 22 ms
+    시작 2 평가 300회  현재 최선 198 Nm  LP 평균 22 ms
+  시작 2: 300회 7s  부분집합 198 → 전체 215 Nm (slack 0.00)
+    시작 3 평가 100회  현재 최선 195418 Nm  LP 평균 25 ms
+    시작 3 평가 200회  현재 최선 252 Nm  LP 평균 24 ms
+    시작 3 평가 300회  현재 최선 177 Nm  LP 평균 23 ms
+  시작 3: 300회 7s  부분집합 177 → 전체 192 Nm (slack 0.00)
+    시작 4 평가 100회  현재 최선 146372 Nm  LP 평균 23 ms
+    시작 4 평가 200회  현재 최선 185 Nm  LP 평균 23 ms
+    시작 4 평가 300회  현재 최선 176 Nm  LP 평균 23 ms
+  시작 4: 300회 7s  부분집합 176 → 전체 181 Nm (slack 0.00)
+    시작 5 평가 100회  현재 최선 198 Nm  LP 평균 32 ms
+    시작 5 평가 200회  현재 최선 180 Nm  LP 평균 32 ms
+    시작 5 평가 300회  현재 최선 176 Nm  LP 평균 31 ms
+  시작 5: 300회 10s  부분집합 176 → 전체 192 Nm (slack 0.00)
+    시작 6 평가 100회  현재 최선 209384 Nm  LP 평균 35 ms
+    시작 6 평가 200회  현재 최선 335 Nm  LP 평균 30 ms
+    시작 6 평가 300회  현재 최선 254 Nm  LP 평균 28 ms
+  시작 6: 300회 8s  부분집합 254 → 전체 263 Nm (slack 0.00)
+전 프레임 검산 (1/3 표본): 설계 용량으로 못 내는 토크 최대 0.74 Nm  (축 정렬: 0.00 Nm)
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 52629 (\N{HANGUL SYLLABLE CUG}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 51221 (\N{HANGUL SYLLABLE JEONG}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 47148 (\N{HANGUL SYLLABLE RYEOL}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 44060 (\N{HANGUL SYLLABLE GAE}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 52572 (\N{HANGUL SYLLABLE COE}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 51201 (\N{HANGUL SYLLABLE JEOG}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 54868 (\N{HANGUL SYLLABLE HWA}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 52509 (\N{HANGUL SYLLABLE CONG}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 50529 (\N{HANGUL SYLLABLE AEG}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 52628 (\N{HANGUL SYLLABLE CU}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 50640 (\N{HANGUL SYLLABLE E}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 51060 (\N{HANGUL SYLLABLE I}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 53552 (\N{HANGUL SYLLABLE TEO}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 50857 (\N{HANGUL SYLLABLE YONG}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 47049 (\N{HANGUL SYLLABLE RYANG}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 44057 (\N{HANGUL SYLLABLE GAT}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 51008 (\N{HANGUL SYLLABLE EUN}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 53664 (\N{HANGUL SYLLABLE TO}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 53356 (\N{HANGUL SYLLABLE KEU}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 47484 (\N{HANGUL SYLLABLE REUL}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 45236 (\N{HANGUL SYLLABLE NAE}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 45716 (\N{HANGUL SYLLABLE NEUN}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 45936 (\N{HANGUL SYLLABLE DE}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 54596 (\N{HANGUL SYLLABLE PIL}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 50836 (\N{HANGUL SYLLABLE YO}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 54620 (\N{HANGUL SYLLABLE HAN}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 44404 (\N{HANGUL SYLLABLE GUL}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 44257 (\N{HANGUL SYLLABLE GOG}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 49888 (\N{HANGUL SYLLABLE SIN}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 51204 (\N{HANGUL SYLLABLE JEON}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 50694 (\N{HANGUL SYLLABLE YEOP}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 44413 (\N{HANGUL SYLLABLE GUB}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 55192 (\N{HANGUL SYLLABLE HIM}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 54924 (\N{HANGUL SYLLABLE HOE}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 49444 (\N{HANGUL SYLLABLE SEOL}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 44228 (\N{HANGUL SYLLABLE GYE}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 50504 (\N{HANGUL SYLLABLE AN}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 44540 (\N{HANGUL SYLLABLE GEUN}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 50977 (\N{HANGUL SYLLABLE YUG}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 48324 (\N{HANGUL SYLLABLE BYEOL}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 44288 (\N{HANGUL SYLLABLE GWAN}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 51208 (\N{HANGUL SYLLABLE JEOL}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 45824 (\N{HANGUL SYLLABLE DAE}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 54840 (\N{HANGUL SYLLABLE HO}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 51068 (\N{HANGUL SYLLABLE IL}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 46412 (\N{HANGUL SYLLABLE DDAE}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 44256 (\N{HANGUL SYLLABLE GO}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 44284 (\N{HANGUL SYLLABLE GWA}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 51228 (\N{HANGUL SYLLABLE JE}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 49352 (\N{HANGUL SYLLABLE SAE}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 48169 (\N{HANGUL SYLLABLE BANG}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 54693 (\N{HANGUL SYLLABLE HYANG}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 49436 (\N{HANGUL SYLLABLE SEO}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 51649 (\N{HANGUL SYLLABLE JIG}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 51217 (\N{HANGUL SYLLABLE JEOB}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 54588 (\N{HANGUL SYLLABLE PI}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 54744 (\N{HANGUL SYLLABLE HEOM}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 51088 (\N{HANGUL SYLLABLE JA}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+C:\Users\USER\Desktop\Pan\report\design_directions.py:254: UserWarning: Glyph 44592 (\N{HANGUL SYLLABLE GI}) missing from font(s) DejaVu Sans.
+  fig.tight_layout(); fig.savefig(os.path.join(ROOT, f"report/fig_design_directions{tag}.png"), dpi=150); print("그림 저장")
+
+설계안 (행 = 근육, 열 = ('lumbar_extension', 'lumbar_bending', 'lumbar_rotation') ) 단위방향 × 용량 = Nm
+  M0: 용량   31.4 Nm   방향 [0.46 0.37 0.81]   Nm [14.5 11.6 25.4]
+  M1: 용량   64.9 Nm   방향 [ 0.76 -0.65 -0.05]   Nm [ 49.4 -42.   -3.3]
+  M2: 용량   27.6 Nm   방향 [-0.88 -0.42 -0.22]   Nm [-24.4 -11.6  -6. ]
+  M3: 용량   57.2 Nm   방향 [ 0.32  0.84 -0.45]   Nm [ 18.1  47.8 -25.8]
+
+과제별 (설계 V 고정) 필요 총용량:
+  walk1.2        129 Nm  slack 0.00
+  walk1.6        154 Nm  slack 0.00
+  lift_box        91 Nm  slack 0.00
+  lift_jug_full     180 Nm  slack 0.00
+  lift_jug_empty     122 Nm  slack 0.00
+  reach_cabinet      72 Nm  slack 0.00
+그림 저장

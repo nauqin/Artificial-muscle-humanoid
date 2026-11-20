@@ -1,0 +1,4 @@
+dataset,subject,trial,ik,id,mass_kg,height_m,task,hand_load_kg,note
+OpenCap,demo,opencap_sample_squat,data/custom/demo/opencap_sample_squat_ik.mot,out/custom40_h160/demo/opencap_sample_squat/opencap_sample_squat_id.sto,40,1.6,squat_deep,0,"원본 키 1.86 m → robot40_h160 뼈대, 지면반력 추정, 컷오프 4 Hz"
+OpenCap,demo,opencap_sample_STS,data/custom/demo/opencap_sample_STS_ik.mot,out/custom40_h160/demo/opencap_sample_STS/opencap_sample_STS_id.sto,40,1.6,sit_to_stand,0,"[상체만]  원본 키 1.86 m → robot40_h160 뼈대, 지면반력 없음, 컷오프 4 Hz"
+Custom,demo,jump_from_ik,data/custom/demo/jump_from_ik_ik.mot,out/custom40_h160/demo/jump_from_ik/jump_from_ik_id.sto,40,1.6,jump,0,"원본 키 1.86 m → robot40_h160 뼈대, 지면반력 추정, 컷오프 8 Hz"

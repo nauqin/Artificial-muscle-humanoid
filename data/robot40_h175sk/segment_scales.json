@@ -1,0 +1,41 @@
+{
+ "height_m": 1.75,
+ "mass_kg": 40.0,
+ "base": "data/moore2015/subject3/subject3_scaled.osim",
+ "base_height_m": 1.62,
+ "length_ratio": 1.0802469135802468,
+ "segment_extra": {
+  "humerus_r": [
+   1.0,
+   1.0974,
+   1.0
+  ],
+  "ulna_r": [
+   1.0,
+   1.0495,
+   1.0
+  ],
+  "radius_r": [
+   1.0,
+   1.0495,
+   1.0
+  ],
+  "humerus_l": [
+   1.0,
+   1.0974,
+   1.0
+  ],
+  "ulna_l": [
+   1.0,
+   1.0495,
+   1.0
+  ],
+  "radius_l": [
+   1.0,
+   1.0495,
+   1.0
+  ]
+ },
+ "per_source": true,
+ "note": "segment_extra: CAD(step/) 실측 마디 길이 ÷ 균일 축소 모델 길이. 출처는 README 12절"
+}

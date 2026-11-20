@@ -411,3 +411,51 @@ python report/path_design.py --space lower --design report/newmus_V_design_lower
 - pip 로 깐 opensim 4.6 은 OpenSim 4.6 GUI 의 DLL 을 쓴다. Moco 의 ipopt 플러그인이 의존 DLL 을 찾게 `C:\OpenSim 4.6\bin` 을 PATH 앞에 둔다(`run_moco.sh` 가 한다).
 - 외력 xml(`*_external_loads.xml`)의 `<datafile>` 이 맥 절대경로다 → 같은 폴더에 경로만 바꾼 `*_external_loads_win.xml` 을 만들어 쓴다.
 - 같은 코드·같은 입력이어도 맥과 윈도우의 경로 설계 결과가 다르다(몸통 부착점 최대 2.8 mm, 하체는 최대 7.3 cm). 비교는 한 컴퓨터 안에서 한다.
+
+### 9-10. 시간 영역 힘 설계 + 175 cm (2026-11-19, 윈도우)
+
+9-6 까지의 경로 설계는 케이블 힘을 `1.1 × 토크 용량 ÷ 최소 모멘트암` 으로 정한다(최악 순간끼리 묶음). 시간 영역은 프레임마다 그 순간의
+장력·수축으로 모듈을 정한다. 설명과 결과는 `report/upper/README.md` 13절. 기본값(`--force-mode amin`)은 그대로다(같은 옵션으로 부착점·힘 차이 0 확인).
+
+```bash
+export PYTHONUTF8=1 MKL_THREADING_LAYER=SEQUENTIAL
+# 0) 지금 경로를 시간 영역으로 평가만 (경로 그대로): 장력 최대·수축·등급, (s, T) 그림
+python report/td_eval.py --space elbow_r --paths report/newmus_paths_elbow_r_k2_40kg_h160_s80.json \
+    --tasks report/upper/tasks_40kg_h160.csv --model data/robot40_h160/robot40_h160.osim --box-scale 0.9877 --grades M3,M4,M5
+# 1) 175 cm 모델 (원본 1.62 m 모델에서 바로, 하체 입력은 출처별 비율) + 상체 ID 16건 + 하체 입력
+python tools/rescale_body.py --mass 40 --height 1.75 --tag _h175sk --per-source \
+    --segment-scale humerus_r=1,1.0974,1 --segment-scale humerus_l=1,1.0974,1 \
+    --segment-scale ulna_r=1,1.0495,1 --segment-scale ulna_l=1,1.0495,1 --segment-scale radius_r=1,1.0495,1 --segment-scale radius_l=1,1.0495,1
+M=data/robot40_h175sk/robot40_h175sk.osim; D=data/robot40_h175sk
+python run_trial.py --model $M --ik $D/lower/walking1_segment_0_ik.mot --grf $D/lower/walking1_segment_0_grf.mot --out out/lower40_h175sk/subject3 --name walking1_segment_0
+python run_trial.py --model $M --ik $D/lower/squats1_segment_0_ik.mot --grf $D/lower/squats1_segment_0_grf.mot --out out/lower40_h175sk/subject3 --name squats1_segment_0
+python run_trial.py --model $M --ik $D/moore/T047_segment_12_ik.mot --grf $D/moore/T047_segment_12_grf.mot --out out/lower40_h175sk/moore --name T047_segment_12 --lowpass 15 --grf-lowpass 15
+#    (윈도: out/lower40_h175sk/*/*_external_loads.xml 을 _external_loads_win.xml 로 복사 — 이미 윈도 경로라 내용은 같다)
+# 2) 배분비·토크 용량: 상체는 175 cm ID 로 새로, 하체는 160 cm V 그대로·c ×1.75/1.60 (사람 7명 원자료가 이 PC 에 없음, 선형이라 같은 답)
+python report/design_directions.py --space trunk --tasks report/upper/tasks_40kg_h175sk.csv --k 4 --starts 5 --ref-mass 40 --ref-height 1.75 --out-tag _40kg_h175sk
+#    (elbow_r --k 2, shoulder_r --k 8 도 같게)
+# 3) 시간 영역 경로 설계 (부위·브래킷 묶음은 report/td/run_160.sh, run_175.sh) → 강건성 다시 (orchestrate4.sh, 꼬리표 _rb) → Moco
+bash report/td/run_175.sh; bash report/td/orchestrate4.sh   # 1·2단계 → 2단계를 강건성 0.25 로 다시(_rb) → Moco
+python report/td/summarize.py 175; python report/td/best_set.py   # → summary_175.md, best_set.md (Moco 통과 + 일 용량 최소)
+#    (--robust-frac 0.25: 모든 자세에서 좌표별 양방향 최대 토크 × 0.25 — 없으면 팔꿈치가 Moco 걷기에서 미달했다)
+```
+
+주요 옵션 (`path_design.py`):
+- `--force-mode time`, `--dt`, `--grades`, `--max-bundles`(기본 4), `--beta`(힘–수축 곡선 감소, 기본 json 0.25), `--curves report/module_curves.json`(임시)
+- `--bracket H` (뼈 관 표면 ~ +H 안에만 부착, 관절 중심 간격), `--body-scale 뼈=x,y,z`(마디별 추가 배율), `--stage1-stride`, `--w-dir-time`(기본 0), `--refine-from json`
+- Moco 는 `report/modulefirst/run_moco.sh` 에 환경 변수 `B UP LO DR` 로 몸 크기를 준다 (기본 160 cm). 상체 검증 시행 `walks9`(subject9 1.6 m/s), `lifts6`(subject6 찬 물병) 추가.
+
+## 10. 새 동작 넣기 — OpenCap·영상에서 로봇 토크까지 (2026-11-19)
+
+찍은 동작을 로봇 뼈대(40 kg · 1.60 m) 관절 토크로 바꿔 설계 입력표에 넣고, 최종 A안이 낼 수 있는지 본다. 자세한 것·정확도·찍는 법은 `report/custom/README.md`.
+
+```bash
+export PYTHONUTF8=1 MKL_THREADING_LAYER=SEQUENTIAL
+# OpenCap 세션 (아이폰 2대+, 하체까지 믿을 만함)
+python tools/add_motion.py --opencap <세션 번호 또는 zip> --trials lift1 --set lift --task lift_box --hand-load 3 --bimanual --check
+# 영상 한 개 (폰 1대 삼각대, 상체용 — 하체 토크는 약 1.5배 크게 나온다). 영상만 `pose` 환경이 더 필요하다 (README 4절)
+python tools/add_motion.py --video reach.mp4 --height 1.70 --mass 62 --set reach --task reach_high --check
+# 그 묶음을 기존 과제에 더해 다시 설계
+python tools/add_motion.py --opencap ... --set lift --redesign lower,trunk,shoulder_r,elbow_r
+```
+확인: 끝에 부위마다 `→ 가능` / `토크 부족` / `경로 부족 (용량은 됨)` / `길이 초과` 가 찍히고, `report/custom/tasks_<묶음>.csv` 가 생긴다. 넣기 전에 `out/custom40_h160/<묶음>/<이름>/<이름>_id.png` 에서 튀는 곳이 없는지 본다(설계 LP 는 튀는 프레임 하나에도 용량을 맞춘다).

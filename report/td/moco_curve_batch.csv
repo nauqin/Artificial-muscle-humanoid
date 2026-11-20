@@ -1,0 +1,16 @@
+space,paths,solution,ik,model,box_scale
+lower,report/newmus_paths_lower_k8_40kg_h175sk_td_br20.json,report/moco/td175_lower_td_br20_walk_solution.sto,data/robot40_h175sk/moore/T047_segment_12_ik.mot,data/robot40_h175sk/robot40_h175sk.osim,1.0802
+lower,report/newmus_paths_lower_k8_40kg_h175sk_td_br20.json,report/moco/td175_lower_td_br20_walklab_solution.sto,data/robot40_h175sk/lower/walking1_segment_0_ik.mot,data/robot40_h175sk/robot40_h175sk.osim,1.0802
+lower,report/newmus_paths_lower_k8_40kg_h175sk_td_br20.json,report/moco/td175_lower_td_br20_squat_solution.sto,data/robot40_h175sk/lower/squats1_segment_0_ik.mot,data/robot40_h175sk/robot40_h175sk.osim,1.0802
+trunk,report/newmus_paths_trunk_k4_40kg_h175sk_td.json,report/moco/td175_trunk_td_walk_solution.sto,data/moore2015/subject3/T047_segment_12_ik.mot,data/robot40_h175sk/robot40_h175sk.osim,1.0802
+trunk,report/newmus_paths_trunk_k4_40kg_h175sk_td.json,report/moco/td175_trunk_td_walks9_solution.sto,data/moore2015/subject9/T027_segment_21_ik.mot,data/robot40_h175sk/robot40_h175sk.osim,1.0802
+trunk,report/newmus_paths_trunk_k4_40kg_h175sk_td.json,report/moco/td175_trunk_td_lift_solution.sto,data/carrt/subject1/PFWJ2_ik.mot,data/robot40_h175sk/robot40_h175sk.osim,1.0802
+trunk,report/newmus_paths_trunk_k4_40kg_h175sk_td.json,report/moco/td175_trunk_td_lifts6_solution.sto,data/carrt/subject6/PFWJ_2_ik.mot,data/robot40_h175sk/robot40_h175sk.osim,1.0802
+shoulder_r,report/newmus_paths_shoulder_r_k8_40kg_h175sk_td_br20_rb.json,report/moco/td175_shoulder_td_br20_rb_walk_solution.sto,data/moore2015/subject3/T047_segment_12_ik.mot,data/robot40_h175sk/robot40_h175sk.osim,1.0802
+shoulder_r,report/newmus_paths_shoulder_r_k8_40kg_h175sk_td_br20_rb.json,report/moco/td175_shoulder_td_br20_rb_walks9_solution.sto,data/moore2015/subject9/T027_segment_21_ik.mot,data/robot40_h175sk/robot40_h175sk.osim,1.0802
+shoulder_r,report/newmus_paths_shoulder_r_k8_40kg_h175sk_td_br20_rb.json,report/moco/td175_shoulder_td_br20_rb_lift_solution.sto,data/carrt/subject1/PFWJ2_ik.mot,data/robot40_h175sk/robot40_h175sk.osim,1.0802
+shoulder_r,report/newmus_paths_shoulder_r_k8_40kg_h175sk_td_br20_rb.json,report/moco/td175_shoulder_td_br20_rb_lifts6_solution.sto,data/carrt/subject6/PFWJ_2_ik.mot,data/robot40_h175sk/robot40_h175sk.osim,1.0802
+elbow_r,report/newmus_paths_elbow_r_k2_40kg_h175sk_td_br50_rb.json,report/moco/td175_elbow_td_br50_rb_walk_solution.sto,data/moore2015/subject3/T047_segment_12_ik.mot,data/robot40_h175sk/robot40_h175sk.osim,1.0802
+elbow_r,report/newmus_paths_elbow_r_k2_40kg_h175sk_td_br50_rb.json,report/moco/td175_elbow_td_br50_rb_walks9_solution.sto,data/moore2015/subject9/T027_segment_21_ik.mot,data/robot40_h175sk/robot40_h175sk.osim,1.0802
+elbow_r,report/newmus_paths_elbow_r_k2_40kg_h175sk_td_br50_rb.json,report/moco/td175_elbow_td_br50_rb_lift_solution.sto,data/carrt/subject1/PFWJ2_ik.mot,data/robot40_h175sk/robot40_h175sk.osim,1.0802
+elbow_r,report/newmus_paths_elbow_r_k2_40kg_h175sk_td_br50_rb.json,report/moco/td175_elbow_td_br50_rb_lifts6_solution.sto,data/carrt/subject6/PFWJ_2_ik.mot,data/robot40_h175sk/robot40_h175sk.osim,1.0802

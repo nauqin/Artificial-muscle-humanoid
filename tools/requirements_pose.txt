@@ -1,0 +1,9 @@
+# 영상 → 3D 자세 (tools/video_pose.py) 전용 환경. osim 과 따로 둔다 (torch 와 opensim 의 numpy·MKL 이 부딪힌다).
+#   conda create -n pose python=3.11 -y
+#   conda activate pose
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128   # RTX 50xx 는 cu128 이상
+#   pip install -r tools/requirements_pose.txt
+# 2026-11-19 이 컴퓨터: torch 2.11.0+cu128, torchvision 0.26.0, RTX 5080, 영상 360x640 60fps 에서 약 15 fps
+opencv-python
+numpy
+imageio-ffmpeg

@@ -40,3 +40,12 @@ __pycache__/
 !out/upper40_h160/
 !out/lower40_h160/
 !report/moco/Geometry/
+# 175 cm·40 kg (2026-11-19) 입력·ID — 다른 컴퓨터에서 바로 돌리려고 올린다.
+# 외부에서 받은 형상·좌표(cad/, step/)와 사이즈코리아 자료(data/사이즈코리아)는 올리지 않는다
+!data/robot40_h175sk/
+data/robot40_h175sk/cad/
+!out/upper40_h175sk/
+!out/lower40_h175sk/
+# 시간 영역 설계의 프레임별 장력·수축 (경로 json 하나에 수 MB, 다시 만들 수 있다)
+report/*_timeseries.npz
+report/td/*_timeseries.npz

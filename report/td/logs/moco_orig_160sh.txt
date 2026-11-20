@@ -1,0 +1,29 @@
+  설계 좌표의 토크 모터 제거: ['shoulder_rot_l', 'shoulder_add_l', 'shoulder_flex_l', 'shoulder_rot_r', 'shoulder_add_r', 'shoulder_flex_r']
+모델 저장 C:\Users\USER\Desktop\Pan\report/moco/newmus_paths_shoulder_r_k8_40kg_h160_s80d_load3.79_model.osim
+  설계 좌표의 토크 모터 제거: ['shoulder_rot_l', 'shoulder_add_l', 'shoulder_flex_l', 'shoulder_rot_r', 'shoulder_add_r', 'shoulder_flex_r']
+모델 저장 C:\Users\USER\Desktop\Pan\report/moco/newmus_paths_shoulder_r_k8_40kg_h160_td_load3.79_model.osim
+  설계 좌표의 토크 모터 제거: ['shoulder_rot_l', 'shoulder_add_l', 'shoulder_flex_l', 'shoulder_rot_r', 'shoulder_add_r', 'shoulder_flex_r']
+모델 저장 C:\Users\USER\Desktop\Pan\report/moco/newmus_paths_shoulder_r_k8_40kg_h160_td_br20_load3.79_model.osim
+  설계 좌표의 토크 모터 제거: ['shoulder_rot_l', 'shoulder_add_l', 'shoulder_flex_l', 'shoulder_rot_r', 'shoulder_add_r', 'shoulder_flex_r']
+모델 저장 C:\Users\USER\Desktop\Pan\report/moco/newmus_paths_shoulder_r_k8_40kg_h160_td_br40_load3.79_model.osim
+[td160_shoulder_s80d_f15_walks9] 보조 최악 0.0 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 6.6 % / 95퍼센타일 3.6 %  → 재현
+[td160_shoulder_td_br40_walks9] 보조 최악 0.1 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 1093.2 % / 95퍼센타일 885.1 %  → 재현
+[td160_shoulder_td_br40_walk] 보조 최악 63.6 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 7138.3 % / 95퍼센타일 2149.3 %  → 재현
+[td160_shoulder_s80d_walks9] 보조 최악 0.1 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 6.6 % / 95퍼센타일 3.6 %  → 재현
+[td160_shoulder_s80d_f15_walk] 보조 최악 0.1 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 386.1 % / 95퍼센타일 63.4 %  → 재현
+[td160_shoulder_td_walks9] 보조 최악 0.1 % (95퍼센타일 0.1 %)   새 근육 토크 vs ID 최대 2812.1 % / 95퍼센타일 2280.8 %  → 재현
+[td160_shoulder_td_walk] 보조 최악 338.3 % (95퍼센타일 17.5 %)   새 근육 토크 vs ID 최대 6167.8 % / 95퍼센타일 3541.2 %  → 미달
+[td160_shoulder_td_br20_walks9] 보조 최악 0.1 % (95퍼센타일 0.1 %)   새 근육 토크 vs ID 최대 793.9 % / 95퍼센타일 679.5 %  → 재현
+[td160_shoulder_s80d_walk] 보조 최악 263.6 % (95퍼센타일 0.1 %)   새 근육 토크 vs ID 최대 316.3 % / 95퍼센타일 63.4 %  → 재현
+[td160_shoulder_td_lift] 보조 최악 2.6 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 76.4 % / 95퍼센타일 48.3 %  → 재현
+[td160_shoulder_td_br40_lift] 보조 최악 0.0 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 53.1 % / 95퍼센타일 35.1 %  → 재현
+[td160_shoulder_s80d_f15_lift] 보조 최악 11.8 % (95퍼센타일 0.1 %)   새 근육 토크 vs ID 최대 11.9 % / 95퍼센타일 1.2 %  → 재현
+[td160_shoulder_td_lifts6] 보조 최악 1.3 % (95퍼센타일 0.3 %)   새 근육 토크 vs ID 최대 148.0 % / 95퍼센타일 74.2 %  → 재현
+[td160_shoulder_td_br20_walk] 보조 최악 205.8 % (95퍼센타일 0.1 %)   새 근육 토크 vs ID 최대 3670.1 % / 95퍼센타일 1150.1 %  → 재현
+[td160_shoulder_s80d_lift] 보조 최악 23.9 % (95퍼센타일 8.3 %)   새 근육 토크 vs ID 최대 24.0 % / 95퍼센타일 8.3 %  → 재현
+[td160_shoulder_s80d_f15_lifts6] 보조 최악 10.7 % (95퍼센타일 1.5 %)   새 근육 토크 vs ID 최대 10.8 % / 95퍼센타일 1.7 %  → 재현
+[td160_shoulder_s80d_lifts6] 보조 최악 41.4 % (95퍼센타일 32.3 %)   새 근육 토크 vs ID 최대 41.5 % / 95퍼센타일 32.3 %  → 미달
+[td160_shoulder_td_br20_lifts6] 보조 최악 18.5 % (95퍼센타일 2.3 %)   새 근육 토크 vs ID 최대 120.9 % / 95퍼센타일 70.9 %  → 재현
+[td160_shoulder_td_br40_lifts6] 보조 최악 5.0 % (95퍼센타일 1.0 %)   새 근육 토크 vs ID 최대 100.3 % / 95퍼센타일 51.1 %  → 재현
+[td160_shoulder_td_br20_lift] 보조 최악 2.5 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 53.4 % / 95퍼센타일 40.4 %  → 재현
+160sh

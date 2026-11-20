@@ -1,0 +1,12 @@
+﻿trial,task,space,frames,skipped_pose,peak_Nm,peak_by_coord,torque_type_p95_pct,torque_type_max_Nm,cable_p95_pct,cable_max_pct,cable_max_Nm,worst_coord,stroke_widen_mm,stroke_over_mm,stroke_worst_cable,dL_has_design_range,verdict
+opencap_sample_squat,squat_deep,lower,632,0,56.8,56.8 22.5 49.7 43.6,0.2,6.25,0.0,0.8,0.46,ankle_angle,5.6,0.0,M3,True,가능
+opencap_sample_squat,squat_deep,trunk,316,0,88.7,88.7 8.0 2.1,11.9,21.3,0.0,1.6,1.45,lumbar_rotation,0.0,0.0,M0,True,가능
+opencap_sample_squat,squat_deep,shoulder_r,632,0,4.1,4.1 1.5 0.8,0.0,0.0,0.0,0.0,0.0,arm_rot,1.5,0.0,M7,True,가능
+opencap_sample_squat,squat_deep,elbow_r,632,0,2.6,2.6,0.0,0.0,0.0,0.0,0.0,elbow_flex,0.0,0.0,M0,True,가능
+opencap_sample_STS,sit_to_stand,trunk,311,0,100.6,100.6 7.2 4.2,24.7,32.53,7.9,14.9,14.95,lumbar_extension,4.4,0.0,M3,True,가능
+opencap_sample_STS,sit_to_stand,shoulder_r,622,0,3.7,2.5 3.7 1.0,0.0,0.0,0.0,0.0,0.0,arm_rot,20.1,11.0,M1,True,길이 초과
+opencap_sample_STS,sit_to_stand,elbow_r,622,0,2.7,2.7,0.0,0.0,0.0,0.0,0.0,elbow_flex,0.0,0.0,M0,True,가능
+jump_from_ik,jump,lower,864,0,162.3,130.1 62.1 89.4 162.3,21.4,114.17,6.2,61.3,99.52,ankle_angle,23.2,21.3,M7,True,길이 초과
+jump_from_ik,jump,trunk,432,0,154.0,154.0 23.2 15.4,33.4,84.56,22.1,40.8,62.81,lumbar_extension,0.0,0.0,M0,True,토크 부족
+jump_from_ik,jump,shoulder_r,864,0,8.3,8.3 3.6 1.8,0.0,0.44,0.0,0.0,0.0,arm_flex,5.4,3.1,M0,True,길이 초과
+jump_from_ik,jump,elbow_r,864,0,5.4,5.4,0.0,0.0,0.0,0.0,0.0,elbow_flex,0.0,0.0,M0,True,가능

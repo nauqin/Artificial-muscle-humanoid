@@ -1,0 +1,18 @@
+  설계 좌표의 토크 모터 제거: ['shoulder_rot_l', 'shoulder_add_l', 'shoulder_flex_l', 'shoulder_rot_r', 'shoulder_add_r', 'shoulder_flex_r']
+모델 저장 C:\Users\USER\Desktop\Pan\report/moco/newmus_paths_shoulder_r_k8_40kg_h175sk_td_load3.79_model.osim
+  설계 좌표의 토크 모터 제거: ['shoulder_rot_l', 'shoulder_add_l', 'shoulder_flex_l', 'shoulder_rot_r', 'shoulder_add_r', 'shoulder_flex_r']
+모델 저장 C:\Users\USER\Desktop\Pan\report/moco/newmus_paths_shoulder_r_k8_40kg_h175sk_td_br20_load3.79_model.osim
+  설계 좌표의 토크 모터 제거: ['shoulder_rot_l', 'shoulder_add_l', 'shoulder_flex_l', 'shoulder_rot_r', 'shoulder_add_r', 'shoulder_flex_r']
+모델 저장 C:\Users\USER\Desktop\Pan\report/moco/newmus_paths_shoulder_r_k8_40kg_h175sk_td_br40_load3.79_model.osim
+[td175_shoulder_td_walks9] 보조 최악 0.1 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 7.0 % / 95퍼센타일 3.8 %  → 재현
+[td175_shoulder_td_br20_walks9] 보조 최악 0.0 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 130.1 % / 95퍼센타일 101.5 %  → 재현
+[td175_shoulder_td_br40_walks9] 보조 최악 0.1 % (95퍼센타일 0.1 %)   새 근육 토크 vs ID 최대 125.8 % / 95퍼센타일 87.0 %  → 재현
+[td175_shoulder_td_walk] 보조 최악 148.2 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 289.1 % / 95퍼센타일 53.3 %  → 재현
+[td175_shoulder_td_br20_walk] 보조 최악 41.8 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 664.8 % / 95퍼센타일 225.6 %  → 재현
+[td175_shoulder_td_br40_walk] 보조 최악 408.1 % (95퍼센타일 0.2 %)   새 근육 토크 vs ID 최대 566.9 % / 95퍼센타일 60.2 %  → 재현
+[td175_shoulder_td_br40_lift] 보조 최악 0.1 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 41.0 % / 95퍼센타일 38.8 %  → 재현
+[td175_shoulder_td_lift] 보조 최악 0.0 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 5.4 % / 95퍼센타일 1.9 %  → 재현
+[td175_shoulder_td_br40_lifts6] 보조 최악 0.8 % (95퍼센타일 0.3 %)   새 근육 토크 vs ID 최대 147.8 % / 95퍼센타일 126.1 %  → 재현
+[td175_shoulder_td_lifts6] 보조 최악 0.6 % (95퍼센타일 0.1 %)   새 근육 토크 vs ID 최대 7.1 % / 95퍼센타일 2.0 %  → 재현
+[td175_shoulder_td_br20_lift] 보조 최악 0.0 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 15.8 % / 95퍼센타일 13.5 %  → 재현
+[td175_shoulder_td_br20_lifts6] 보조 최악 190.2 % (95퍼센타일 1.7 %)   새 근육 토크 vs ID 최대 38.7 % / 95퍼센타일 29.3 %  → 재현

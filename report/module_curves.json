@@ -1,0 +1,10 @@
+{
+ "note": "임시 (2026-11-19). 등급 g 한 묶음이 하중 f 에서 내는 수축 = S_g × (1 − beta × f / F_g). F_g·S_g 는 actuator_model.MODULES 의 상한. 등급별 하중–수축 실측점이 생기면 grades 에 등급별 값을 넣어 교체한다.",
+ "beta": 0.25,
+ "beta_sweep": [
+  0.0,
+  0.25,
+  0.5
+ ],
+ "grades": {}
+}

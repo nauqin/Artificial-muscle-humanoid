@@ -1,0 +1,6 @@
+  설계 좌표의 토크 모터 제거: ['lumbar_rot', 'lumbar_bend', 'lumbar_ext']
+모델 저장 C:\Users\USER\Desktop\Pan\report/moco/newmus_paths_trunk_k4_40kg_h175sk_td_load3.79_model.osim
+[td175_trunk_td_walk] 보조 최악 0.0 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 70.6 % / 95퍼센타일 14.3 %  → 재현
+[td175_trunk_td_walks9] 보조 최악 0.0 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 5.3 % / 95퍼센타일 3.0 %  → 재현
+[td175_trunk_td_lift] 보조 최악 0.0 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 1.3 % / 95퍼센타일 0.3 %  → 재현
+[td175_trunk_td_lifts6] 보조 최악 0.0 % (95퍼센타일 0.0 %)   새 근육 토크 vs ID 최대 1.0 % / 95퍼센타일 0.4 %  → 재현

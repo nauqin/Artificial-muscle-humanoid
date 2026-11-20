@@ -1,0 +1,29 @@
+
+               MODEL: robot40_h175sk
+         coordinates: 39
+              forces: 97
+           actuators: 97
+             muscles: 80
+            analyses: 0
+              probes: 0
+              bodies: 22
+              joints: 22
+         constraints: 2
+             markers: 45
+         controllers: 0
+  contact geometries: 0
+misc modelcomponents: 0
+모델 : data/robot40_h175sk/robot40_h175sk.osim  (체중 40.00 kg)
+     calcn_r -> calcn_r   calcn_r=0.123  calcn_l=0.521   +0.398
+     calcn_l -> calcn_l   calcn_r=0.485  calcn_l=0.130   +0.355
+  구간 : 0.246 ~ 1.123 s  (지지 0.079~1.290, 마진 0.167)
+  ankle_r             1.703 Nm/kg  [  1.2 ~ 1.6]  WARN   의심: GRF-발 매핑 / 좌표계 / 단위
+  ankle_l             1.582 Nm/kg  [  1.2 ~ 1.6]  PASS
+  knee_r              0.491 Nm/kg  [  0.4 ~ 0.8]  PASS
+  knee_l              0.417 Nm/kg  [  0.4 ~ 0.8]  PASS
+  hip_r               0.952 Nm/kg  [  0.7 ~ 1.2]  PASS
+  hip_l               0.875 Nm/kg  [  0.7 ~ 1.2]  PASS
+  grf_peak            1.335 BW     [  0.9 ~ 1.3]  WARN   의심: GRF 단위(N vs BW) / 체중
+  cop_dist            0.130 m      [      < 0.3]  PASS
+  residual            6.613 %      [        < 5]  WARN   의심: 모델-모션 부정합 / 동역학 불일치
+  판정 : WARN

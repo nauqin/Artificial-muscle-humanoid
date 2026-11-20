@@ -26,4 +26,4 @@ if a.force_scale != 1.0: pd.build_model(out, os.path.join(ROOT, a.base), os.path
 if a.space != "lower":
     for lt in a.loads.split(","):
         mp = os.path.join(ROOT, f"report/moco/{stem}_load{lt}_model.osim")
-        if not os.path.exists(mp): pd.build_model(out, os.path.join(ROOT, f"data/robot40_h160/robot40_h160_load{lt}.osim"), mp)
+        if not os.path.exists(mp): pd.build_model(out, os.path.join(ROOT, a.base.replace(".osim", f"_load{lt}.osim")), mp)   # 손 하중 모델 = --base 옆 _load<꼬리표> (2026-11-19, 기본은 그대로 h160)

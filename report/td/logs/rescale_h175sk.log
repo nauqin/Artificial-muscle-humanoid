@@ -1,0 +1,261 @@
+모델 C:\Users\USER\Desktop\Pan\data/robot40_h175sk\robot40_h175sk.osim: 질량 40.0 kg, 길이 ×1.0802, 추가 {'humerus_r': (1.0, 1.0974, 1.0), 'ulna_r': (1.0, 1.0495, 1.0), 'radius_r': (1.0, 1.0495, 1.0), 'humerus_l': (1.0, 1.0974, 1.0), 'ulna_l': (1.0, 1.0495, 1.0), 'radius_l': (1.0, 1.0495, 1.0)}
+[ID] Moore2015 subject3 T047_segment_12 하중 0.0 kg 모델 robot40_h175sk.osim
+
+               MODEL: robot40_h175sk
+         coordinates: 39
+              forces: 97
+           actuators: 97
+             muscles: 80
+            analyses: 0
+              probes: 0
+              bodies: 22
+              joints: 22
+         constraints: 2
+             markers: 45
+         controllers: 0
+  contact geometries: 0
+misc modelcomponents: 0
+[ID] Moore2015 subject3 T047_segment_21 하중 0.0 kg 모델 robot40_h175sk.osim
+
+               MODEL: robot40_h175sk
+         coordinates: 39
+              forces: 97
+           actuators: 97
+             muscles: 80
+            analyses: 0
+              probes: 0
+              bodies: 22
+              joints: 22
+         constraints: 2
+             markers: 45
+         controllers: 0
+  contact geometries: 0
+misc modelcomponents: 0
+[ID] Moore2015 subject3 T048_segment_5 하중 0.0 kg 모델 robot40_h175sk.osim
+
+               MODEL: robot40_h175sk
+         coordinates: 39
+              forces: 97
+           actuators: 97
+             muscles: 80
+            analyses: 0
+              probes: 0
+              bodies: 22
+              joints: 22
+         constraints: 2
+             markers: 45
+         controllers: 0
+  contact geometries: 0
+misc modelcomponents: 0
+[ID] Moore2015 subject3 T048_segment_10 하중 0.0 kg 모델 robot40_h175sk.osim
+
+               MODEL: robot40_h175sk
+         coordinates: 39
+              forces: 97
+           actuators: 97
+             muscles: 80
+            analyses: 0
+              probes: 0
+              bodies: 22
+              joints: 22
+         constraints: 2
+             markers: 45
+         controllers: 0
+  contact geometries: 0
+misc modelcomponents: 0
+[ID] Moore2015 subject9 T026_segment_23 하중 0.0 kg 모델 robot40_h175sk.osim
+
+               MODEL: robot40_h175sk
+         coordinates: 39
+              forces: 97
+           actuators: 97
+             muscles: 80
+            analyses: 0
+              probes: 0
+              bodies: 22
+              joints: 22
+         constraints: 2
+             markers: 45
+         controllers: 0
+  contact geometries: 0
+misc modelcomponents: 0
+[ID] Moore2015 subject9 T026_segment_15 하중 0.0 kg 모델 robot40_h175sk.osim
+
+               MODEL: robot40_h175sk
+         coordinates: 39
+              forces: 97
+           actuators: 97
+             muscles: 80
+            analyses: 0
+              probes: 0
+              bodies: 22
+              joints: 22
+         constraints: 2
+             markers: 45
+         controllers: 0
+  contact geometries: 0
+misc modelcomponents: 0
+[ID] Moore2015 subject9 T027_segment_21 하중 0.0 kg 모델 robot40_h175sk.osim
+
+               MODEL: robot40_h175sk
+         coordinates: 39
+              forces: 97
+           actuators: 97
+             muscles: 80
+            analyses: 0
+              probes: 0
+              bodies: 22
+              joints: 22
+         constraints: 2
+             markers: 45
+         controllers: 0
+  contact geometries: 0
+misc modelcomponents: 0
+[ID] Moore2015 subject9 T027_segment_22 하중 0.0 kg 모델 robot40_h175sk.osim
+
+               MODEL: robot40_h175sk
+         coordinates: 39
+              forces: 97
+           actuators: 97
+             muscles: 80
+            analyses: 0
+              probes: 0
+              bodies: 22
+              joints: 22
+         constraints: 2
+             markers: 45
+         controllers: 0
+  contact geometries: 0
+misc modelcomponents: 0
+[ID] CARRT subject1 PB1 하중 0.52 kg 모델 robot40_h175sk_load0.52_bi.osim
+
+               MODEL: robot40_h175sk
+         coordinates: 39
+              forces: 97
+           actuators: 97
+             muscles: 80
+            analyses: 0
+              probes: 0
+              bodies: 22
+              joints: 22
+         constraints: 2
+             markers: 45
+         controllers: 0
+  contact geometries: 0
+misc modelcomponents: 0
+[ID] CARRT subject1 PFWJ2 하중 3.79 kg 모델 robot40_h175sk_load3.79.osim
+
+               MODEL: robot40_h175sk
+         coordinates: 39
+              forces: 97
+           actuators: 97
+             muscles: 80
+            analyses: 0
+              probes: 0
+              bodies: 22
+              joints: 22
+         constraints: 2
+             markers: 45
+         controllers: 0
+  contact geometries: 0
+misc modelcomponents: 0
+[ID] CARRT subject1 PEWJ2 하중 0.9 kg 모델 robot40_h175sk_load0.9.osim
+
+               MODEL: robot40_h175sk
+         coordinates: 39
+              forces: 97
+           actuators: 97
+             muscles: 80
+            analyses: 0
+              probes: 0
+              bodies: 22
+              joints: 22
+         constraints: 2
+             markers: 45
+         controllers: 0
+  contact geometries: 0
+misc modelcomponents: 0
+[ID] CARRT subject1 OCH2 하중 0.0 kg 모델 robot40_h175sk.osim
+
+               MODEL: robot40_h175sk
+         coordinates: 39
+              forces: 97
+           actuators: 97
+             muscles: 80
+            analyses: 0
+              probes: 0
+              bodies: 22
+              joints: 22
+         constraints: 2
+             markers: 45
+         controllers: 0
+  contact geometries: 0
+misc modelcomponents: 0
+[ID] CARRT subject6 PB4 하중 0.52 kg 모델 robot40_h175sk_load0.52_bi.osim
+
+               MODEL: robot40_h175sk
+         coordinates: 39
+              forces: 97
+           actuators: 97
+             muscles: 80
+            analyses: 0
+              probes: 0
+              bodies: 22
+              joints: 22
+         constraints: 2
+             markers: 45
+         controllers: 0
+  contact geometries: 0
+misc modelcomponents: 0
+[ID] CARRT subject6 PFWJ_2 하중 3.79 kg 모델 robot40_h175sk_load3.79.osim
+
+               MODEL: robot40_h175sk
+         coordinates: 39
+              forces: 97
+           actuators: 97
+             muscles: 80
+            analyses: 0
+              probes: 0
+              bodies: 22
+              joints: 22
+         constraints: 2
+             markers: 45
+         controllers: 0
+  contact geometries: 0
+misc modelcomponents: 0
+[ID] CARRT subject6 PEWJ2 하중 0.9 kg 모델 robot40_h175sk_load0.9.osim
+
+               MODEL: robot40_h175sk
+         coordinates: 39
+              forces: 97
+           actuators: 97
+             muscles: 80
+            analyses: 0
+              probes: 0
+              bodies: 22
+              joints: 22
+         constraints: 2
+             markers: 45
+         controllers: 0
+  contact geometries: 0
+misc modelcomponents: 0
+[ID] CARRT subject6 OC3 하중 0.0 kg 모델 robot40_h175sk.osim
+
+               MODEL: robot40_h175sk
+         coordinates: 39
+              forces: 97
+           actuators: 97
+             muscles: 80
+            analyses: 0
+              probes: 0
+              bodies: 22
+              joints: 22
+         constraints: 2
+             markers: 45
+         controllers: 0
+  contact geometries: 0
+misc modelcomponents: 0
+tasks C:\Users\USER\Desktop\Pan\report/upper/tasks_40kg_h175sk.csv 16 행
+  하체 입력 walking1_segment_0: IK·GRF 저장
+  하체 입력 squats1_segment_0: IK·GRF 저장
+  하체 입력 T047_segment_12: IK·GRF 저장

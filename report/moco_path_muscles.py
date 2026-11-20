@@ -25,6 +25,9 @@ def main():
     ap.add_argument("--space", default="lower"); ap.add_argument("--paths", default=None, help="경로 json (기본 report/newmus_paths_k8.json)")
     ap.add_argument("--box-scale", type=float, default=1.0, help="감는 구 배율 (로봇 크기, path_design 과 같게) — 케이블 토크 vs ID 지표에만 쓴다")
     ap.add_argument("--prefilter", action="store_true", help="운동학을 전체 길이에서 6 Hz 로 미리 거른다 (Moco 내부 필터는 창으로 자른 뒤 걸어 양 끝·급변 구간이 튄다)")
+    ap.add_argument("--out-dir", default=None, help="중간·해 파일을 둘 곳 (기본 report/moco). 최적화 반복 평가용 (2026-11-19)")
+    ap.add_argument("--no-csv", action="store_true", help="results_paths.csv 에 줄을 더하지 않는다 (최적화 반복 평가용)")
+    ap.add_argument("--metrics-json", default=None, help="좌표별 보조·토크 오차와 설계 쪽 시계열(시간, 보조, 케이블 토크, ID)을 이 json 으로 (2026-11-19)")
     a = ap.parse_args(); sub, trial = a.subject, a.trial
     global COORDS
     SP = pd.configure(a.space); COORDS = SP["base"]; dside = SP["design_side"]
@@ -32,7 +35,7 @@ def main():
     paths_json = a.paths or os.path.join(ROOT, "report/newmus_paths_k8.json")
     if a.space != "lower" and a.model == os.path.join(ROOT, "report/moco/newmus_paths_subject3_model.osim"):
         a.model = os.path.join(ROOT, f"report/moco/newmus_paths_{a.space}_k{len(json.load(open(paths_json))['muscles'])}_model.osim")
-    name = a.name or f"paths_{sub}_{trial.replace('_segment_0','')}{a.tag}"; out_dir = os.path.join(ROOT, "report/moco")
+    name = a.name or f"paths_{sub}_{trial.replace('_segment_0','')}{a.tag}"; out_dir = a.out_dir or os.path.join(ROOT, "report/moco"); os.makedirs(out_dir, exist_ok=True)
     base = os.path.join(ROOT, "out/real", sub, trial); ext = None if (a.ext or "").lower() == "none" else (a.ext or os.path.join(base, f"{trial}_external_loads.xml"))
     idm = io.read_mot(a.id or os.path.join(base, f"{trial}_id.sto")); t0 = a.t0 if a.t0 is not None else float(idm.t0); t1 = a.t1 if a.t1 is not None else float(idm.t1)
     ik_raw = a.ik or os.path.join(ROOT, "data", sub, f"{trial}_ik.mot")
@@ -78,22 +81,30 @@ def main():
     tau_new = np.zeros((len(tt), len(COORDS)))
     for m in paths["muscles"]:
         u = np.asarray(msol.getControlMat(ctrl_name(m["name"]))).ravel(); chain = [pd.BODIES.index(b) for b in m["chain"]]
-        r, _ = pd.moment_arms(fr, chain, np.array(m["points"])); tau_new += (m["force_N"] * u)[:, None] * r
-    rows = []; worst = 0; worst_err = 0; worst_e95 = 0; worst_r95 = 0
+        r, _ = pd.moment_arms(fr, chain, np.array(m["points"]), wrap_cyl=m.get("wrap_cyl")); tau_new += (m["force_N"] * u)[:, None] * r
+    rows = []; worst = 0; worst_err = 0; worst_e95 = 0; worst_r95 = 0; met = dict(name=name, success=bool(ok), coords={}, series=dict(time=tt[inner].tolist()))
     for j, c in enumerate(COORDS):
         for side in SP["sides"]:
             coord = ds.full(c, side); cands = [n for n in names if "reserve" in n and n.endswith("_" + coord)]
             r_t = np.abs(np.asarray(msol.getControlMat(cands[0])).ravel()[inner]); res = float(r_t.max()); idc = idm.column(f"{coord}_moment"); idpk = float(np.abs(idc).max())
             pct = res / idpk * 100; worst = max(worst, pct); r95 = float(np.percentile(r_t, 95)) / idpk * 100; worst_r95 = max(worst_r95, r95); extra = f"  (95퍼센타일 {r95:5.1f} %)"
+            met["coords"][coord] = dict(assist_peak_Nm=res, id_peak_Nm=idpk, assist_peak_pct=pct, assist_p95_pct=r95)
             if side == dside:
                 e_t = np.abs(tau_new[:, j] - np.interp(tt, idm.time, idc))[inner]; err = e_t.max() / idpk * 100; e95 = np.percentile(e_t, 95) / idpk * 100
                 worst_err = max(worst_err, err); worst_e95 = max(worst_e95, e95); extra = f"   | 최대 {err:5.1f} %  95퍼센타일 {e95:5.1f} %"
+                met["coords"][coord].update(err_max_pct=float(err), err_p95_pct=float(e95))
+                met["series"][coord] = dict(reserve_Nm=np.asarray(msol.getControlMat(cands[0])).ravel()[inner].tolist(), cable_Nm=tau_new[inner, j].tolist(), id_Nm=np.interp(tt, idm.time, idc)[inner].tolist(),
+                                            q=Q[inner, list(pd.COORDS).index(coord)].tolist() if coord in pd.COORDS else None)
             rows.append((coord, pct)); print(f"  {coord:16s} {res:10.2f} {idpk:8.1f} {pct:8.1f} %{extra}")
     upk = {m["name"]: float(np.asarray(msol.getControlMat(ctrl_name(m["name"]))).ravel().max()) for m in paths["muscles"]}
     print(f"  설계 쪽 신호 피크 (u_max {a.umax}): " + "  ".join(f"{k}={v:.2f}" for k, v in upk.items()))
     # 최대값은 Moco 가 창을 잘라 6 Hz 로 거른 운동학과 ID(전체 길이 필터)가 어긋나는 한두 순간에 튄다 — 95퍼센타일로 판정 (2026-11-03)
     print(f"[{name}] 보조 최악 {worst:.1f} % (95퍼센타일 {worst_r95:.1f} %)   새 근육 토크 vs ID 최대 {worst_err:.1f} % / 95퍼센타일 {worst_e95:.1f} %  → {'재현' if worst_r95 < 10 else '미달'}", flush=True)
-    with open(os.path.join(out_dir, "results_paths.csv"), "a", newline="") as fh:
+    if a.metrics_json:
+        met.update(worst_peak_pct=worst, worst_p95_pct=worst_r95, err_max_pct=worst_err, err_p95_pct=worst_e95, u_peak=upk, q_names=list(pd.COORDS) + list(pd.EXTRA), Q=Q[inner].tolist())
+        json.dump(met, open(a.metrics_json, "w", encoding="utf-8"), ensure_ascii=False)
+    if a.no_csv: return
+    with open(os.path.join(ROOT, "report/moco", "results_paths.csv"), "a", newline="") as fh:
         csv.writer(fh).writerow([name, ok, f"{worst:.1f}", f"{worst_r95:.1f}", f"{worst_err:.1f}", f"{worst_e95:.1f}"] + [f"{r[1]:.1f}" for r in rows] + [f"{v:.2f}" for v in upk.values()])
 
 

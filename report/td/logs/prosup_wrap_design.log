@@ -1,0 +1,31 @@
+자세 7454개 (시행 16), 회내외 토크 -0.92 ~ +0.85 N·m, 각 0.7 ~ 92.0°, 강건성 ±0.25 N·m (× 1.1) 자세 1491개
+뼈 변환 저장 2s
+회내외 축 (노뼈 좌표) [0.0564 0.9984 0.002 ], 원점 [0. 0. 0.];  팔꿈치 케이블 report/newmus_paths_elbow_r_k2_40kg_h175sk_td_br50_rb.json (['M3×3', 'M3×3'])
+
+── 설계 1회 (Moco 추가 프레임 0개) ──
+  DE 세대 25: 최선 4.3986  61s
+  DE 세대 50: 최선 4.3740  120s
+  DE 세대 75: 최선 4.3587  183s
+  DE 세대 100: 최선 4.3587  244s
+  DE 세대 125: 최선 4.3558  307s
+  DE 세대 150: 최선 4.3496  370s
+  DE 세대 175: 최선 4.3464  432s
+  DE 세대 200: 최선 4.3454  493s
+  DE 세대 225: 최선 4.3452  551s
+  DE 세대 250: 최선 4.3452  609s
+  DE 세대 275: 최선 4.3451  666s
+  DE 세대 300: 최선 4.3451  724s
+설계 쪽 최적화: DE 4.3451 → NM 4.3451  (61276 회, 736s)
+  R 10.8 mm, 드럼 중심 축 방향 -42.5 mm (노뼈머리 기준)   목적 4.345 (일 용량 4.345 J, 벌점 0.0000)
+  드럼 높이에서 회내외 축 ↔ 자뼈 관 축 거리 17.9 mm (자뼈 관 반지름 15 + 드럼 10.8 mm → 틈 -7.9 mm)
+  M2 회내: 회내외 모멘트암 +10.8~+10.8 mm (그 방향 유효 10.8~10.8), 팔꿈치 모멘트암 최대 |0.000| mm, 감김 각 74~165°, 가이드 높이 12.6 mm  | M5 ×2 (연속 1.73, 일 용량 2 J, park 9 g)  장력 최대 87 N, 수축 최대 17 mm  (데이터 프레임 장력 최대 87 N)
+  M3 회외: 회내외 모멘트암 -10.0~-9.1 mm (그 방향 유효 9.1~10.0), 팔꿈치 모멘트암 최대 |0.000| mm, 감김 각 24~115°, 가이드 높이 8.8 mm  | M5 ×3 (연속 2.22, 일 용량 3 J, park 14 g)  장력 최대 111 N, 수축 최대 15 mm  (데이터 프레임 장력 최대 111 N)
+  설계 좌표의 토크 모터 제거: ['pro_sup_l', 'elbow_flex_l', 'pro_sup_r', 'elbow_flex_r']
+모델 저장 c:\Users\USER\Desktop\Pan\report/moco/newmus_paths_forearm_r_k4_40kg_h175sk_prosup_wrap_model.osim
+  설계 좌표의 토크 모터 제거: ['pro_sup_l', 'elbow_flex_l', 'pro_sup_r', 'elbow_flex_r']
+모델 저장 c:\Users\USER\Desktop\Pan\report/moco/newmus_paths_forearm_r_k4_40kg_h175sk_prosup_wrap_load3.79_model.osim
+  OpenSim M2_r: 길이 차 최대 0.000 mm, 회내외 모멘트암 차 최대 0.000 mm (OpenSim +10.79~+10.79, 설계 +10.79~+10.79 mm), 팔꿈치 모멘트암 최대 |0.000| mm
+  OpenSim M2_l: 길이 차 최대 0.000 mm, 회내외 모멘트암 차 최대 0.000 mm (OpenSim +10.79~+10.79, 설계 +10.79~+10.79 mm), 팔꿈치 모멘트암 최대 |0.000| mm
+  OpenSim M3_r: 길이 차 최대 0.194 mm, 회내외 모멘트암 차 최대 0.166 mm (OpenSim -9.85~-8.99, 설계 -9.97~-9.07 mm), 팔꿈치 모멘트암 최대 |0.000| mm
+  OpenSim M3_l: 길이 차 최대 0.194 mm, 회내외 모멘트암 차 최대 0.166 mm (OpenSim -9.85~-8.99, 설계 -9.97~-9.07 mm), 팔꿈치 모멘트암 최대 |0.000| mm
+저장 report/newmus_paths_forearm_r_k4_40kg_h175sk_prosup_wrap.json report/moco/newmus_paths_forearm_r_k4_40kg_h175sk_prosup_wrap_model.osim report/moco/newmus_paths_forearm_r_k4_40kg_h175sk_prosup_wrap_load3.79_model.osim report\td\prosup_wrap_prosup_wrap

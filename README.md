@@ -263,6 +263,7 @@ VAF(설명된 분산)로 고른다. 두 기준을 나란히 보고한다.
 | `report/paths_video.py` | 케이블 근육 영상 — 뼈대 + 케이블(신호로 진하기) + GRF + 토크 추적 + 보조 액추에이터 토크 패널. `video_paths_subject3_{walking1,squats1}.mp4` |
 | `report/gui_export.py` | GUI 용: 같은 경로의 Millard 근육 모델 `moco/gui_muscles_model.osim` + 관절각·활성도 모션 `moco/gui_paths_*_v3.mot` |
 | `report/design_directions.py` | **새 근육 8개의 관절 배분비·토크 용량을 ID 토크에서 직접 설계** (LP + Powell) — v2(걷기 7명 + 스쿼트, 9/15) 394 Nm, 축 정렬 522 대비 −25 %. 결과 `newmus_V_design_k8.npz`, `design_directions.csv`. v1(앉았다 서기 포함)은 `report/archive_v1/` |
+| `tools/add_motion.py` | **새 동작 넣기 (2026-11-19)**: OpenCap 세션·영상 한 개·관절각 → 로봇 뼈대 → 지면반력 추정 → ID → `report/custom/tasks_<묶음>.csv`, `--check`(최종 A안 가능?) `--redesign`. 정확도·찍는 법은 `report/custom/README.md` |
 | `raw_b3d/` | 내려받은 `.b3d`를 여기에 둔다 |
 | `data/` | AddBiomechanics 다운로드를 여기에 푼다 |
 | `out/` | 결과 |
