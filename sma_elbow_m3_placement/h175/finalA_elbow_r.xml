@@ -1,0 +1,31 @@
+<mujoco model="finalA_elbow_r">
+  <!-- 자동 생성: elbow_finalA.py build — 유빈 최종 A안 들기 모델의 오른팔 (40 kg · 160 cm). 각도는 OpenSim 그대로, 위팔 안 좌표도 OpenSim 그대로 (화면용으로 통째로 z 위로 세움) -->
+  <compiler angle="radian"/>
+  <option timestep="0.0005" gravity="0 0 -9.81" integrator="implicitfast"/>
+  <visual><global offwidth="1280" offheight="720"/></visual>
+  <worldbody>
+    <light pos="0.5 1 1" dir="-0.5 -1 -1"/>
+    <geom type="plane" pos="0 0 -0.75" size="0.8 0.8 0.05" rgba="0.8 0.8 0.8 1"/>
+    <light pos="0 -1 1.5" dir="0 0.6 -1"/>
+    <body name="humerus_r" pos="0 0 0.3" quat="0.70710678 0.70710678 0 0">  <!-- OpenSim(y 위) → MuJoCo(z 위): x축으로 90° 돌림 -->
+      <inertial pos="0 -0.195011028 0" mass="1.07905" fullinertia="0.00865188931 0.00255304109 0.00865188931 0 0 0"/>
+      <geom type="capsule" fromto="0 0 0 0.013540311 -0.329692899 -0.0104904913" size="0.022" rgba="0.7 0.7 0.72 1" contype="0" conaffinity="0"/>
+      <site name="elbow_M0_r_p0" pos="0.0231667199 -0.234850443 -0.00115000129" size="0.006" rgba="1 0.2 0.2 1"/><site name="elbow_M1_r_p0" pos="-0.00381883243 -0.0512005369 -0.0153993316" size="0.006" rgba="1 0.2 0.2 1"/>
+      <body name="ulna_r" pos="0.013540311 -0.329692899 -0.0104904913" quat="1 5.26835606e-09 5.26835606e-09 0">
+        <joint name="elbow_flex_r" type="hinge" pos="0 0 0" axis="0.22604727 0.0222689894 0.973861758" range="0 2.618" limited="true" damping="0.3"/>
+        <inertial pos="0 -0.136641499 0" mass="0.322519" fullinertia="0.00200175985 0.000382863208 0.00200175985 0 0 0"/>
+        <geom type="capsule" fromto="0 0 0 0 -0.24 0" size="0.018" rgba="0.7 0.7 0.72 1" contype="0" conaffinity="0"/>
+        <site name="elbow_M0_r_p1" pos="0.00978308317 -0.0217704221 0.0133871814" size="0.006" rgba="1 0.2 0.2 1"/><site name="elbow_M1_r_p1" pos="-0.011025674 0.0213827843 -0.0133969109" size="0.006" rgba="1 0.2 0.2 1"/>
+        <body name="radius_r" pos="-0.00713531517 -0.0128698534 0.0261959931" quat="1 0 1.05367121e-08 0">
+          <inertial pos="0 -0.136641499 0" mass="0.322519" fullinertia="0.00200175985 0.000382863208 0.00200175985 0 0 0"/>
+          <body name="hand_r" pos="-0.00933095995 -0.233354277 0.0136689593" quat="1 7.4505806e-09 7.4505806e-09 0">
+            <inertial pos="0 -0.0735594136 0" mass="4.03288" fullinertia="0.00055261169 0.000338877329 0.000830156512 0 0 0"/>
+            <geom type="sphere" pos="0 -0.0735594136 0" size="0.045" rgba="0.55 0.1 0.15 1" contype="0" conaffinity="0"/>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+  <tendon><spatial name="elbow_M0_r" width="0.004" rgba="0.9 0.1 0.1 1"><site site="elbow_M0_r_p0"/><site site="elbow_M0_r_p1"/></spatial><spatial name="elbow_M1_r" width="0.004" rgba="0.1 0.3 0.9 1"><site site="elbow_M1_r_p0"/><site site="elbow_M1_r_p1"/></spatial></tendon>
+  <actuator><general name="elbow_M0_r" tendon="elbow_M0_r" ctrlrange="0 1" ctrllimited="true" gainprm="-20000" biastype="none"/><general name="elbow_M1_r" tendon="elbow_M1_r" ctrlrange="0 1" ctrllimited="true" gainprm="-20000" biastype="none"/></actuator>
+</mujoco>
